@@ -72,6 +72,9 @@ function api.KeyPressed(key, scancode, isRepeat)
 	if TerrainHandler.KeyPressed and TerrainHandler.KeyPressed(key, scancode, isRepeat) then
 		return
 	end
+	if PlayerHandler.KeyPressed and PlayerHandler.KeyPressed(key, scancode, isRepeat) then
+		return
+	end
 	if key == "escape" then
 		api.ToggleMenu()
 	end
@@ -79,7 +82,7 @@ function api.KeyPressed(key, scancode, isRepeat)
 		api.ToggleMenu()
 	end
 	if key == "f" then
-		self.freeCamera = not self.freeCamera
+		self.editMode = not self.editMode
 	end
 	if api.GetGameOver() then
 		return -- No doing actions
@@ -91,6 +94,9 @@ end
 
 function api.MousePressed(x, y, button)
 	if GameHandler.MousePressed(x, y, button) then
+		return
+	end
+	if TerrainHandler.MousePressed(x, y, button) then
 		return
 	end
 	if api.GetPaused() then
@@ -126,7 +132,7 @@ function api.MouseMoved(x, y, dx, dy)
 end
 
 function api.MouseWheelMoved(x, y)
-	if self.freeCamera then
+	if self.editMode then
 		self.scrollAmount = (self.scrollAmount or 0) + y
 	end
 end
@@ -169,6 +175,10 @@ function api.GetOrderMult()
 	return self.orderMult
 end
 
+function api.GetEditMode()
+	return self.editMode
+end
+
 function api.GetCameraExtents(buffer)
 	local screenWidth, screenHeight = love.window.getMode()
 	local topLeftPos = api.ScreenToWorld({0, 0})
@@ -182,7 +192,7 @@ function api.GetPhysicsWorld()
 end
 
 local function UpdateCamera(dt)
-	if self.freeCamera then
+	if self.editMode then
 		CameraHandler.UpdateFree(dt, self.scrollAmount)
 		self.scrollAmount = 0
 	else
@@ -272,7 +282,7 @@ function api.Initialize(cosmos, levelData)
 	self.interfaceTransform = love.math.newTransform()
 	self.emptyTransform = love.math.newTransform()
 	self.paused = false
-	self.freeCamera = false
+	self.editMode = false
 	self.lifetime = Global.DEBUG_START_LIFETIME or 0
 	
 	Delay.Initialise()
@@ -290,7 +300,7 @@ function api.Initialize(cosmos, levelData)
 	DeckHandler.Initialize(api)
 	GameHandler.Initialize(api)
 	
-	CameraHandler.Initialize(api)
+	CameraHandler.Initialize(api, PlayerHandler.GetPos())
 end
 
 return api

@@ -51,10 +51,9 @@ function api.GetCameraTransform()
 	return self.cameraTransform
 end
 
-function api.Initialize(world, levelData, padding)
+function api.Initialize(world, playerPos)
 	self = {
 		world = world,
-		levelData = levelData,
 	}
 	
 	self.cameraTransform = love.math.newTransform()
@@ -62,7 +61,7 @@ function api.Initialize(world, levelData, padding)
 	Camera.Initialize({
 		baseScale = Global.CAMERA_SCALE,
 	})
-	local cameraX, cameraY, cameraScale = Camera.UpdateCameraToPlayer(false, {0, 0}, {0, 0}, 0)
+	local cameraX, cameraY, cameraScale = Camera.UpdateCameraToPlayer(false, playerPos, {0, 0}, 0)
 	
 	self.cameraPos[1] = cameraX
 	self.cameraPos[2] = cameraY

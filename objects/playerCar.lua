@@ -121,8 +121,23 @@ local function NewComponent(self, physicsWorld)
 		return {x, y}
 	end
 	
+	function self.SetPos(pos)
+		self.hull.body:setPosition(pos[1], pos[2])
+		for i = 1, #self.wheels do
+			self.wheels[i].body:setPosition(pos[1], pos[2])
+		end
+	end
+	
+	function self.SetVelocity(vel)
+		self.hull.body:setLinearVelocity(vel[1], vel[2])
+		for i = 1, #self.wheels do
+			self.wheels[i].body:setLinearVelocity(vel[1], vel[2])
+		end
+	end
+	
 	function self.Draw(drawQueue)
 		drawQueue:push({y=0; f=function()
+			love.graphics.setColor(1, 1, 1, 1)
 			local x, y = self.hull.body:getPosition()
 			local angle = self.hull.body:getAngle()
 			love.graphics.push()

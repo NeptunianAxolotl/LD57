@@ -17,7 +17,7 @@ function api.Draw(drawQueue)
 		self.playerCar.Draw(drawQueue)
 	end
 end
-
+function api.KeyPressed(key, scancode, isRepeat)	if self.world.GetEditMode() then		if key == "g" then			self.playerCar.SetPos(self.world.GetMousePosition())			self.playerCar.SetVelocity({9, 0})		end	endend
 function api.Initialize(world)
 	self = {
 		playerCar = false,

@@ -36,7 +36,7 @@ local globals = {
 	
 	
 	GRAVITY = 200,
-	CAMERA_SCALE = 600,
+	CAMERA_SCALE = 860,
 	CAMERA_SCROLL_SPEED = 0.12,
 	CAMERA_SPEED = 1.8,
 	

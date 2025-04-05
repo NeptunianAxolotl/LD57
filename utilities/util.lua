@@ -365,6 +365,25 @@ function util.ExtendLine(line, length)
 	}
 end
 
+function util.ConvexPolygonPoints(points)
+	if #points < 3 then
+		return true
+	end
+	local n = #points
+	local sign = false
+	for i = 1, n do
+		local a = points[i]
+		local b = points[(i % n) + 1]
+		local c = points[((i + 1) % n) + 1]
+		local newSign = util.Cross2D(util.Subtract(a, b), util.Subtract(b, c))
+		sign = sign or newSign
+		if (sign > 0) ~= (newSign > 0) then
+			return false
+		end
+	end
+	return true
+end
+
 --------------------------------------------------
 --------------------------------------------------
 -- Transforms
