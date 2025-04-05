@@ -34,7 +34,7 @@ local globals = {
 	FLOATING_TEXT_COL   = {0.95,0.95,0.9},
 	
 	
-	TURN_MULT = 500,
+	TURN_MULT = 1200,
 	
 	GRAVITY = 520,
 	CAMERA_SCALE = 900,
