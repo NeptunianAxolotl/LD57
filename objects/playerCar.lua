@@ -134,7 +134,7 @@ local function NewComponent(self, physicsWorld, world)
 			local vx, vy = self.hull.body:getLinearVelocity()
 			local speed = util.Dist(0, 0, vx, vy)
 			turnAmount = turnAmount * Global.TURN_MULT
-			turnAmount = turnAmount * (0.5 + 0.5 * (1 - speed / (speed + 1000))) * math.max(1, 50 / (5 + speed))
+			turnAmount = turnAmount * (0.5 + 0.5 * (1 - speed / (speed + 1000))) * math.max(1, 60 / (3.5 + speed))
 			
 			print(speed)
 			self.hull.body:applyTorque(turnAmount)
