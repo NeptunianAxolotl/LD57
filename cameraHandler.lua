@@ -6,18 +6,18 @@ function api.GetCameraTransform()
 	return self.cameraTransform
 end
 
---function api.Update(dt)
---	local cameraX, cameraY, cameraScale = Camera.UpdateCameraToViewPoints(false, 
---		{
---			{pos = self.levelData.bounds[1], xOff = 20, yOff = 20},
---			{pos = self.levelData.bounds[2], xOff = 20, yOff = 20},
---		}
---	)
---	self.cameraPos[1] = cameraX
---	self.cameraPos[2] = cameraY
---	self.cameraScale = cameraScale
---	Camera.UpdateTransform(self.cameraTransform, self.cameraPos[1], self.cameraPos[2], self.cameraScale)
---end
+function api.Update(dt, pad)
+	local cameraX, cameraY, cameraScale = Camera.UpdateCameraToViewPoints(false, 
+		{
+			{pos = {0, 0}, xOff = pad and pad[1] or 20, yOff = pad and pad[2] or 20},
+			{pos = {self.levelData.width, self.levelData.height}, xOff = pad and pad[3] or 20, yOff = pad and pad[4] or 20},
+		}
+	)
+	self.cameraPos[1] = cameraX
+	self.cameraPos[2] = cameraY
+	self.cameraScale = cameraScale
+	Camera.UpdateTransform(self.cameraTransform, self.cameraPos[1], self.cameraPos[2], self.cameraScale)
+end
 
 local function UpdateCamera(dt, vector)
 	local cameraX, cameraY, cameraScale = Camera.PushCamera(dt, vector, 0.55)
@@ -33,76 +33,23 @@ function api.GetCameraTransform()
 	return self.cameraTransform
 end
 
-function api.Update(dt)
-	dt = math.min(0.1, dt)
-	
-	local x, y = love.mouse.getPosition()
-	local fullX, fullY = love.window.getMode()
-	local cameraVector = {0, 0}
-	
-	local mouseScroll, keyScroll = self.world.GetCosmos().GetScrollSpeeds()
-	
-	if x < Global.MOUSE_EDGE then
-		cameraVector = util.Add(cameraVector, {-Global.MOUSE_SCROLL*mouseScroll, 0})
-	end
-	if y < Global.MOUSE_EDGE then
-		cameraVector = util.Add(cameraVector, {0,-Global.MOUSE_SCROLL*mouseScroll})
-	end
-	if x > fullX - Global.MOUSE_EDGE then
-		cameraVector = util.Add(cameraVector, {Global.MOUSE_SCROLL*mouseScroll, 0})
-	end
-	if y > fullY - Global.MOUSE_EDGE then
-		cameraVector = util.Add(cameraVector, {0,Global.MOUSE_SCROLL*mouseScroll})
-	end
-	
-	if (love.keyboard.isDown("a") or love.keyboard.isDown("left")) then
-		cameraVector = util.Add(cameraVector, {-Global.CAMERA_SPEED*keyScroll, 0})
-	end
-	if (love.keyboard.isDown("d") or love.keyboard.isDown("right")) then
-		cameraVector = util.Add(cameraVector, {Global.CAMERA_SPEED*keyScroll, 0})
-	end
-	if (love.keyboard.isDown("w") or love.keyboard.isDown("up")) then
-		cameraVector = util.Add(cameraVector, {0, -Global.CAMERA_SPEED*keyScroll})
-	end
-	if (love.keyboard.isDown("s") or love.keyboard.isDown("down")) then
-		cameraVector = util.Add(cameraVector, {0, Global.CAMERA_SPEED*keyScroll})
-	end
-	
-	if self.cameraPos[1] < -Global.CAMERA_BOUND then
-		cameraVector[1] = math.max(0, cameraVector[1])
-	end
-	if self.cameraPos[1] > Global.CAMERA_BOUND then
-		cameraVector[1] = math.min(0, cameraVector[1])
-	end
-	if self.cameraPos[2] < -Global.CAMERA_BOUND then
-		cameraVector[2] = math.max(0, cameraVector[2])
-	end
-	if self.cameraPos[2] > Global.CAMERA_BOUND then
-		cameraVector[2] = math.min(0, cameraVector[2])
-	end
-	
-	UpdateCamera(dt, cameraVector)
-end
-
-function api.Initialize(world)
+function api.Initialize(world, levelData, padding)
+	levelData = levelData or {width = 600, height = 500}
 	self = {
 		world = world,
+		levelData = levelData,
 	}
 	
 	self.cameraTransform = love.math.newTransform()
 	self.cameraPos = {0, 0}
 	Camera.Initialize({
-		windowPadding = {left = 0, right = 0, top = 0, bot = 0},
+		windowPadding = padding,
 	})
 	
-	local cameraPos = world.GetCameraInitalPosition()
-	local posTL = util.Add({-500*Global.ZOOM_OUT, -500*Global.ZOOM_OUT}, cameraPos)
-	local posBR = util.Add({500*Global.ZOOM_OUT, 500*Global.ZOOM_OUT}, cameraPos)
-
 	local cameraX, cameraY, cameraScale = Camera.UpdateCameraToViewPoints(false, 
 		{
-			{pos = posTL, xOff = 20, yOff = 20},
-			{pos = posBR, xOff = 20, yOff = 20},
+			{pos = {0, 0}, xOff = 20, yOff = 20},
+			{pos = {self.levelData.width, self.levelData.height}, xOff = 20, yOff = 20},
 		}
 	)
 	self.cameraPos[1] = cameraX

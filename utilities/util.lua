@@ -5,6 +5,17 @@ local pi = math.pi
 local cos = math.cos
 local sin = math.sin
 
+local self = {}
+
+--------------------------------------------------
+-- Initialisation
+--------------------------------------------------
+
+function util.SetDefaultWrap(width, height)
+	self.wrapWidth = width
+	self.wrapHeight = height
+end
+
 --------------------------------------------------
 -- Vector funcs
 --------------------------------------------------
@@ -145,6 +156,29 @@ function util.Subtract(v1, v2)
 	return {v1[1] - v2[1], v1[2] - v2[2]}
 end
 
+function util.SubtractWithWrap(v1, v2, wrapX, wrapY)
+	-- Subtract is supposed to make the shortest from v2 to v1, so
+	-- that other functions can find directions and unit vectors
+	-- towards a target. This is the use case for this type of wrap.
+	local xDiff = v1[1] - v2[1]
+	local yDiff = v1[2] - v2[2]
+	wrapX = wrapX or self.wrapWidth
+	wrapY = wrapY or self.wrapHeight
+	while xDiff > 0.5*wrapX do
+		xDiff = xDiff - wrapX
+	end
+	while xDiff < -0.5*wrapX do
+		xDiff = xDiff + wrapX
+	end
+	while yDiff > 0.5*wrapY do
+		yDiff = yDiff - wrapY
+	end
+	while yDiff < -0.5*wrapY do
+		yDiff = yDiff + wrapY
+	end
+	return {xDiff, yDiff}
+end
+
 function util.Mult(b, v)
 	return {b*v[1], b*v[2]}
 end
@@ -223,6 +257,14 @@ function util.Angle(x, z)
 	end
 	-- x < 0
 	return 0
+end
+
+function util.AngleFromPointToPoint(p1, p2)
+	return util.Angle(util.Subtract(p2, p1))
+end
+
+function util.AngleFromPointToPointWithWrap(p1, p2, wrapX, wrapY)
+	return util.Angle(util.SubtractWithWrap(p2, p1, wrapX, wrapY))
 end
 
 function util.Dot(v1, v2)

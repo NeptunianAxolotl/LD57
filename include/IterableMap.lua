@@ -39,6 +39,9 @@ function IterableMap.Add(self, key, data)
 	self.keyByIndex[self.indexMax] = key
 	self.dataByKey[key] = data
 	self.indexByKey[key] = self.indexMax
+	if type(data) == "table" then
+		data.map_key = key
+	end
 	return key
 end
 
@@ -154,13 +157,24 @@ function IterableMap.GetFirstSatisfies(self, funcName, ...)
 	end
 end
 
-function IterableMap.GetMinimum(self, minFunc)
+function IterableMap.SumWithFunction(self, funcName, ...)
+	local count = 0
+	local i = 1
+	while i <= self.indexMax do
+		local key = self.keyByIndex[i]
+		count = count + (self.dataByKey[key][funcName](...) or 0)
+		i = i + 1
+	end
+	return count
+end
+
+function IterableMap.GetMinimum(self, minFunc, ...)
 	local i = 1
 	local minItem = false
 	local minValue = false
 	while i <= self.indexMax do
 		local key = self.keyByIndex[i]
-		local itemValue = minFunc(self.dataByKey[key])
+		local itemValue = minFunc(self.dataByKey[key], ...)
 		if itemValue and ((not minValue) or itemValue < minValue) then
 			minItem = self.dataByKey[key]
 			minValue = itemValue
@@ -181,6 +195,20 @@ function IterableMap.ApplySelf(self, funcName, ...)
 			i = i + 1
 		end
 	end
+end
+
+function IterableMap.ApplySelfMapToList(self, funcName, ...)
+	local list = {}
+	local i = 1
+	while i <= self.indexMax do
+		local key = self.keyByIndex[i]
+		local value = self.dataByKey[key][funcName](...)
+		if value then
+			list[#list + 1] = value
+		end
+		i = i + 1
+	end
+	return list
 end
 
 function IterableMap.ApplySelfRandomOrder(self, funcName, ...)
