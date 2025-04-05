@@ -1,10 +1,8 @@
 
-local ModuleTest = require("moduleTest")
 EffectsHandler = require("effectsHandler")
-ComponentHandler = require("componentHandler")
 DialogueHandler = require("dialogueHandler")
 TerrainHandler = require("terrainHandler")
-ShadowHandler = require("shadowHandler")
+--ShadowHandler = require("--ShadowHandler")
 
 LevelHandler = require("levelHandler")
 PlayerHandler = require("playerHandler")
@@ -199,10 +197,8 @@ function api.Update(dt)
 	self.lifetime = self.lifetime + dt
 	Delay.Update(dt)
 	InterfaceUtil.Update(dt)
-	ComponentHandler.Update(dt)
 	PlayerHandler.Update(dt)
-	ModuleTest.Update(dt)
-	ShadowHandler.Update(api)
+	--ShadowHandler.Update(api)
 	
 	PhysicsHandler.Update(dt)
 
@@ -217,7 +213,6 @@ function api.Draw()
 
 	-- Draw world
 	love.graphics.replaceTransform(CameraHandler.GetCameraTransform())
-	ModuleTest.Draw(drawQueue)
 	while true do
 		local d = preShadowQueue:pop()
 		if not d then break end
@@ -225,7 +220,6 @@ function api.Draw()
 	end
 	
 	--ShadowHandler.DrawGroundShadow(self.cameraTransform)
-	ComponentHandler.Draw(drawQueue)
 	EffectsHandler.Draw(drawQueue)
 	PlayerHandler.Draw(drawQueue)
 	TerrainHandler.Draw(drawQueue)
@@ -236,7 +230,7 @@ function api.Draw()
 		if not d then break end
 		d.f()
 	end
-	ShadowHandler.DrawVisionShadow(CameraHandler.GetCameraTransform())
+	--ShadowHandler.DrawVisionShadow(CameraHandler.GetCameraTransform())
 	
 	--local windowX, windowY = love.window.getMode()
 	--if windowX/windowY > 16/9 then
@@ -269,17 +263,15 @@ function api.Initialize(cosmos, levelData)
 	EffectsHandler.Initialize(api)
 	
 	PhysicsHandler.Initialize(api)
-	ComponentHandler.Initialize(api)
 	PlayerHandler.Initialize(api)
 	ChatHandler.Initialize(api)
 	DialogueHandler.Initialize(api)
 	
 	TerrainHandler.Initialize(api, levelData)
-	ShadowHandler.Initialize(api)
+	--ShadowHandler.Initialize(api)
 	
 	DeckHandler.Initialize(api)
 	GameHandler.Initialize(api)
-	ModuleTest.Initialize(api)
 	
 	CameraHandler.Initialize(api)
 end
