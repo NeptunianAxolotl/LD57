@@ -84,12 +84,12 @@ local function NewComponent(self, physicsWorld)
 		for i = 1, #self.wheels do
 			if love.keyboard.isDown("a") or love.keyboard.isDown("left") then
 				self.wheels[i].motor:setMotorEnabled(true)
-				self.wheels[i].motor:setMotorSpeed(-1)
-				self.wheels[i].motor:setMaxMotorTorque(1)
+				self.wheels[i].motor:setMotorSpeed(-10)
+				self.wheels[i].motor:setMaxMotorTorque(150)
 			elseif love.keyboard.isDown("d") or love.keyboard.isDown("right") then
 				self.wheels[i].motor:setMotorEnabled(true)
-				self.wheels[i].motor:setMotorSpeed(10)
-				self.wheels[i].motor:setMaxMotorTorque(100)
+				self.wheels[i].motor:setMotorSpeed(25)
+				self.wheels[i].motor:setMaxMotorTorque(150)
 			else
 				self.wheels[i].motor:setMotorEnabled(false)
 			end

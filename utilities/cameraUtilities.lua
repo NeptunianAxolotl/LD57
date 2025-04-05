@@ -3,7 +3,10 @@
 local self = {}
 
 local function UpdateCameraToPlayer(dt, playerPos, playerVelocity, playerSpeed, smoothness)
-	local wantedScale = math.min(3, math.max(0.5, (40 + playerSpeed)/40)) * self.baseScale
+	local wantedScale = self.baseScale
+	if Global.SPEED_ZOOM_SCALE then
+		wantedScale = wantedScale * math.min(3, math.max(0.5, (40 + playerSpeed)/40))
+	end
 	if not dt then
 		self.cameraPos = playerPos
 		self.playerVelocity = playerVelocity

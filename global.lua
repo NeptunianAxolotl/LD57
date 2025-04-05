@@ -34,11 +34,31 @@ local globals = {
 	FLOATING_TEXT_COL   = {0.95,0.95,0.9},
 	
 	
+	TURN_MULT = 500,
 	
 	GRAVITY = 200,
 	CAMERA_SCALE = 860,
 	CAMERA_SCROLL_SPEED = 0.12,
 	CAMERA_SPEED = 1.8,
+	SPEED_ZOOM_SCALE = false,
+	
+	SAVE_ORDER = {
+		"polygons", "circles"
+	},
+	SAVE_INLINE = {"pos"},
+	INIT_LEVEL = "mainLevel",
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -57,7 +77,6 @@ local globals = {
 	
 	GRAVITY_MULT = 900,
 	SPEED_LIMIT = 1800,
-	TURN_MULT = 175,
 	
 	MOUSE_SCROLL_MULT = 0,
 	KEYBOARD_SCROLL_MULT = 1.4,
