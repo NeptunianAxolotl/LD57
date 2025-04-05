@@ -5,7 +5,7 @@ local Font = require("include/font")
 local DEF = {
 	density = 1.2,
 	ballastDensity = 3,
-	wheelDensity = 0.5,
+	wheelDensity = 0.35,
 	scale = 50,
 	wheelFriction = 0.95,
 	hullFriction = 0.65,
@@ -23,11 +23,11 @@ local function HandleWheel(wheel, wantLeft, wantRight)
 	if wantLeft then
 		motor:setMotorEnabled(true)
 		motor:setMotorSpeed(-20000)
-		motor:setMaxMotorTorque(2500 * 500 / (500 + math.max(-speed, 200)))
+		motor:setMaxMotorTorque(2600 * 500 / (500 + math.max(-speed, 200)))
 	elseif wantRight then
 		motor:setMotorEnabled(true)
 		motor:setMotorSpeed(20000)
-		motor:setMaxMotorTorque(2500 * 500 / (500 + math.max(speed, 200)))
+		motor:setMaxMotorTorque(2600 * 500 / (500 + math.max(speed, 200)))
 	else
 		motor:setMotorEnabled(false)
 	end
@@ -102,12 +102,9 @@ local function NewComponent(self, physicsWorld, world)
 		
 		if love.keyboard.isDown("space") and not self.jumpReload then
 			local vx, vy = self.hull.body:getWorldVector(0, -1)
-			local force = 2000
+			local force = 4800
 			local forceVec = util.Mult(force, util.Unit({vx, vy}))
 			self.hull.body:applyForce(forceVec[1], forceVec[2])
-			for i = 1, #self.wheels do
-				self.wheels[i].body:applyForce(forceVec[1]*0.8, forceVec[2]*0.8)
-			end
 			self.jumpReload = def.jumpReload
 		end
 		if self.jumpReload then
@@ -134,7 +131,7 @@ local function NewComponent(self, physicsWorld, world)
 			local vx, vy = self.hull.body:getLinearVelocity()
 			local speed = util.Dist(0, 0, vx, vy)
 			turnAmount = turnAmount * Global.TURN_MULT
-			turnAmount = turnAmount * (0.5 + 0.5 * (1 - speed / (speed + 1000))) * math.max(1, 60 / (3.5 + speed))
+			turnAmount = turnAmount * (0.4 + 0.6 * (1 - speed / (speed + 1000))) * math.max(1, 90 / (15 + speed))
 			
 			print(speed)
 			self.hull.body:applyTorque(turnAmount)

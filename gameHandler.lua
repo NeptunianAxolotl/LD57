@@ -54,7 +54,13 @@ function api.DrawInterface()
 	else
 		Font.SetSize(3)
 		love.graphics.setColor(1, 1, 1, 0.7)
-		love.graphics.printf([[ - F to enable edit mode]], 40, 40, 500)
+		love.graphics.printf([[ - F to enable edit mode
+
+ - A and D spin wheels
+ - W pitch up, S pitch down
+ - Space to thrust
+ - Ctrl+R to restart
+]], 40, 40, 500)
 	
 	end
 end
