@@ -41,6 +41,10 @@ function love.mousepressed(x, y, button, istouch, presses)
 	Cosmos.MousePressed(x, y, button, istouch, presses)
 end
 
+function love.wheelmoved(x, y)
+	Cosmos.MouseWheelMoved(x, y)
+end
+
 --------------------------------------------------
 -- Update
 --------------------------------------------------

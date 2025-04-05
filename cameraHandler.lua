@@ -13,19 +13,39 @@ function api.Update(dt, playerPos, playerVelocity)
 	self.cameraPos[1] = cameraX + cameraScale * 0.65
 	self.cameraPos[2] = cameraY - cameraScale * 0.02
 	self.cameraScale = cameraScale
-	print(cameraX, playerPos[1], cameraY, playerPos[2], cameraScale)
 	Camera.UpdateTransform(self.cameraTransform, self.cameraPos[1], self.cameraPos[2], self.cameraScale)
 end
 
-local function UpdateCamera(dt, vector)
+local function UpdateCameraVector(dt, vector)
 	local cameraX, cameraY, cameraScale = Camera.PushCamera(dt, vector, 0.55)
 	Camera.UpdateTransform(self.cameraTransform, cameraX, cameraY, cameraScale)
-	--if ((cameraX - self.cameraPos[1])*10 < 150 or (cameraX - self.cameraPos[1])*10 > 180) and (cameraX - self.cameraPos[1])*10 > 40 then
-	--	print(math.floor((cameraX - self.cameraPos[1])*10))
-	--end
 	self.cameraPos[1] = cameraX
 	self.cameraPos[2] = cameraY
+	self.cameraScale = cameraScale
 end
+
+function api.UpdateFree(dt, zoomAmount)
+	local cameraVector = {0, 0}
+	local mouseScroll, keyScroll = self.world.GetCosmos().GetScrollSpeeds()
+	keyScroll = keyScroll * self.cameraScale
+	if (love.keyboard.isDown("a") or love.keyboard.isDown("left")) then
+		cameraVector = util.Add(cameraVector, {-Global.CAMERA_SPEED*keyScroll, 0})
+	end
+	if (love.keyboard.isDown("d") or love.keyboard.isDown("right")) then
+		cameraVector = util.Add(cameraVector, {Global.CAMERA_SPEED*keyScroll, 0})
+	end
+	if (love.keyboard.isDown("w") or love.keyboard.isDown("up")) then
+		cameraVector = util.Add(cameraVector, {0, -Global.CAMERA_SPEED*keyScroll})
+	end
+	if (love.keyboard.isDown("s") or love.keyboard.isDown("down")) then
+		cameraVector = util.Add(cameraVector, {0, Global.CAMERA_SPEED*keyScroll})
+	end
+	if zoomAmount then
+		Camera.ZoomCamera(zoomAmount)
+	end
+	UpdateCameraVector(dt, cameraVector)
+end
+
 
 function api.GetCameraTransform()
 	return self.cameraTransform

@@ -37,6 +37,8 @@ local globals = {
 	
 	GRAVITY = 200,
 	CAMERA_SCALE = 600,
+	CAMERA_SCROLL_SPEED = 0.12,
+	CAMERA_SPEED = 1.8,
 	
 	
 	
@@ -46,8 +48,6 @@ local globals = {
 	DEFAULT_MUSIC_DURATION = 174.69,
 	CROSSFADE_TIME = 0,
 	
-	ZOOM_OUT = 1,
-	CAMERA_SPEED = 2,
 	PHYSICS_SCALE = 300,
 	LINE_SPACING = 36,
 	INC_OFFSET = -15,
@@ -64,7 +64,6 @@ local globals = {
 	
 	MOUSE_EDGE = 8,
 	MOUSE_SCROLL = 1200,
-	CAMERA_SPEED = 800,
 	CAMERA_BOUND = 1600,
 }
 

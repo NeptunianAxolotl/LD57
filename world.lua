@@ -78,6 +78,9 @@ function api.KeyPressed(key, scancode, isRepeat)
 	if key == "p" then
 		api.ToggleMenu()
 	end
+	if key == "f" then
+		self.freeCamera = not self.freeCamera
+	end
 	if api.GetGameOver() then
 		return -- No doing actions
 	end
@@ -120,6 +123,12 @@ end
 
 function api.MouseMoved(x, y, dx, dy)
 	
+end
+
+function api.MouseWheelMoved(x, y)
+	if self.freeCamera then
+		self.scrollAmount = (self.scrollAmount or 0) + y
+	end
 end
 
 --------------------------------------------------
@@ -173,9 +182,14 @@ function api.GetPhysicsWorld()
 end
 
 local function UpdateCamera(dt)
-	local pos = PlayerHandler.GetPos()
-	local velocity = PlayerHandler.GetVelocity()
-	CameraHandler.Update(dt, pos, velocity)
+	if self.freeCamera then
+		CameraHandler.UpdateFree(dt, self.scrollAmount)
+		self.scrollAmount = 0
+	else
+		local pos = PlayerHandler.GetPos()
+		local velocity = PlayerHandler.GetVelocity()
+		CameraHandler.Update(dt, pos, velocity)
+	end
 end
 
 function api.GetCameraInitalPosition()
@@ -258,6 +272,7 @@ function api.Initialize(cosmos, levelData)
 	self.interfaceTransform = love.math.newTransform()
 	self.emptyTransform = love.math.newTransform()
 	self.paused = false
+	self.freeCamera = false
 	self.lifetime = Global.DEBUG_START_LIFETIME or 0
 	
 	Delay.Initialise()

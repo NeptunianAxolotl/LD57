@@ -80,6 +80,11 @@ local function PushCamera(dt, vector, moveSmooth)
 	return self.cameraPos[1], self.cameraPos[2], self.cameraScale
 end
 
+local function ZoomCamera(zoomAmount)
+	self.cameraScale = self.cameraScale * math.pow(1 + Global.CAMERA_SCROLL_SPEED, -zoomAmount)
+	return self.cameraPos[1], self.cameraPos[2], self.cameraScale
+end
+
 local function UpdateTransform(cameraTransform, cameraX, cameraY, cameraScale)
 	local fullX, fullY = love.window.getMode()
 	local windowX = fullX * (1 - self.windowPadding.left - self.windowPadding.right)
@@ -138,6 +143,7 @@ return {
 	UpdateCameraToViewPoints = UpdateCameraToViewPoints,
 	UpdateTransform = UpdateTransform,
 	PushCamera = PushCamera,
+	ZoomCamera = ZoomCamera,
 	Initialize = Initialize,
 	GetCameraScale = GetCameraScale,
 	GetCameraPos = GetCameraPos,

@@ -140,6 +140,10 @@ function api.MouseMoved(x, y, dx, dy)
 	World.MouseMoved(x, y, dx, dy)
 end
 
+function api.MouseWheelMoved(x, y)
+	World.MouseWheelMoved(x, y)
+end
+
 --------------------------------------------------
 -- Update and Initialize
 --------------------------------------------------
