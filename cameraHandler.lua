@@ -6,16 +6,14 @@ function api.GetCameraTransform()
 	return self.cameraTransform
 end
 
-function api.Update(dt, pad)
-	local cameraX, cameraY, cameraScale = Camera.UpdateCameraToViewPoints(false, 
-		{
-			{pos = {0, 0}, xOff = pad and pad[1] or 20, yOff = pad and pad[2] or 20},
-			{pos = {self.levelData.width, self.levelData.height}, xOff = pad and pad[3] or 20, yOff = pad and pad[4] or 20},
-		}
-	)
-	self.cameraPos[1] = cameraX
-	self.cameraPos[2] = cameraY
+function api.Update(dt, playerPos, playerVelocity)
+	local playerVelocity = util.Mult(0.02, playerVelocity)
+	local speed = util.AbsVal(playerVelocity)
+	cameraX, cameraY, cameraScale = Camera.UpdateCameraToPlayer(dt, playerPos, playerVelocity, speed, 0.9)
+	self.cameraPos[1] = cameraX + cameraScale * 0.65
+	self.cameraPos[2] = cameraY - cameraScale * 0.02
 	self.cameraScale = cameraScale
+	print(cameraX, playerPos[1], cameraY, playerPos[2], cameraScale)
 	Camera.UpdateTransform(self.cameraTransform, self.cameraPos[1], self.cameraPos[2], self.cameraScale)
 end
 
@@ -34,7 +32,6 @@ function api.GetCameraTransform()
 end
 
 function api.Initialize(world, levelData, padding)
-	levelData = levelData or {width = 600, height = 500}
 	self = {
 		world = world,
 		levelData = levelData,
@@ -43,15 +40,10 @@ function api.Initialize(world, levelData, padding)
 	self.cameraTransform = love.math.newTransform()
 	self.cameraPos = {0, 0}
 	Camera.Initialize({
-		windowPadding = padding,
+		baseScale = Global.CAMERA_SCALE,
 	})
+	local cameraX, cameraY, cameraScale = Camera.UpdateCameraToPlayer(false, {0, 0}, {0, 0}, 0)
 	
-	local cameraX, cameraY, cameraScale = Camera.UpdateCameraToViewPoints(false, 
-		{
-			{pos = {0, 0}, xOff = 20, yOff = 20},
-			{pos = {self.levelData.width, self.levelData.height}, xOff = 20, yOff = 20},
-		}
-	)
 	self.cameraPos[1] = cameraX
 	self.cameraPos[2] = cameraY
 	self.cameraScale = cameraScale

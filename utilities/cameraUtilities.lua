@@ -3,12 +3,16 @@
 local self = {}
 
 local function UpdateCameraToPlayer(dt, playerPos, playerVelocity, playerSpeed, smoothness)
+	local wantedScale = math.min(3, math.max(0.5, (40 + playerSpeed)/40)) * self.baseScale
+	if not dt then
+		self.cameraPos = playerPos
+		self.playerVelocity = playerVelocity
+		self.cameraScale = wantedScale
+		return self.cameraPos[1], self.cameraPos[2], self.cameraScale
+	end
 	self.cameraVelocity = util.Average(self.cameraVelocity, playerVelocity, 2*(1 - smoothness))
 	self.cameraPos = util.Add(util.Mult(dt*60, self.cameraVelocity), util.Average(self.cameraPos, playerPos, (1 - smoothness)))
-	
-	local wantedScale = math.min(0.93, math.max(0.5, 12/(12 + playerSpeed)))
 	self.cameraScale = self.cameraScale*smoothness + wantedScale*(1 - smoothness)
-	
 	return self.cameraPos[1], self.cameraPos[2], self.cameraScale
 end
 
@@ -117,6 +121,7 @@ local function Initialize(data)
 		cameraVelocity = {0, 0},
 		posVelocity = {0, 0},
 		cameraScale = data.initScale or 1080,
+		baseScale = data.baseScale or 1,
 		windowPadding = data.windowPadding or {left = 0, right = 0, top = 0, bot = 0},
 		pinX = data.pinX,
 		pinY = data.pinY,

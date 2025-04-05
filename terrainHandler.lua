@@ -39,14 +39,6 @@ function api.WrapBody(body)
 	end
 end
 
-function api.ApplyGravity(body)
-	local bx, by = body:getPosition()
-	local toSun, sunDist = util.Unit({self.sunX - bx, self.sunY - by})
-	local distSq = math.max(sunDist * sunDist, 100)
-	local forceVector = util.Mult(body:getMass() * self.sunGravity / distSq, toSun)
-	body:applyForce(forceVector[1], forceVector[2])
-end
-
 function api.UpdateSpeedLimit(body)
 	local vx, vy = body:getLinearVelocity()
 	local speedSq = util.DistSq(0, 0, vx, vy)
@@ -60,7 +52,6 @@ end
 
 local function SetupLevel()
 	-- TODO self.map = {}
-	
 	
 end
 

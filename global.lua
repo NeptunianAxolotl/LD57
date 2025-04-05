@@ -35,6 +35,12 @@ local globals = {
 	
 	
 	
+	GRAVITY = 200,
+	CAMERA_SCALE = 600,
+	
+	
+	
+	
 	MASTER_VOLUME = 0.75,
 	MUSIC_VOLUME = 0.02,
 	DEFAULT_MUSIC_DURATION = 174.69,

@@ -10,8 +10,8 @@ function api.Update(dt)
 	if self.playerCar then
 		self.playerCar.Update(dt)
 	end
-end
-
+endfunction api.GetPos()	if self.playerCar then		self.lastPlayerPos = self.playerCar.GetPos()	end	return self.lastPlayerPosend
+function api.GetVelocity()	if self.playerCar then		self.lastPlayerVelocity = self.playerCar.GetVelocity()	end	return self.lastPlayerVelocityend
 function api.Draw(drawQueue)
 	if self.playerCar then
 		self.playerCar.Draw(drawQueue)

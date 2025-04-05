@@ -173,7 +173,9 @@ function api.GetPhysicsWorld()
 end
 
 local function UpdateCamera(dt)
-	CameraHandler.Update(dt)
+	local pos = PlayerHandler.GetPos()
+	local velocity = PlayerHandler.GetVelocity()
+	CameraHandler.Update(dt, pos, velocity)
 end
 
 function api.GetCameraInitalPosition()

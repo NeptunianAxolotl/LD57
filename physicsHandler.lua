@@ -2,7 +2,6 @@ local EffectsHandler = require("effectsHandler")
 
 local self = {}
 local api = {}
-local physicsWorld
 local world
 
 --------------------------------------------------
@@ -10,11 +9,11 @@ local world
 --------------------------------------------------
 
 function api.GetPhysicsWorld()
-	return physicsWorld
+	return self.physicsWorld
 end
 
 function api.AddStaticObject()
-	return physicsWorld
+	return self.physicsWorld
 end
 
 --------------------------------------------------
@@ -36,28 +35,35 @@ local function postSolve(a, b, coll,  normalimpulse, tangentimpulse)
 end
 
 --------------------------------------------------
+-- Initialize
+--------------------------------------------------
+
+local function InitPhysics()
+	love.physics.setMeter(Global.PHYSICS_SCALE)
+	self.physicsWorld = love.physics.newWorld(0, 0, true) -- Last argument is whether sleep is allowed.
+	self.physicsWorld:setCallbacks(beginContact, endContact, preSolve, postSolve)
+	self.physicsWorld:setGravity(0, Global.GRAVITY)
+end
+
+--------------------------------------------------
 -- Updating
 --------------------------------------------------
 
 function api.Update(dt)
-	physicsWorld:update(dt)
+	self.physicsWorld:update(dt)
 end
 
 function api.Destroy(dt)
-	if physicsWorld then
-		physicsWorld:destroy()
-		physicsWorld = nil
+	if self.physicsWorld then
+		self.physicsWorld:destroy()
+		self.physicsWorld = nil
 	end
 end
 
 function api.Initialize(parentWorld)
-	self = {}
 	world = parentWorld
-	love.physics.setMeter(Global.PHYSICS_SCALE)
-	physicsWorld = love.physics.newWorld(0, 0, true) -- Last argument is whether sleep is allowed.
-	physicsWorld:setCallbacks(beginContact, endContact, preSolve, postSolve)
-	
-	physicsWorld:setGravity(0, 0)
+	self = {}
+	InitPhysics()
 end
 
 return api
