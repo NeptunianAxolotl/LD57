@@ -11,7 +11,7 @@ function api.Update(dt, playerPos, playerVelocity)
 	local speed = util.AbsVal(playerVelocity)
 	cameraX, cameraY, cameraScale = Camera.UpdateCameraToPlayer(dt, playerPos, playerVelocity, speed, 0.9)
 	self.cameraPos[1] = cameraX + cameraScale * 0.65
-	self.cameraPos[2] = cameraY - cameraScale * 0.02
+	self.cameraPos[2] = cameraY + cameraScale * 0.1
 	self.cameraScale = cameraScale
 	Camera.UpdateTransform(self.cameraTransform, self.cameraPos[1], self.cameraPos[2], self.cameraScale)
 end

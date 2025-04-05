@@ -365,7 +365,7 @@ function util.ExtendLine(line, length)
 	}
 end
 
-function util.ConvexPolygonPoints(points)
+function util.ArePointsConvex(points)
 	if #points < 3 then
 		return true
 	end

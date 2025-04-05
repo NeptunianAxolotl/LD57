@@ -36,8 +36,8 @@ local globals = {
 	
 	TURN_MULT = 500,
 	
-	GRAVITY = 200,
-	CAMERA_SCALE = 860,
+	GRAVITY = 520,
+	CAMERA_SCALE = 900,
 	CAMERA_SCROLL_SPEED = 0.12,
 	CAMERA_SPEED = 1.8,
 	SPEED_ZOOM_SCALE = false,
@@ -45,7 +45,7 @@ local globals = {
 	SAVE_ORDER = {
 		"polygons", "circles"
 	},
-	SAVE_INLINE = {"pos"},
+	SAVE_INLINE = {"pos", "points"},
 	INIT_LEVEL = "mainLevel",
 	
 	
@@ -76,7 +76,7 @@ local globals = {
 	WORLD_HEIGHT = 2000,
 	
 	GRAVITY_MULT = 900,
-	SPEED_LIMIT = 1800,
+	SPEED_LIMIT = 4500,
 	
 	MOUSE_SCROLL_MULT = 0,
 	KEYBOARD_SCROLL_MULT = 1.4,

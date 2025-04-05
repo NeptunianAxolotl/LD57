@@ -47,6 +47,7 @@ function api.DrawInterface()
 		love.graphics.printf([[ - F to disable edit mode
  - G to warp player to mouse.
  - C to place circle with the mouse.
+ - R and click to remove shapes.
  - V to place polygon vertices with the mouse. Right click to finish.
  - Press C or V to cancel placement.
  Polygons are convex have 2 < vertices < 9]], 40, 40, 500)

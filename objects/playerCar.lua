@@ -3,9 +3,12 @@ local Resources = require("resourceHandler")
 local Font = require("include/font")
 
 local DEF = {
-	density = 1,
-	wheelDensity = 1.6,
+	density = 1.2,
+	ballastDensity = 2.4,
+	wheelDensity = 1.5,
 	scaleFactor = 50,
+	wheelFriction = 0.95,
+	hullFriction = 0.65,
 	width = 2,
 	height = 1.4,
 	wheelOffX = 0.72,
@@ -14,7 +17,35 @@ local DEF = {
 	jumpReload = 4,
 }
 
-local function NewComponent(self, physicsWorld)
+local function HandleWheel(wheel, wantLeft, wantRight)
+	local motor = wheel.motor
+	local speed = motor:getJointSpeed()
+	print(speed)
+	if wantLeft then
+		motor:setMotorEnabled(true)
+		motor:setMotorSpeed(-1000000)
+		motor:setMaxMotorTorque(2500 * 500 / (500 + math.max(-speed, 200)))
+	elseif wantRight then
+		motor:setMotorEnabled(true)
+		motor:setMotorSpeed(1000000)
+		motor:setMaxMotorTorque(2500 * 500 / (500 + math.max(speed, 200)))
+	else
+		motor:setMotorEnabled(false)
+	end
+end
+
+local function MakeShapeCoords(def, coords)
+	local modCoords = {}
+	for i = 1, #coords do
+		local pos = util.Mult(def.scaleFactor, coords[i])
+		modCoords[#modCoords + 1] = pos[1]
+		modCoords[#modCoords + 1] = pos[2]
+		coords[i] = pos
+	end
+	return modCoords
+end
+
+local function NewComponent(self, physicsWorld, world)
 	-- pos
 	self.animTime = 0
 	self.def = DEF
@@ -26,20 +57,17 @@ local function NewComponent(self, physicsWorld)
 	local wheelOffX, wheelOffY = 0.72, 0.62
 	local wheelRadius = 0.52
 	
-	local coords = {{def.width/2, def.height/2}, {-def.width/2, def.height/2}, {-def.width/2, -def.height/2}, {def.width/2, -def.height/2}}
-	local modCoords = {}
-	for i = 1, #coords do
-		local pos = util.Mult(def.scaleFactor, coords[i])
-		modCoords[#modCoords + 1] = pos[1]
-		modCoords[#modCoords + 1] = pos[2]
-		coords[i] = pos
-	end
+	local hullCoords = {{def.width/2, def.height/2}, {-def.width/2, def.height/2}, {-def.width/2, -def.height/2}, {def.width/2, -def.height/2}}
+	local ballastCoords = {{def.width/2, def.height/2}, {-def.width/2, def.height/2}, {-def.width/2, def.height/4}, {def.width/2, def.height/4}}
 	
 	self.hull = {}
 	self.hull.body = love.physics.newBody(physicsWorld, self.pos[1], self.pos[2], "dynamic")
-	self.hull.shape = love.physics.newPolygonShape(unpack(modCoords))
+	self.hull.shape = love.physics.newPolygonShape(unpack(MakeShapeCoords(def, hullCoords)))
+	self.hull.ballastShape = love.physics.newPolygonShape(unpack(MakeShapeCoords(def, ballastCoords)))
 	self.hull.fixture = love.physics.newFixture(self.hull.body, self.hull.shape, def.density)
-	self.hull.body:setAngularDamping(9)
+	self.hull.ballastFixture = love.physics.newFixture(self.hull.body, self.hull.ballastShape, def.density)
+	self.hull.body:setAngularDamping(1)
+	self.hull.fixture:setFriction(def.hullFriction)
 	
 	self.wheels = {}
 	for i = 1, 2 do
@@ -49,7 +77,10 @@ local function NewComponent(self, physicsWorld)
 		local body = love.physics.newBody(physicsWorld, x, y, "dynamic")
 		local shape = love.physics.newCircleShape(def.wheelRadius * def.scaleFactor)
 		local fixture = love.physics.newFixture(body, shape, def.wheelDensity)
+		fixture:setFriction(def.wheelFriction)
 		local motor = love.physics.newWheelJoint(self.hull.body, body, body:getX(), body:getY(), 0, 1, false)
+		motor:setSpringDampingRatio(5)
+		motor:setSpringFrequency(4)
 		self.wheels[i] = {
 			body = body,
 			shape = shape,
@@ -66,10 +97,13 @@ local function NewComponent(self, physicsWorld)
 	function self.Update(dt)
 		self.animTime = self.animTime + dt
 		TerrainHandler.UpdateSpeedLimit(self.hull.body)
+		if world.GetEditMode() then
+			return
+		end
 		
 		if love.keyboard.isDown("space") and not self.jumpReload then
 			local vx, vy = self.hull.body:getWorldVector(0, -1)
-			local force = 1200
+			local force = 2400
 			local forceVec = util.Mult(force, util.Unit({vx, vy}))
 			self.hull.body:applyForce(forceVec[1], forceVec[2])
 			for i = 1, #self.wheels do
@@ -79,20 +113,15 @@ local function NewComponent(self, physicsWorld)
 		end
 		if self.jumpReload then
 			self.jumpReload = self.jumpReload - dt
+			if self.jumpReload < 0 then
+				self.jumpReload = false
+			end
 		end
 		
+		local wantLeft = love.keyboard.isDown("a") or love.keyboard.isDown("left")
+		local wantRight = love.keyboard.isDown("d") or love.keyboard.isDown("right")
 		for i = 1, #self.wheels do
-			if love.keyboard.isDown("a") or love.keyboard.isDown("left") then
-				self.wheels[i].motor:setMotorEnabled(true)
-				self.wheels[i].motor:setMotorSpeed(-10)
-				self.wheels[i].motor:setMaxMotorTorque(150)
-			elseif love.keyboard.isDown("d") or love.keyboard.isDown("right") then
-				self.wheels[i].motor:setMotorEnabled(true)
-				self.wheels[i].motor:setMotorSpeed(25)
-				self.wheels[i].motor:setMaxMotorTorque(150)
-			else
-				self.wheels[i].motor:setMotorEnabled(false)
-			end
+			HandleWheel(self.wheels[i], wantLeft, wantRight)
 		end
 		
 		local turnAmount = false
@@ -121,6 +150,10 @@ local function NewComponent(self, physicsWorld)
 		return {x, y}
 	end
 	
+	function self.SetAngle(angle)
+		self.hull.body:setAngle(angle)
+	end
+	
 	function self.SetPos(pos)
 		self.hull.body:setPosition(pos[1], pos[2])
 		for i = 1, #self.wheels do
@@ -143,9 +176,9 @@ local function NewComponent(self, physicsWorld)
 			love.graphics.push()
 				love.graphics.translate(x, y)
 				love.graphics.rotate(angle)
-				for i = 1, #coords do
-					local other = coords[(i < #coords and (i + 1)) or 1]
-					love.graphics.line(coords[i][1], coords[i][2], other[1], other[2])
+				for i = 1, #hullCoords do
+					local other = hullCoords[(i < #hullCoords and (i + 1)) or 1]
+					love.graphics.line(hullCoords[i][1], hullCoords[i][2], other[1], other[2])
 				end
 			love.graphics.pop()
 			for i = 1, #self.wheels do
