@@ -67,8 +67,10 @@ local function UpdateHyrdodynamics(def, dt, body)
 	body:applyForce(bodyForce[1], bodyForce[2])
 end
 
-local function NewComponent(self, physicsWorld, world, def)
-	-- pos
+local function NewComponent(spawnPos, physicsWorld, world, def)
+	local self = {
+		pos = spawnPos,
+	}
 	self.animTime = 0
 	
 	self.jumpReload = false
@@ -190,6 +192,13 @@ local function NewComponent(self, physicsWorld, world, def)
 		self.hull.body:setLinearVelocity(vel[1], vel[2])
 		for i = 1, #self.wheels do
 			self.wheels[i].body:setLinearVelocity(vel[1], vel[2])
+		end
+	end
+	
+	function self.Destroy()
+		self.hull.body:destroy()
+		for i = 1, #self.wheels do
+			self.wheels[i].body:destroy()
 		end
 	end
 	

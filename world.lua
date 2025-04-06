@@ -206,6 +206,10 @@ function api.GetCameraInitalPosition()
 	return {500, 500}
 end
 
+function api.GetLevelData()
+	return self.levelData
+end
+
 --------------------------------------------------
 -- Updates
 --------------------------------------------------
@@ -278,6 +282,7 @@ end
 function api.Initialize(cosmos, levelData)
 	self = {}
 	self.cosmos = cosmos
+	self.levelData = levelData
 	self.cameraTransform = love.math.newTransform()
 	self.interfaceTransform = love.math.newTransform()
 	self.emptyTransform = love.math.newTransform()

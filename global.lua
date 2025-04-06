@@ -43,9 +43,10 @@ local globals = {
 	SPEED_ZOOM_SCALE = false,
 	
 	SAVE_ORDER = {
-		"waterline", "pickups", "polygons", "circles"
+		"waterline", "playerSpawn",
+		"pickups", "polygons", "circles",
 	},
-	SAVE_INLINE = {"pos", "points"},
+	SAVE_INLINE = {"pos", "playerSpawn", "points"},
 	INIT_LEVEL = "mainLevel",
 	
 	

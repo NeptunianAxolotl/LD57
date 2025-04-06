@@ -25,12 +25,14 @@ local function UpdateSmoothNumber(dt, name)
 		end
 		number.has = number.has + rate*(number.want - number.has)*2
 	end
-	while number.wrap and number.has >= number.wrap do
-		number.want = number.want - number.wrap
-		number.has = number.has - number.wrap
-		number.wrap = GameHandler.ReportOnWrap(name, number.wrap) or number.wrap
+	if GameHandler.ReportOnWrap then
+		while number.wrap and number.has >= number.wrap do
+			number.want = number.want - number.wrap
+			number.has = number.has - number.wrap
+			number.wrap = GameHandler.ReportOnWrap(name, number.wrap) or number.wrap
+		end
 	end
-	if (not number.wrap) and number.has > number.recordHigh then
+	if GameHandler.ReportOnRecord and (not number.wrap) and number.has > number.recordHigh then
 		GameHandler.ReportOnRecord(name, number.has, number.recordHigh)
 		number.recordHigh = number.has
 	end
@@ -85,7 +87,7 @@ end
 
 function api.ForceUpdataAllNumbers()
 	for i = 1, #self.smoothNumberList do
-		UpdateSmoothNumber(false, self.smoothNumberList[i])
+		api.UpdateSmoothNumber(false, self.smoothNumberList[i])
 	end
 end
 

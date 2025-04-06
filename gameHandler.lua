@@ -61,12 +61,13 @@ function api.DrawInterface()
  - A and D spin wheels
  - W pitch up, S pitch down
  - Space to thrust
- - Ctrl+R to restart
+ - Ctrl+R to respawn
+ - Ctrl+Y to restart
 ]], 40, 40, 500)
 	end
 	
 	Font.SetSize(2)
-	love.graphics.printf("$0", windowX/2 - 100, 25, windowX/2, "left")
+	love.graphics.printf(string.format("$%d", InterfaceUtil.GetNumber("money")), windowX/2 - 100, 25, windowX/2, "left")
 end
 
 function api.Initialize(world)
