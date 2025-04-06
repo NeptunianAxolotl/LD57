@@ -2,32 +2,25 @@
 local Resources = require("resourceHandler")
 local Font = require("include/font")
 
-local DEF = {
-	density = 1.2,
-	ballastDensity = 3,
-	wheelDensity = 0.35,
-	scale = 50,
-	wheelFriction = 0.95,
-	hullFriction = 0.65,
-	width = 2,
-	height = 1.4,
-	wheelOffX = 0.78,
-	wheelOffY = 0.55,
-	wheelRadius = 0.52,
-	jumpReload = 4,
-}
-
-local function HandleWheel(wheel, wantLeft, wantRight)
+local function HandleWheel(def, wheel, wantLeft, wantRight)
 	local motor = wheel.motor
 	local speed = motor:getJointSpeed()
 	if wantLeft then
-		motor:setMotorEnabled(true)
-		motor:setMotorSpeed(-20000)
-		motor:setMaxMotorTorque(2600 * 500 / (500 + math.max(-speed, 200)))
+		if speed > -def.motorMaxSpeed then
+			motor:setMotorEnabled(true)
+			motor:setMotorSpeed(-def.motorMaxSpeed)
+			motor:setMaxMotorTorque(def.motorTorque * 500 / (300 + math.max(-speed, 100)))
+		else
+			motor:setMotorEnabled(false)
+		end
 	elseif wantRight then
-		motor:setMotorEnabled(true)
-		motor:setMotorSpeed(20000)
-		motor:setMaxMotorTorque(2600 * 500 / (500 + math.max(speed, 200)))
+		if speed < def.motorMaxSpeed then
+			motor:setMotorEnabled(true)
+			motor:setMotorSpeed(def.motorMaxSpeed)
+			motor:setMaxMotorTorque(def.motorTorque * 500 / (300 + math.max(speed, 100)))
+		else
+			motor:setMotorEnabled(false)
+		end
 	else
 		motor:setMotorEnabled(false)
 	end
@@ -44,11 +37,39 @@ local function MakeShapeCoords(def, coords)
 	return modCoords
 end
 
-local function NewComponent(self, physicsWorld, world)
+local function UpdateHyrdodynamics(def, dt, body)
+	local x, y = body:getPosition()
+	if TerrainHandler.GetDepth(y) < 10 then
+		return
+	end
+	local vx, vy = body:getLinearVelocity()
+	local velUnit, speed = util.Unit({vx, vy})
+	if speed < 10 then
+		return
+	end
+	local angle = body:getAngle()
+	local bodyUnit = util.PolarToCart(1, angle)
+	local offMag = util.Cross2D(velUnit, bodyUnit)
+	local bodyPerp = util.RotateVector(bodyUnit, math.pi/2)
+	local bodyForce = util.Mult(dt*def.hydrofoilForceMult*offMag*math.pow(speed, 3)/100000, bodyPerp)
+	
+	-- The bonus partially reduces the component of bodyForce in the -velUnit direction
+	-- Reduction scales down to zero when the car is flying flat-side-on
+	local bonusComponent = (math.abs(offMag) - 1)*def.hyroDragReduce*util.Dot(bodyForce, velUnit)
+	local backForceAdjust = util.Mult(bonusComponent, velUnit)
+	bodyForce = util.Add(bodyForce, backForceAdjust)
+	
+	-- The penalty reduces the component perpendicular to velocity, ie the useful lift part
+	local penaltyComponent = util.Mult(1 - def.hydroPerpEffect, util.Subtract(util.Mult(util.Dot(bodyForce, velUnit), velUnit), bodyForce))
+	bodyForce = util.Add(bodyForce, penaltyComponent)
+	
+	print(offMag)
+	body:applyForce(bodyForce[1], bodyForce[2])
+end
+
+local function NewComponent(self, physicsWorld, world, def)
 	-- pos
 	self.animTime = 0
-	self.def = DEF
-	local def = self.def
 	
 	self.jumpReload = false
 	
@@ -66,6 +87,7 @@ local function NewComponent(self, physicsWorld, world)
 	self.hull.fixture = love.physics.newFixture(self.hull.body, self.hull.shape, def.density)
 	self.hull.ballastFixture = love.physics.newFixture(self.hull.body, self.hull.ballastShape, def.density)
 	self.hull.body:setAngularDamping(1)
+	self.hull.body:setLinearDamping(def.baseDrag)
 	self.hull.fixture:setFriction(def.hullFriction)
 	
 	self.wheels = {}
@@ -96,6 +118,7 @@ local function NewComponent(self, physicsWorld, world)
 	function self.Update(dt)
 		self.animTime = self.animTime + dt
 		TerrainHandler.UpdateSpeedLimit(self.hull.body)
+		UpdateHyrdodynamics(def, dt, self.hull.body)
 		if world.GetEditMode() then
 			return
 		end
@@ -117,7 +140,7 @@ local function NewComponent(self, physicsWorld, world)
 		local wantLeft = love.keyboard.isDown("a") or love.keyboard.isDown("left")
 		local wantRight = love.keyboard.isDown("d") or love.keyboard.isDown("right")
 		for i = 1, #self.wheels do
-			HandleWheel(self.wheels[i], wantLeft, wantRight)
+			HandleWheel(def, self.wheels[i], wantLeft, wantRight)
 		end
 		
 		local turnAmount = false
@@ -132,8 +155,6 @@ local function NewComponent(self, physicsWorld, world)
 			local speed = util.Dist(0, 0, vx, vy)
 			turnAmount = turnAmount * Global.TURN_MULT
 			turnAmount = turnAmount * (0.4 + 0.6 * (1 - speed / (speed + 1000))) * math.max(1, 90 / (15 + speed))
-			
-			print(speed)
 			self.hull.body:applyTorque(turnAmount)
 		end
 	end

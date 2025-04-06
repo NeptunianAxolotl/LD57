@@ -5,7 +5,7 @@ local NewPlayerCar = require("objects/playerCar")
 
 local self = {}
 local api = {}
-
+local defaultCar = {	density = 1.2,	ballastDensity = 3,	wheelDensity = 0.35,	scale = 50,	wheelFriction = 0.95,	hullFriction = 0.65,	width = 2,	height = 1.4,	wheelOffX = 0.78,	wheelOffY = 0.55,	wheelRadius = 0.52,	jumpReload = 4,	motorMaxSpeed = 16000,	motorTorque = 2600,	baseDrag = 0.05,	hydrofoilForceMult = 1,	hyroDragReduce = 0.1,	hydroPerpEffect = 0.6,}
 function api.Update(dt)
 	if self.playerCar then
 		self.playerCar.Update(dt)
@@ -28,7 +28,7 @@ function api.Initialize(world)
 	local initPlayerData = {
 		pos = {500, 200}
 	}
-	self.playerCar = NewPlayerCar(initPlayerData, self.world.GetPhysicsWorld(), world)
+	self.playerCar = NewPlayerCar(initPlayerData, self.world.GetPhysicsWorld(), world, defaultCar)
 end
 
 return api

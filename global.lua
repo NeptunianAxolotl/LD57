@@ -37,13 +37,13 @@ local globals = {
 	TURN_MULT = 1500,
 	
 	GRAVITY = 520,
-	CAMERA_SCALE = 900,
+	CAMERA_SCALE = 1600,
 	CAMERA_SCROLL_SPEED = 0.12,
 	CAMERA_SPEED = 1.8,
 	SPEED_ZOOM_SCALE = false,
 	
 	SAVE_ORDER = {
-		"polygons", "circles"
+		"waterline", "polygons", "circles"
 	},
 	SAVE_INLINE = {"pos", "points"},
 	INIT_LEVEL = "mainLevel",
