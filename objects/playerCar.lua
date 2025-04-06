@@ -121,6 +121,7 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 		UpdateHyrdodynamics(def, dt, self.hull.body)
 		
 		local bx, by = self.hull.body:getPosition()
+		InterfaceUtil.SetNumber("depth", TerrainHandler.GetDepth(by))
 		local pickup = TerrainHandler.TryCollectPickup({bx, by}, def.pickupRadius)
 		if pickup then
 			PlayerHandler.ProcessPickup(pickup)
@@ -215,6 +216,10 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 				for i = 1, #hullCoords do
 					local other = hullCoords[(i < #hullCoords and (i + 1)) or 1]
 					love.graphics.line(hullCoords[i][1], hullCoords[i][2], other[1], other[2])
+				end
+				for i = 1, #ballastCoords do
+					local other = ballastCoords[(i < #ballastCoords and (i + 1)) or 1]
+					love.graphics.line(ballastCoords[i][1], ballastCoords[i][2], other[1], other[2])
 				end
 				local fill = self.jumpStore/def.jumpMax
 				if fill >= def.jumpPropRequired then

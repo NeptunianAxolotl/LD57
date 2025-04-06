@@ -88,13 +88,19 @@ local function ZoomCamera(zoomAmount)
 	return self.cameraPos[1], self.cameraPos[2], self.cameraScale
 end
 
-local function UpdateTransform(cameraTransform, cameraX, cameraY, cameraScale)
+local function UpdateTransform(cameraTransform, cameraX, cameraY, cameraScale, focusOffset)
 	local fullX, fullY = love.window.getMode()
 	local windowX = fullX * (1 - self.windowPadding.left - self.windowPadding.right)
 	local windowY = fullY * (1 - self.windowPadding.top - self.windowPadding.bot)
 	
 	local boundLimit = math.min(windowX, windowY)
 	self.scaleMult = {boundLimit/windowX, boundLimit/windowY}
+	local scale = boundLimit/cameraScale
+	if focusOffset then
+		print(scale)
+		cameraX = cameraX + scale*fullX*focusOffset[1]
+		cameraY = cameraY + scale*fullY*focusOffset[2]
+	end
 	
 	if self.pinY then
 		if self.pinY[2] == 1 then
@@ -110,7 +116,7 @@ local function UpdateTransform(cameraTransform, cameraX, cameraY, cameraScale)
 		windowX/2 + fullX * self.windowPadding.left,
 		windowY/2 + fullY * self.windowPadding.top,
 		0,
-		boundLimit/cameraScale, boundLimit/cameraScale,
+		scale, scale,
 		cameraX, cameraY)
 end
 

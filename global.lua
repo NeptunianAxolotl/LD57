@@ -49,6 +49,7 @@ local globals = {
 	SAVE_INLINE = {"pos", "playerSpawn", "points"},
 	INIT_LEVEL = "mainLevel",
 	
+	UI_DEPTH_SCALE = 8,
 	
 	
 	
@@ -59,8 +60,8 @@ local globals = {
 	
 	
 	
-	
-	
+	UI_WIDTH = 1920,
+	UI_HEIGHT = 1080,
 	
 	
 	

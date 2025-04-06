@@ -31,6 +31,10 @@ function api.GetViewRestriction()
 	return pointsToView
 end
 
+function api.ReportOnRecord(depth, newValue, prevValue)
+
+end
+
 --------------------------------------------------
 -- Updating
 --------------------------------------------------
@@ -39,7 +43,7 @@ function api.Update(dt)
 end
 
 function api.DrawInterface()
-	local windowX, windowY = love.window.getMode()
+	local windowX, windowY = Global.UI_WIDTH, Global.UI_HEIGHT
 	
 	if self.world.GetEditMode() then
 		Font.SetSize(3)
@@ -68,12 +72,16 @@ function api.DrawInterface()
 	
 	Font.SetSize(2)
 	love.graphics.printf(string.format("$%d", InterfaceUtil.GetNumber("money")), windowX/2 - 100, 25, windowX/2, "left")
+	local depth = math.max(0, InterfaceUtil.GetNumber("depth")) / Global.UI_DEPTH_SCALE
+	love.graphics.printf(string.format("Depth: %d", depth), 25, windowY - 62, windowX, "left")
 end
 
 function api.Initialize(world)
 	self = {
 		world = world,
 	}
+	InterfaceUtil.RegisterSmoothNumber("money", 0, 1)
+	InterfaceUtil.RegisterSmoothNumber("depth", 0, 1)
 end
 
 return api
