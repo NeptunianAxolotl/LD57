@@ -10,14 +10,14 @@ local self = {}
 local api = {}
 
 local upgradeOrder = {
+	"body",
 	"engine",
-	"gearbox",
-	--"wheels",
-	--"body",
-	--"fuelTank",
-	--"boostTank",
-	--"boostStyle",
-	--"boostDirection",
+	"wheels",
+	"hydro",
+	"air",
+	"boostTank",
+	"boostStyle",
+	"boostDirection",
 }
 
 --------------------------------------------------
@@ -176,7 +176,10 @@ function api.DrawInterface()
 		love.graphics.printf(string.format("$%d", InterfaceUtil.GetNumber("money")), windowX/2 - 275, 25, windowX/2, "left")
 	end
 	local depth = math.max(0, InterfaceUtil.GetNumber("depth"))
-	love.graphics.printf(string.format("Depth: %d", depth), 25, windowY - 76, windowX, "left")
+	love.graphics.printf(string.format("Depth: %d", depth), 25, windowY - 85, windowX, "left")
+	
+	local underwaterTime = PlayerHandler.GetUnderwaterTimeProp()
+	
 end
 
 function api.Initialize(world)

@@ -70,6 +70,7 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 		pos = spawnPos,
 	}
 	self.animTime = 0
+	self.underwaterTime = 0
 	self.jumpStore = def.jumpMax
 	
 	local hullCoords = {{def.width/2, def.height/2}, {-def.width/2, def.height/2}, {-def.width/2, -def.height/2}, {def.width/2, -def.height/2}}
@@ -89,7 +90,7 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 	
 	self.wheels = {}
 	for i = 1, def.wheelCount do
-		local front = 1 - ((i - 1)/(def.wheelCount - 1))*2
+		local front = (def.wheelCount <= 1 and 0) or (1 - ((i - 1)/(def.wheelCount - 1))*2)
 		local x = self.pos[1] + front * def.wheelOffX * def.scale
 		local y = self.pos[2] + def.wheelOffY * def.scale
 		local body = love.physics.newBody(physicsWorld, x, y, "dynamic")
@@ -125,6 +126,11 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 			PlayerHandler.ProcessPickup(pickup)
 		end
 		
+		for i = 1, #self.wheels do
+			local torque = self.wheels[i].motor:getReactionTorque(1/dt)
+			self.hull.body:applyTorque(torque * def.reactionControl)
+		end
+		
 		if world.GetEditMode() then
 			return
 		end
@@ -136,9 +142,9 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 			end
 		end
 		if love.keyboard.isDown("space") and (self.jumping or (self.jumpStore/def.jumpMax >= def.jumpPropRequired)) then
-			local jumpUse = (jumpUse and math.min(self.jumpStore, dt*def.jumpUseRate)) or self.jumpStore
-			local vx, vy = self.hull.body:getWorldVector(0, -1)
-			local forceVec = util.Mult(def.jumpForce*jumpUse/def.jumpMax, util.Unit({vx, vy}))
+			local jumpUse = (def.jumpUseRate and math.min(self.jumpStore, dt*def.jumpUseRate)) or self.jumpStore
+			local vx, vy = self.hull.body:getWorldVector(def.jumpVector[1], def.jumpVector[2])
+			local forceVec = util.Mult(def.jumpForce*jumpUse, util.Unit({vx, vy}))
 			self.hull.body:applyForce(forceVec[1], forceVec[2])
 			self.jumpStore = self.jumpStore - jumpUse
 			self.jumping = (self.jumpStore > 0)
@@ -166,6 +172,15 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 			turnAmount = turnAmount * (0.4 + 0.6 * (1 - speed / (speed + 1000))) * math.max(1, 140 / (20 + speed))
 			self.hull.body:applyTorque(turnAmount)
 		end
+		
+		self.underwaterTime = self.underwaterTime + dt
+		if self.underwaterTime > def.airSeconds then
+			return false
+		end
+	end
+	
+	function self.GetUnderwaterTimeProp()
+		return 1 - math.min(1, self.underwaterTime / def.airSeconds)
 	end
 	
 	function self.GetPos()
