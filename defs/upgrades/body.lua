@@ -9,6 +9,8 @@
 	
 	
 local data = {
+	humanName = "Chassis",
+	textLine = 1,
 	applyFunc = function (spec, option)
 		spec.width = option.width or spec.width
 		spec.height = option.height or spec.height
@@ -22,7 +24,7 @@ local data = {
 		spec.motorMaxSpeed = spec.motorMaxSpeed * (option.speed or 1)
 		spec.jumpForce = spec.jumpForce * (option.jumpForce or 1)
 		spec.hullRotateMult     = spec.hullRotateMult     * (option.hullRotateMult or 1)
-		spec.hydrofoilForceMult = spec.hydrofoilForceMult * (option.hyroMult or 1)
+		spec.hydrofoilForceMult = spec.hydrofoilForceMult * (option.hydrofoilForceMult or 1)
 		spec.jumpMax = spec.jumpMax * (option.jumpMaxMult or 1)
 		spec.jumpChargeRate = spec.jumpChargeRate * (option.jumpChargeRate or 1)
 		spec.airSeconds = spec.airSeconds * (option.airMult or 1)
@@ -30,16 +32,17 @@ local data = {
 		
 		return spec
 	end,
-	showDepth = 200,
+	showDepth = 350,
 	options = {
 		{
-			name = "basic",
+			name = "Brick",
 			cost = 0,
 		},
 		{
-			name = "flatmobile",
-			cost = 0,
-			depth = 0,
+			name = "Flat",
+			cost = 1400,
+			depth = 700,
+			showDepth = 350,
 			width = 3.5,
 			height = 0.75,
 			wheelOffX = 1.5,
@@ -49,12 +52,12 @@ local data = {
 			wheelMass = 0.018,
 			hullRotateMult = 1.4,
 			hydrofoilForceMult = 0.95,
-			mass = -1,
 		},
 		{
-			name = "monster",
-			cost = 0,
-			depth = 0,
+			name = "Monster",
+			cost = 2200,
+			depth = 900,
+			showDepth = 600,
 			width = 2.6,
 			height = 1.4,
 			wheelOffX = 1.2,
@@ -67,9 +70,10 @@ local data = {
 			mass = 2,
 		},
 		{
-			name = "light",
-			cost = 0,
-			depth = 0,
+			name = "Mino",
+			cost = 2400,
+			depth = 1100,
+			showDepth = 600,
 			width = 1.8,
 			height = 1,
 			wheelOffX = 0.8,
@@ -82,9 +86,10 @@ local data = {
 			mass = -6,
 		},
 		{
-			name = "semi",
-			cost = 0,
-			depth = 0,
+			name = "Whale",
+			cost = 4000,
+			depth = 2000,
+			showDepth = 1200,
 			width = 3.6,
 			height = 2.2,
 			wheelOffX = 1.6,
@@ -94,7 +99,7 @@ local data = {
 			wheelCount = 3,
 			torque = 1.3,
 			hydrofoilForceMult = 1.25,
-			hullRotateMult = 1.2,
+			hullRotateMult = 1.6,
 			jumpMax = 1.5,
 			jumpChargeRate = 1.2,
 			jumpForce = 1.25,

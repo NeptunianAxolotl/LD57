@@ -187,6 +187,11 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 		
 		local wantLeft = love.keyboard.isDown("a") or love.keyboard.isDown("left")
 		local wantRight = love.keyboard.isDown("d") or love.keyboard.isDown("right")
+		if wantLeft or wantRight then
+			local vx, vy = self.hull.body:getWorldVector(0, 1)
+			local forceVec = util.Mult(def.wheelDownforce*dt, util.Unit({vx, vy}))
+			self.hull.body:applyForce(forceVec[1], forceVec[2])
+		end
 		for i = 1, #self.wheels do
 			HandleWheel(def, self.wheels[i], wantLeft, wantRight)
 		end
@@ -213,7 +218,10 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 	
 	function self.GetUnderwaterTime()
 		return math.max(0, def.airSeconds - self.underwaterTime)
+	end
 	
+	function self.GetDef()
+		return def
 	end
 	
 	function self.GetPos()

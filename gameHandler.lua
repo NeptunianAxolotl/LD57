@@ -20,17 +20,64 @@ local upgradeOrder = {
 	"boostDirection",
 }
 
+
 --------------------------------------------------
 -- Utils
 --------------------------------------------------
 
+local statsList = {
+	{text = "Oxygen: ",  param = "airSeconds", showDepth = 100},
+	{text = "Mass: ",  param = "mass", showDepth = 100},
+	{text = "Width: ",  param = "width", showDepth = 100},
+	{text = "Height: ",  param = "height", showDepth = 100},
+	{text = "Engine Power: ",  param = "power", showDepth = 100},
+	{text = "Engine Speed: ",  param = "speed", showDepth = 100},
+	{text = "Counter-Torque: ",  param = "reactionControl", showDepth = 250},
+	{text = "Hull Rotation: ",  param = "hullRotateMult", showDepth = 250},
+	{text = "Bounce: ",  param = "bounce", showDepth = 450},
+	{text = "Drag: ",  param = "drag", showDepth = 450},
+	{text = "Lift: ",  param = "lift", showDepth = 450},
+	{text = "Boost Capacity: ",  param = "jumpMax", showDepth = 450},
+	{text = "Charge Rate: ",  param = "jumpChargeRate", showDepth = 450},
+	{text = "Use Rate: ",  param = "jumpUseRate", showDepth = 450},
+	{text = "Boost Power: ",  param = "jumpForce", showDepth = 450},
+	{text = "Direction: ",  param = "jumpAngleName", showDepth = 450},
+}
+
+local function ExtractSpecStats(spec)
+	local default = PlayerHandler.GetDefaultCar()
+	local data = {}
+	data.airSeconds = string.format("%ds", spec.airSeconds)
+	data.mass = string.format("%.02f tons", 10*(spec.massScale*spec.hullMass + spec.wheelCount*spec.wheelMass))
+	data.power = string.format("%d%%", 100 * spec.motorTorque / default.motorTorque)
+	data.speed = string.format("%d%%", 100 * spec.motorMaxSpeed / default.motorMaxSpeed)
+	data.width = string.format("%ds", spec.width / default.width * 10)
+	data.height = string.format("%ds", spec.height / default.height * 10)
+	data.reactionControl = string.format("%d%%", 100 * spec.reactionControl)
+	data.hullRotateMult = string.format("%d%%", 100 * spec.hullRotateMult)
+	data.bounce = string.format("%d%%", 100 * spec.wheelBounce)
+	data.drag = string.format("%d%%", 100 * (1 - spec.hyroDragReduce) * spec.hydrofoilForceMult)
+	data.lift = string.format("%d%%", 100 * spec.hydroPerpEffect)
+	data.jumpMax = string.format("%.01f", spec.jumpMax)
+	data.jumpChargeRate = string.format("%.01f/s", spec.jumpChargeRate)
+	data.jumpAngleName = spec.jumpAngleName
+	if spec.jumpUseRate then
+		data.jumpUseRate = string.format("%.01f/s", spec.jumpUseRate)
+		data.jumpForce = string.format("%d/s", spec.jumpForce/10)
+	else
+		data.jumpUseRate = "Instant"
+		data.jumpForce = string.format("%d", spec.jumpForce * spec.jumpMax/10)
+	end
+	return data
+end
+
 local function CanSelectOption(slot, index)
 	local def = UpgradeDefs[slot]
 	local option = def.options[index]
-	if option.showDepth and option.showDepth > InterfaceUtil.GetRawRecordHigh("depth") then
+	if option.showDepth and option.showDepth > InterfaceUtil.GetRawRecordHigh("depth") and not Global.DEBUG_SHOP then
 		return false
 	end
-	if option.depth and option.depth > InterfaceUtil.GetRawRecordHigh("depth") then
+	if option.depth and option.depth > InterfaceUtil.GetRawRecordHigh("depth") and not Global.DEBUG_SHOP then
 		return true, false
 	end
 	local currentCost = (def.options[self.loadout[slot]].cost or 0)
@@ -109,6 +156,33 @@ end
 function api.Update(dt)
 end
 
+local buttonOffset = {47, 27}
+local function DrawCarStats()
+	local def = PlayerHandler.GetCarDef()
+	local defData = ExtractSpecStats(def)
+	local newData = false
+	if self.hoveredOptionEvenDisabled and self.selectingSlot then
+		local loadout = util.CopyTable(self.loadout)
+		loadout[self.selectingSlot] = self.hoveredOptionEvenDisabled
+		newData = ExtractSpecStats(api.ApplyCarUpgrades(loadout))
+	end
+	local shopX, shopY = 550, -450
+	local offset = 35
+	love.graphics.setColor(1, 1, 1, 0.9)
+	Font.SetSize(2)
+	for i = 1, #statsList do
+		local stat = statsList[i]
+		if stat.showDepth > InterfaceUtil.GetRawRecordHigh("depth") or Global.DEBUG_SHOP then
+			local text = stat.text .. defData[stat.param]
+			if newData and newData[stat.param] ~= defData[stat.param] then
+				text = text .. " (" .. newData[stat.param] .. ")"
+			end
+			love.graphics.printf(text, shopX, shopY, 500, "left")
+			shopY = shopY + offset
+		end
+	end
+end
+
 function api.Draw(drawQueue)
 	drawQueue:push({y=0; f=function()
 		local mousePos = self.world.GetMousePosition()
@@ -117,16 +191,17 @@ function api.Draw(drawQueue)
 		local buttonPad = 30
 		self.hoveredSlot = false
 		self.hoveredOption = false
+		self.hoveredOptionEvenDisabled = false
 		self.drawMoneyChange = false
 		local drawIndex = 1
 		for i = 1, #upgradeOrder do
 			local defName = upgradeOrder[i]
 			local def = UpgradeDefs[defName]
-			if def.showDepth < InterfaceUtil.GetRawRecordHigh("depth") then
+			if def.showDepth < InterfaceUtil.GetRawRecordHigh("depth") or Global.DEBUG_SHOP then
 				local x = shopX + (buttonSize + buttonPad) * (drawIndex - 1)
 				drawIndex = drawIndex + 1
 				local open = (self.selectingSlot == defName)
-				self.hoveredSlot = InterfaceUtil.DrawButton(x, shopY, buttonSize, buttonSize, mousePos, def.name, false, false, false, open, 2, 32, 8) and def.name or self.hoveredSlot
+				self.hoveredSlot = InterfaceUtil.DrawButton(x, shopY, buttonSize, buttonSize, mousePos, def.humanName or def.name, false, false, false, open, 2, buttonOffset[def.textLine], 8) and def.name or self.hoveredSlot
 				if self.selectingSlot == defName then
 					local options = def.options
 					for j = 1, #options do
@@ -136,7 +211,8 @@ function api.Draw(drawQueue)
 						local shown, enabled, moneyChange = CanSelectOption(defName, j)
 						if shown then
 							local inLoadout = (self.loadout[defName] == j)
-							local hovered = InterfaceUtil.DrawButton(x, y, buttonSize, buttonSize, mousePos, option.name, not enabled, false, true, inLoadout, 2, 32, 8)
+							local hovered = InterfaceUtil.DrawButton(x, y, buttonSize, buttonSize, mousePos, option.name, not enabled, false, true, inLoadout, 2, buttonOffset[option.textLine or 1], 8)
+							self.hoveredOptionEvenDisabled = hovered and j or self.hoveredOptionEvenDisabled
 							self.hoveredOption = hovered and enabled and j or self.hoveredOption
 							if hovered and moneyChange ~= 0 then
 								self.drawMoneyChange = moneyChange
@@ -146,6 +222,7 @@ function api.Draw(drawQueue)
 				end
 			end
 		end
+		DrawCarStats()
 	end})
 end
 
@@ -163,7 +240,7 @@ function api.DrawInterface()
  - T to toggle surface and item type.
  - R and click to remove things.
  - B to place coins.
- Polygons are convex have 2 < vertices < 9]], 40, 40, 500)
+ Polygons are convex have 2 < vertices < 9]], Global.UI_WIDTH - 200, 40, 500)
 	else
 		Font.SetSize(3)
 		love.graphics.setColor(1, 1, 1, 0.7)
@@ -174,7 +251,7 @@ function api.DrawInterface()
  - Space to thrust
  - Ctrl+R to respawn
  - Ctrl+Y to restart
-]], 40, 40, 500)
+]], Global.UI_WIDTH - 200, 40, 500)
 	end
 	
 	Font.SetSize(1)
@@ -189,7 +266,6 @@ function api.DrawInterface()
 	
 	local underwaterTime = PlayerHandler.GetUnderwaterTime()
 	love.graphics.printf(string.format("Oxygen: %.1fs", underwaterTime), 25, windowY - 135, windowX, "left")
-	
 end
 
 function api.Initialize(world)

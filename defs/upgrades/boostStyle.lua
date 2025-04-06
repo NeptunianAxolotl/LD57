@@ -1,5 +1,7 @@
 
 local data = {
+	humanName = "Boost\nType",
+	textLine = 2,
 	applyFunc = function (spec, option)
 		spec.jumpMax = spec.jumpMax * (option.jumpMaxMult or 1)
 		spec.jumpChargeRate = spec.jumpChargeRate * (option.chargeMult or 1)
@@ -12,13 +14,14 @@ local data = {
 	showDepth = 700,
 	options = {
 		{
-			name = "burst",
+			name = "Burst",
 			cost = 0,
 		},
 		{
-			name = "sustain",
-			cost = 0,
-			depth = 0,
+			name = "Steady",
+			cost = 800,
+			depth = 900,
+			showDepth = 450,
 			jumpUseRate = 5,
 			jumpMaxMult = 1.25,
 			jumpPropRequired = 0,
@@ -26,9 +29,10 @@ local data = {
 			mass = 0.15
 		},
 		{
-			name = "mix",
-			cost = 0,
-			depth = 0,
+			name = "Mixed",
+			cost = 800,
+			depth = 900,
+			showDepth = 450,
 			jumpUseRate = 10,
 			jumpMaxMult = 0.75,
 			jumpForce = 1.4,
@@ -37,9 +41,11 @@ local data = {
 			mass = 0.35
 		},
 		{
-			name = "superburst",
-			cost = 0,
-			depth = 0,
+			name = "Super\nBurst",
+			textLine = 2,
+			cost = 1200,
+			depth = 900,
+			showDepth = 1200,
 			jumpMaxMult = 1.2,
 			chargeMult = 0.5,
 			jumpForce = 1.6,
