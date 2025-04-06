@@ -19,8 +19,10 @@ local data = {
 		spec.wheelRadius = option.wheelRadius or spec.wheelRadius
 		spec.wheelCount = option.wheelCount or spec.wheelCount
 		spec.wheelMass = option.wheelMass or spec.wheelMass
-		spec.spawnOffset = option.spawnOffset
 		spec.pickupRadius = option.pickupRadius or spec.pickupRadius
+		spec.ballastProp = option.ballastProp or spec.ballastProp
+		spec.spawnOffset = option.spawnOffset
+		spec.hydroRotation = option.hydroRotation
 		
 		spec.torque = spec.motorTorque * (option.torque or 1)
 		spec.motorMaxSpeed = spec.motorMaxSpeed * (option.speed or 1)
@@ -88,7 +90,7 @@ local data = {
 			wheelRadius = 0.45,
 			hullRotateMult = 0.6,
 			hydrofoilForceMult = 0.6,
-			jumpForce = 0.9,
+			jumpForce = 0.85,
 			mass = -6,
 		},
 		{
@@ -108,10 +110,30 @@ local data = {
 			hydrofoilForceMult = 1.25,
 			hullRotateMult = 1.6,
 			jumpMax = 1.5,
-			jumpChargeRate = 1.2,
+			jumpChargeRate = 1.1,
 			jumpForce = 1.25,
 			airMult = 1.2,
 			mass = 7,
+		},
+		{
+			name = "Rocket",
+			cost = 1800,
+			depth = 3000,
+			spawnOffset = {0, 6},
+			pickupRadius = 60,
+			width = 1.2,
+			height = 3.2,
+			wheelOffX = 0.5,
+			wheelOffY = 1.5,
+			wheelMass = 0.005,
+			wheelRadius = 0.45,
+			hullRotateMult = 2,
+			hydrofoilForceMult = 1,
+			jumpForce = 2.5,
+			jumpChargeRate = 1.25,
+			mass = -2,
+			hydroRotation = math.pi/2,
+			ballastProp = -0.4,
 		},
 	},
 }

@@ -43,21 +43,24 @@ local function MakeShapeCoords(def, coords)
 	return modCoords
 end
 
-local function UpdateHyrdodynamics(def, dt, body)
+local function UpdateHyrdodynamics(def, dt, body, self)
+	self.debugDraw.bodyForce = false
+	self.debugDraw.backComp = false
+	self.debugDraw.penaltyComponent = false
 	local x, y = body:getPosition()
-	if TerrainHandler.GetDepth(y) < 10 then
+	if TerrainHandler.GetDepth(y) < 2 then
 		return
 	end
 	local vx, vy = body:getLinearVelocity()
 	local velUnit, speed = util.Unit({vx, vy})
-	if speed < 10 then
+	if speed < 5 then
 		return
 	end
-	local angle = body:getAngle()
+	local angle = body:getAngle() + (def.hydroRotation or 0)
 	local bodyUnit = util.PolarToCart(1, angle)
 	local offMag = util.Cross2D(velUnit, bodyUnit)
 	local bodyPerp = util.RotateVector(bodyUnit, math.pi/2)
-	local bodyForce = util.Mult(dt*def.hydrofoilForceMult*offMag*math.pow(speed, 3)/100000, bodyPerp)
+	local bodyForce = util.Mult(dt*def.hydrofoilForceMult*offMag*math.pow(speed, 2)/100, bodyPerp)
 	
 	-- The bonus partially reduces the component of bodyForce in the -velUnit direction
 	-- Reduction scales down to zero when the car is flying flat-side-on
@@ -65,10 +68,23 @@ local function UpdateHyrdodynamics(def, dt, body)
 	local backForceAdjust = util.Mult(bonusComponent, velUnit)
 	bodyForce = util.Add(bodyForce, backForceAdjust)
 	
+	
 	-- The penalty reduces the component perpendicular to velocity, ie the useful lift part
 	local penaltyComponent = util.Mult(1 - def.hydroPerpEffect, util.Subtract(util.Mult(util.Dot(bodyForce, velUnit), velUnit), bodyForce))
 	bodyForce = util.Add(bodyForce, penaltyComponent)
+	
 	body:applyForce(bodyForce[1], bodyForce[2])
+	self.debugDraw.bodyForce = bodyForce
+	self.debugDraw.backComp = backForceAdjust
+	self.debugDraw.penaltyComponent = penaltyComponent
+end
+
+local function DrawVector(pos, vector, scale, color)
+	if vector then
+		local draw = util.Add(pos, util.Mult(scale, vector))
+		love.graphics.setColor(unpack(color))
+		love.graphics.line(pos[1], pos[2], draw[1], draw[2])
+	end
 end
 
 local function NewComponent(spawnPos, physicsWorld, world, def)
@@ -77,13 +93,14 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 	end
 	local self = {
 		pos = spawnPos,
+		debugDraw = {}
 	}
 	self.animTime = 0
 	self.underwaterTime = 0
 	self.jumpStore = def.jumpMax
-	
+	print("ballastProp", def.ballastProp)
 	local hullCoords = {{def.width/2, def.height/2}, {-def.width/2, def.height/2}, {-def.width/2, -def.height/2}, {def.width/2, -def.height/2}}
-	local ballastCoords = {{def.width/2, def.height/2}, {-def.width/2, def.height/2}, {-def.width/2, def.height/4}, {def.width/2, def.height/4}}
+	local ballastCoords = {{def.width/2, def.height/2}, {-def.width/2, def.height/2}, {-def.width/2, def.height*def.ballastProp}, {def.width/2, def.height*def.ballastProp}}
 	
 	self.hull = {}
 	self.hull.body = love.physics.newBody(physicsWorld, self.pos[1], self.pos[2], "dynamic")
@@ -127,7 +144,7 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 	function self.Update(dt)
 		self.animTime = self.animTime + dt
 		TerrainHandler.UpdateSpeedLimit(self.hull.body)
-		UpdateHyrdodynamics(def, dt, self.hull.body)
+		UpdateHyrdodynamics(def, dt, self.hull.body, self)
 		
 		local bx, by = self.hull.body:getPosition()
 		InterfaceUtil.SetNumber("depth", TerrainHandler.GetDepth(by))
@@ -268,6 +285,7 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 		drawQueue:push({y=0; f=function()
 			love.graphics.setColor(1, 1, 1, 1)
 			local x, y = self.hull.body:getPosition()
+			local pos = {x, y}
 			local angle = self.hull.body:getAngle()
 			love.graphics.push()
 				love.graphics.translate(x, y)
@@ -288,6 +306,12 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 				end
 				love.graphics.rectangle("fill", -0.5*def.width*def.scale, (0.5 - fill)*def.height*def.scale, def.width*def.scale, fill * def.height*def.scale)
 			love.graphics.pop()
+			love.graphics.setColor(1, 1, 1, 1)
+			
+			DrawVector(pos, self.debugDraw.bodyForce, 10, {0, 0, 0, 1})
+			DrawVector(pos, self.debugDraw.backComp, 10, {0, 1, 0, 1})
+			DrawVector(pos, self.debugDraw.penaltyComponent, 10, {1, 0, 0, 1})
+			
 			love.graphics.setColor(1, 1, 1, 1)
 			for i = 1, #self.wheels do
 				local x, y = self.wheels[i].body:getPosition()

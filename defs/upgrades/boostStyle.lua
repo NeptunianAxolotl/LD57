@@ -25,10 +25,10 @@ local data = {
 			jumpMaxMult = 1.25,
 			jumpPropRequired = 0,
 			jumpForce = 1.4,
-			mass = 0.15
+			mass = 0.1
 		},
 		{
-			name = "Mixed",
+			name = "Quick",
 			cost = 300,
 			depth = 450,
 			jumpUseRate = 10,
@@ -46,7 +46,19 @@ local data = {
 			jumpMaxMult = 1.2,
 			chargeMult = 0.5,
 			jumpForce = 1.6,
-			mass = 0.6
+			mass = 0.5
+		},
+		{
+			name = "Super\nSteady",
+			textLine = 2,
+			cost = 200,
+			depth = 1500,
+			jumpUseRate = 3,
+			jumpMaxMult = 1.25,
+			chargeMult = 0.75,
+			jumpPropRequired = 0,
+			jumpForce = 2.1,
+			mass = 0.65
 		},
 	},
 }

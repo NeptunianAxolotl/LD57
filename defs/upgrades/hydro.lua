@@ -8,7 +8,7 @@ local data = {
 		spec.hydrofoilForceMult = spec.hydrofoilForceMult * ((option.power or 0)*0.1 + 1) * (option.hydroMult or 1)
 		spec.hyroDragReduce     = spec.hyroDragReduce + (1 - spec.hyroDragReduce) * (option.dragDown or 0) / (0.6 + (option.dragDown or 0))
 		spec.hydroPerpEffect    = spec.hydroPerpEffect + (option.power or 0) / (1 + (option.power or 0))
-		spec.massScale = spec.massScale + (option.power or 0)*0.33 + (option.dragDown or 0)*0.3
+		spec.massScale = spec.massScale + (option.power or 0)*0.33 + (option.dragDown or 0)*0.3 + (option.mass or 0)
 		return spec
 	end,
 	showDepth = 450,
@@ -55,8 +55,8 @@ local data = {
 			textLine = 2,
 			cost = 1800,
 			depth = 1400,
-			dragDown = 2.5,
-			hydroMult = 0.2,
+			dragDown = 3,
+			hydroMult = 0.25,
 		},
 		{
 			name = "Glide\nMk 3",
@@ -66,6 +66,15 @@ local data = {
 			power = 1.2,
 			dragDown = -0.35,
 			hydroMult = 1.15,
+		},
+		{
+			name = "Ultra Sleek",
+			textLine = 2,
+			cost = 1800,
+			depth = 1400,
+			dragDown = 15,
+			hydroMult = 0.05,
+			mass = -2.05, -- counteract autocalculated
 		},
 	},
 }
