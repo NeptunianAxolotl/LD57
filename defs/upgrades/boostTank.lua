@@ -22,7 +22,7 @@ local data = {
 			name = "Rate",
 			cost = 0,
 			depth = 0,
-			jumpChargeRate = 1.25,
+			jumpChargeRate = 1.2,
 			mass = 0.3,
 		},
 		{
@@ -38,8 +38,16 @@ local data = {
 			cost = 0,
 			depth = 0,
 			jumpMax = 0.75,
-			jumpChargeRate = 1.15,
+			jumpChargeRate = 1.3,
 			mass = 0.65,
+		},
+		{
+			name = "Heavy",
+			cost = 0,
+			depth = 0,
+			jumpMax = 2,
+			jumpChargeRate = 1.2,
+			mass = 1.2,
 		},
 	},
 }

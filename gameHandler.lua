@@ -178,7 +178,8 @@ function api.DrawInterface()
 	local depth = math.max(0, InterfaceUtil.GetNumber("depth"))
 	love.graphics.printf(string.format("Depth: %d", depth), 25, windowY - 85, windowX, "left")
 	
-	local underwaterTime = PlayerHandler.GetUnderwaterTimeProp()
+	local underwaterTime = PlayerHandler.GetUnderwaterTime()
+	love.graphics.printf(string.format("Oxygen: %.1fs", underwaterTime), 25, windowY - 135, windowX, "left")
 	
 end
 

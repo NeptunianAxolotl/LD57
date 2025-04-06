@@ -20,10 +20,13 @@ local data = {
 		
 		spec.torque = spec.motorTorque * (option.torque or 1)
 		spec.motorMaxSpeed = spec.motorMaxSpeed * (option.speed or 1)
-		spec.massScale = spec.massScale + (option.mass or 0)
 		spec.jumpForce = spec.jumpForce * (option.jumpForce or 1)
 		spec.hullRotateMult     = spec.hullRotateMult     * (option.hullRotateMult or 1)
 		spec.hydrofoilForceMult = spec.hydrofoilForceMult * (option.hyroMult or 1)
+		spec.jumpMax = spec.jumpMax * (option.jumpMaxMult or 1)
+		spec.jumpChargeRate = spec.jumpChargeRate * (option.jumpChargeRate or 1)
+		spec.airSeconds = spec.airSeconds * (option.airMult or 1)
+		spec.massScale = spec.massScale + (option.mass or 0)
 		
 		return spec
 	end,
@@ -58,6 +61,7 @@ local data = {
 			wheelRadius = 0.95,
 			wheelMass = 0.03,
 			torque = 1.1,
+			hullRotateMult = 1.1,
 			hydrofoilForceMult = 1.1,
 			mass = 3,
 		},
@@ -73,8 +77,29 @@ local data = {
 			wheelRadius = 0.45,
 			hullRotateMult = 0.6,
 			hydrofoilForceMult = 0.6,
-			mass = -6,
 			jumpForce = 0.9,
+			airMult = 0.9,
+			mass = -6,
+		},
+		{
+			name = "semi",
+			cost = 0,
+			depth = 0,
+			width = 3.6,
+			height = 2.2,
+			wheelOffX = 1.6,
+			wheelOffY = 0.8,
+			wheelRadius = 0.72,
+			wheelMass = 0.02,
+			wheelCount = 3,
+			torque = 1.25,
+			hydrofoilForceMult = 1.25,
+			hullRotateMult = 1.2,
+			jumpMax = 1.5,
+			jumpChargeRate = 1.2,
+			jumpForce = 1.25,
+			airMult = 1.2,
+			mass = 7,
 		},
 	},
 }

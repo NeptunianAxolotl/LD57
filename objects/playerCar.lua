@@ -136,6 +136,13 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 			return
 		end
 		
+		if TerrainHandler.GetDepth(by) > def.height then
+			self.underwaterTime = self.underwaterTime + dt
+			if self.underwaterTime > def.airSeconds then
+				return false
+			end
+		end
+		
 		if self.jumpStore < def.jumpMax then
 			self.jumpStore = self.jumpStore + dt*def.jumpChargeRate
 			if self.jumpStore > def.jumpMax then
@@ -170,18 +177,18 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 			local vx, vy = self.hull.body:getLinearVelocity()
 			local speed = util.Dist(0, 0, vx, vy)
 			turnAmount = turnAmount * Global.TURN_MULT * def.hullRotateMult
-			turnAmount = turnAmount * (0.4 + 0.6 * (1 - speed / (speed + 1000))) * math.max(1, 140 / (20 + speed))
+			turnAmount = turnAmount * (0.5 + 0.5 * (1 - speed / (speed + 1000))) * math.max(1, 140 / (8 + speed))
 			self.hull.body:applyTorque(turnAmount)
-		end
-		
-		self.underwaterTime = self.underwaterTime + dt
-		if self.underwaterTime > def.airSeconds then
-			return false
 		end
 	end
 	
 	function self.GetUnderwaterTimeProp()
 		return 1 - math.min(1, self.underwaterTime / def.airSeconds)
+	end
+	
+	function self.GetUnderwaterTime()
+		return math.max(0, def.airSeconds - self.underwaterTime)
+	
 	end
 	
 	function self.GetPos()

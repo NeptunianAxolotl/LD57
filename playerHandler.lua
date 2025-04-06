@@ -11,7 +11,14 @@ function api.Draw(drawQueue)
 		self.playerCar.Draw(drawQueue)
 	end
 end
-function api.KeyPressed(key, scancode, isRepeat)	if self.world.GetEditMode() then		if key == "g" then			self.playerCar.SetPos(self.world.GetMousePosition())			self.playerCar.SetVelocity({9, 0})			self.playerCar.SetAngle(0)			return true		end	end	if key == "r" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then		api.RespawnCar()		return true	endendfunction api.GetUnderwaterTimeProp()	if self.playerCar then		return self.playerCar.GetUnderwaterTimeProp()	endendfunction api.Update(dt)	if self.playerCar then		local outOfAir = self.playerCar.Update(dt)		if outOfAir then			api.RespawnCar()		end	endend
+function api.KeyPressed(key, scancode, isRepeat)	if self.world.GetEditMode() then		if key == "g" then			self.playerCar.SetPos(self.world.GetMousePosition())			self.playerCar.SetVelocity({9, 0})			self.playerCar.SetAngle(0)			return true		end	end	if key == "r" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then		api.RespawnCar()		return true	endendfunction api.GetUnderwaterTimeProp()	if self.playerCar then		return self.playerCar.GetUnderwaterTimeProp()	endend
+function api.GetUnderwaterTime()
+	if self.playerCar then
+		return self.playerCar.GetUnderwaterTime()
+	end
+end
+
+function api.Update(dt)	if self.playerCar then		local outOfAir = self.playerCar.Update(dt)		if outOfAir then			api.RespawnCar()		end	endend
 function api.Initialize(world)
 	self = {
 		playerCar = false,
