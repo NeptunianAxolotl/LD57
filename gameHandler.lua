@@ -74,11 +74,8 @@ end
 local function CanSelectOption(slot, index)
 	local def = UpgradeDefs[slot]
 	local option = def.options[index]
-	if option.showDepth and option.showDepth > InterfaceUtil.GetRawRecordHigh("depth") and not Global.DEBUG_SHOP then
-		return false
-	end
 	if option.depth and option.depth > InterfaceUtil.GetRawRecordHigh("depth") and not Global.DEBUG_SHOP then
-		return true, false
+		return false
 	end
 	local currentCost = (def.options[self.loadout[slot]].cost or 0)
 	local deltaMoney = currentCost - (option.cost or 0)
@@ -172,7 +169,7 @@ local function DrawCarStats()
 	Font.SetSize(2)
 	for i = 1, #statsList do
 		local stat = statsList[i]
-		if stat.showDepth > InterfaceUtil.GetRawRecordHigh("depth") or Global.DEBUG_SHOP then
+		if stat.showDepth < InterfaceUtil.GetRawRecordHigh("depth") or Global.DEBUG_SHOP then
 			local text = stat.text .. defData[stat.param]
 			if newData and newData[stat.param] ~= defData[stat.param] then
 				text = text .. " (" .. newData[stat.param] .. ")"
@@ -197,7 +194,7 @@ function api.Draw(drawQueue)
 		for i = 1, #upgradeOrder do
 			local defName = upgradeOrder[i]
 			local def = UpgradeDefs[defName]
-			if def.showDepth < InterfaceUtil.GetRawRecordHigh("depth") or Global.DEBUG_SHOP then
+			if def.depth < InterfaceUtil.GetRawRecordHigh("depth") or Global.DEBUG_SHOP then
 				local x = shopX + (buttonSize + buttonPad) * (drawIndex - 1)
 				drawIndex = drawIndex + 1
 				local open = (self.selectingSlot == defName)

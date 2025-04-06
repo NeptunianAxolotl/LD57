@@ -1,5 +1,5 @@
 
-local NewPlayerCar = require("objects/playerCar")local UpgradeDefs = util.LoadDefDirectory("defs/upgrades")
+local NewPlayerCar = require("objects/playerCar")
 
 local self = {}
 local api = {}local defaultCar = {	density = 1.2,	ballastDensity = 5,	hullMass = 0.015,	wheelDensity = 0.5,
