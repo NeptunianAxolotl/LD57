@@ -10,11 +10,11 @@ local self = {}
 local api = {}
 
 local upgradeOrder = {
-	"body",
+	"air",
 	"engine",
+	"body",
 	"wheels",
 	"hydro",
-	"air",
 	"boostTank",
 	"boostStyle",
 	"boostDirection",
@@ -27,12 +27,15 @@ local upgradeOrder = {
 local function CanSelectOption(slot, index)
 	local def = UpgradeDefs[slot]
 	local option = def.options[index]
-	if option.depth and option.depth > InterfaceUtil.GetRawRecordHigh("depth") then
+	if option.showDepth and option.showDepth > InterfaceUtil.GetRawRecordHigh("depth") then
 		return false
+	end
+	if option.depth and option.depth > InterfaceUtil.GetRawRecordHigh("depth") then
+		return true, false
 	end
 	local currentCost = (def.options[self.loadout[slot]].cost or 0)
 	local deltaMoney = currentCost - (option.cost or 0)
-	return self.currentCarCost - deltaMoney <= InterfaceUtil.GetRawNumber("total_money"), deltaMoney
+	return true, self.currentCarCost - deltaMoney <= InterfaceUtil.GetRawNumber("total_money"), deltaMoney
 end
 
 --------------------------------------------------
@@ -80,7 +83,7 @@ function api.MousePressed(x, y)
 			self.selectingSlot = self.hoveredSlot
 		end
 	elseif self.hoveredOption and self.selectingSlot then
-		local enabled, moneyChange = CanSelectOption(self.selectingSlot, self.hoveredOption)
+		local shown, enabled, moneyChange = CanSelectOption(self.selectingSlot, self.hoveredOption)
 		if enabled then
 			self.loadout[self.selectingSlot] = self.hoveredOption
 			self.currentCarCost = api.GetCarCost(self.loadout)
@@ -115,24 +118,30 @@ function api.Draw(drawQueue)
 		self.hoveredSlot = false
 		self.hoveredOption = false
 		self.drawMoneyChange = false
+		local drawIndex = 1
 		for i = 1, #upgradeOrder do
 			local defName = upgradeOrder[i]
 			local def = UpgradeDefs[defName]
-			local x = shopX + (buttonSize + buttonPad) * (i - 1)
-			local open = (self.selectingSlot == defName)
-			self.hoveredSlot = InterfaceUtil.DrawButton(x, shopY, buttonSize, buttonSize, mousePos, def.name, false, false, false, open, 2, 32, 8) and def.name or self.hoveredSlot
-			if self.selectingSlot == defName then
-				local options = def.options
-				for j = 1, #options do
-					local option = options[j]
-					local x = shopX + (buttonSize + buttonPad) * (j - 1)
-					local y = shopY + (buttonSize + buttonPad*2)
-					local enabled, moneyChange = CanSelectOption(defName, j)
-					local inLoadout = (self.loadout[defName] == j)
-					local hovered = InterfaceUtil.DrawButton(x, y, buttonSize, buttonSize, mousePos, option.name, not enabled, false, true, inLoadout, 2, 32, 8)
-					self.hoveredOption = hovered and enabled and j or self.hoveredOption
-					if hovered and moneyChange ~= 0 then
-						self.drawMoneyChange = moneyChange
+			if def.showDepth < InterfaceUtil.GetRawRecordHigh("depth") then
+				local x = shopX + (buttonSize + buttonPad) * (drawIndex - 1)
+				drawIndex = drawIndex + 1
+				local open = (self.selectingSlot == defName)
+				self.hoveredSlot = InterfaceUtil.DrawButton(x, shopY, buttonSize, buttonSize, mousePos, def.name, false, false, false, open, 2, 32, 8) and def.name or self.hoveredSlot
+				if self.selectingSlot == defName then
+					local options = def.options
+					for j = 1, #options do
+						local option = options[j]
+						local x = shopX + (buttonSize + buttonPad) * (j - 1)
+						local y = shopY + (buttonSize + buttonPad*2)
+						local shown, enabled, moneyChange = CanSelectOption(defName, j)
+						if shown then
+							local inLoadout = (self.loadout[defName] == j)
+							local hovered = InterfaceUtil.DrawButton(x, y, buttonSize, buttonSize, mousePos, option.name, not enabled, false, true, inLoadout, 2, 32, 8)
+							self.hoveredOption = hovered and enabled and j or self.hoveredOption
+							if hovered and moneyChange ~= 0 then
+								self.drawMoneyChange = moneyChange
+							end
+						end
 					end
 				end
 			end

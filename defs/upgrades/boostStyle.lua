@@ -9,6 +9,7 @@ local data = {
 		spec.massScale = spec.massScale + (option.mass or 0)
 		return spec
 	end,
+	showDepth = 700,
 	options = {
 		{
 			name = "burst",

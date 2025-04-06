@@ -26,6 +26,12 @@ local function HandleWheel(def, wheel, wantLeft, wantRight)
 	end
 end
 
+local function StopWheel(wheel)
+	local motor = wheel.motor
+	motor:setMotorEnabled(true)
+	motor:setMotorSpeed(0)
+end
+
 local function MakeShapeCoords(def, coords)
 	local modCoords = {}
 	for i = 1, #coords do
@@ -144,6 +150,9 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 				if not self.noAirWaitTimer then
 					for i = 1, 35 do
 						EffectsHandler.SpawnEffect("bubble", {bx, by}, {velocity = util.RandomPointInAnnulus(3, 12)})
+					end
+					for i = 1, #self.wheels do
+						StopWheel(self.wheels[i])
 					end
 				end
 				self.noAirWaitTimer = (self.noAirWaitTimer or 0) + dt * (0.4 + 0.6 * (200 / (200 + speed)))

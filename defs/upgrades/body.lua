@@ -30,6 +30,7 @@ local data = {
 		
 		return spec
 	end,
+	showDepth = 200,
 	options = {
 		{
 			name = "basic",
@@ -63,7 +64,7 @@ local data = {
 			torque = 1.2,
 			hullRotateMult = 1.1,
 			hydrofoilForceMult = 1.1,
-			mass = 3,
+			mass = 2,
 		},
 		{
 			name = "light",
@@ -78,7 +79,6 @@ local data = {
 			hullRotateMult = 0.6,
 			hydrofoilForceMult = 0.6,
 			jumpForce = 0.9,
-			airMult = 0.9,
 			mass = -6,
 		},
 		{

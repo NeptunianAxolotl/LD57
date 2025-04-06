@@ -6,6 +6,7 @@ local data = {
 		spec.massScale = spec.massScale + (option.mass or 0)
 		return spec
 	end,
+	showDepth = 450,
 	options = {
 		{
 			name = "basic",

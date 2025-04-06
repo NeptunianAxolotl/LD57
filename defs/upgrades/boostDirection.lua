@@ -5,6 +5,7 @@ local data = {
 		spec.jumpForce = spec.jumpForce * (option.jumpForce or 1)
 		return spec
 	end,
+	showDepth = 700,
 	options = {
 		{
 			name = "basic",
