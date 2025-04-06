@@ -141,11 +141,21 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 			if self.underwaterTime > def.airSeconds then
 				local vx, vy = self.hull.body:getLinearVelocity()
 				local speed = util.Dist(0, 0, vx, vy)
-				self.waitTimer = (self.waitTimer or 0) + dt * (0.15 + 0.85 * (200 / (200 + speed)))
-				if self.waitTimer > 2.2 then
+				if not self.noAirWaitTimer then
+					for i = 1, 35 do
+						EffectsHandler.SpawnEffect("bubble", {bx, by}, {velocity = util.RandomPointInAnnulus(3, 12)})
+					end
+				end
+				self.noAirWaitTimer = (self.noAirWaitTimer or 0) + dt * (0.4 + 0.6 * (200 / (200 + speed)))
+				if self.noAirWaitTimer > 2.2 then
 					return true
 				end
 				return false
+			end
+			self.bubbleSpawn = (self.bubbleSpawn or 0) + dt*(1.2 + math.random()*3 + (2 + math.random()*8)*math.pow(1 - self.GetUnderwaterTimeProp(), 2))
+			if self.bubbleSpawn > 1 then
+				EffectsHandler.SpawnEffect("bubble", {bx, by}, {velocity = {6*math.random() - 3, -2*(0.4 + 0.6*math.random())}})
+				self.bubbleSpawn = self.bubbleSpawn - (0.8 + math.random()*0.2)
 			end
 		end
 		
