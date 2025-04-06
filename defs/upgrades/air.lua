@@ -38,6 +38,13 @@ local data = {
 			airMult = 90/15,
 			mass = 0.6,
 		},
+		{
+			name = "bulk++",
+			cost = 0,
+			depth = 0,
+			airMult = 120/15,
+			mass = 1.1,
+		},
 	},
 }
 

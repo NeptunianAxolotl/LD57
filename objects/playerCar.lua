@@ -139,6 +139,12 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 		if TerrainHandler.GetDepth(by) > def.height then
 			self.underwaterTime = self.underwaterTime + dt
 			if self.underwaterTime > def.airSeconds then
+				local vx, vy = self.hull.body:getLinearVelocity()
+				local speed = util.Dist(0, 0, vx, vy)
+				self.waitTimer = (self.waitTimer or 0) + dt * (0.15 + 0.85 * (200 / (200 + speed)))
+				if self.waitTimer > 2.2 then
+					return true
+				end
 				return false
 			end
 		end

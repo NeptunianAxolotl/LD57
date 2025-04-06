@@ -18,7 +18,7 @@ function api.GetUnderwaterTime()
 	end
 end
 
-function api.Update(dt)	if self.playerCar then		local outOfAir = self.playerCar.Update(dt)		if outOfAir then			api.RespawnCar()		end	endend
+function api.Update(dt)	if self.playerCar then		local wantRespawn = self.playerCar.Update(dt)		if wantRespawn then			api.RespawnCar()		end	endend
 function api.Initialize(world)
 	self = {
 		playerCar = false,
