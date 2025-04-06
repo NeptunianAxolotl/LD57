@@ -9,12 +9,13 @@ end
 function api.Update(dt, playerPos, playerVelocity)
 	local playerVelocity = util.Mult(0.02, playerVelocity)
 	local speed = util.AbsVal(playerVelocity)
-	local offset = {0.65, 0.1}
+	local offset = {0.15, 0.43}
+	local minRatio = 13/9
 	cameraX, cameraY, cameraScale = Camera.UpdateCameraToPlayer(dt, playerPos, playerVelocity, speed, 0.9)
 	self.cameraPos[1] = cameraX
 	self.cameraPos[2] = cameraY
 	self.cameraScale = cameraScale
-	Camera.UpdateTransform(self.cameraTransform, self.cameraPos[1], self.cameraPos[2], self.cameraScale, offset)
+	Camera.UpdateTransform(self.cameraTransform, self.cameraPos[1], self.cameraPos[2], self.cameraScale, offset, minRatio)
 end
 
 local function UpdateCameraVector(dt, vector)

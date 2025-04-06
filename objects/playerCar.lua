@@ -70,12 +70,7 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 		pos = spawnPos,
 	}
 	self.animTime = 0
-	
 	self.jumpStore = def.jumpMax
-	
-	local width, height = 2, 1.4
-	local wheelOffX, wheelOffY = 0.72, 0.95
-	local wheelRadius = 0.52
 	
 	local hullCoords = {{def.width/2, def.height/2}, {-def.width/2, def.height/2}, {-def.width/2, -def.height/2}, {def.width/2, -def.height/2}}
 	local ballastCoords = {{def.width/2, def.height/2}, {-def.width/2, def.height/2}, {-def.width/2, def.height/4}, {def.width/2, def.height/4}}
@@ -89,19 +84,22 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 	self.hull.body:setAngularDamping(1)
 	self.hull.body:setLinearDamping(def.baseDrag)
 	self.hull.fixture:setFriction(def.hullFriction)
+	self.hull.fixture:setRestitution(def.hullBounce)
+	self.hull.body:setMass(def.hullMass * def.massScale)
 	
 	self.wheels = {}
-	for i = 1, 2 do
-		local front = 3 - i*2
+	for i = 1, def.wheelCount do
+		local front = 1 - ((i - 1)/(def.wheelCount - 1))*2
 		local x = self.pos[1] + front * def.wheelOffX * def.scale
 		local y = self.pos[2] + def.wheelOffY * def.scale
 		local body = love.physics.newBody(physicsWorld, x, y, "dynamic")
 		local shape = love.physics.newCircleShape(def.wheelRadius * def.scale)
 		local fixture = love.physics.newFixture(body, shape, def.wheelDensity)
 		fixture:setFriction(def.wheelFriction)
+		fixture:setRestitution(def.wheelBounce)
 		local motor = love.physics.newWheelJoint(self.hull.body, body, body:getX(), body:getY(), 0, 1, false)
-		motor:setSpringDampingRatio(5)
-		motor:setSpringFrequency(12)
+		motor:setSpringDampingRatio(def.wheelDampen)
+		motor:setSpringFrequency(def.wheelFreq)
 		self.wheels[i] = {
 			body = body,
 			shape = shape,

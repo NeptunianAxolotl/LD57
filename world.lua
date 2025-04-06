@@ -253,6 +253,7 @@ function api.Draw()
 	EffectsHandler.Draw(drawQueue)
 	PlayerHandler.Draw(drawQueue)
 	TerrainHandler.Draw(drawQueue)
+	GameHandler.Draw(drawQueue)
 	
 	love.graphics.replaceTransform(CameraHandler.GetCameraTransform())
 	while true do

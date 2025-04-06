@@ -1068,6 +1068,7 @@ function util.LoadDefDirectory(dir, nameByKey)
 		local name = string.sub(files[i], 0, -5)
 		nameList[#nameList + 1] = name
 		defTable[name] = love.filesystem.load(dir .. "/" .. name .. ".lua")()
+		defTable[name].name = name
 	end
 	
 	-- Loop for multiple inheritence
