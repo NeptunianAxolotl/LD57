@@ -237,7 +237,7 @@ function api.DrawInterface()
  - T to toggle surface and item type.
  - R and click to remove things.
  - B to place coins.
- Polygons are convex have 2 < vertices < 9]], Global.UI_WIDTH - 200, 40, 500)
+ Polygons are convex have 2 < vertices < 9]], 30, 40, 500)
 	else
 		Font.SetSize(3)
 		love.graphics.setColor(1, 1, 1, 0.7)

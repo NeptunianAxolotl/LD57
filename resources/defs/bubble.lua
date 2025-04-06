@@ -4,5 +4,6 @@ return {
 	form = "image",
 	xScale = 1,
 	yScale = 1,
-	duration = 1.5,
+	xOffset = 0.5,
+	yOffset = 0.5,
 }
