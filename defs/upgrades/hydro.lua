@@ -6,7 +6,7 @@ local data = {
 		spec.hydrofoilForceMult = spec.hydrofoilForceMult * ((option.power or 0)*0.1 + 1) * (option.hydroMult or 1)
 		spec.hyroDragReduce     = spec.hyroDragReduce + (1 - spec.hyroDragReduce) * (option.dragDown or 0) / (0.6 + (option.dragDown or 0))
 		spec.hydroPerpEffect    = spec.hydroPerpEffect + (option.power or 0) / (1 + (option.power or 0))
-		spec.massScale = spec.massScale + (option.power or 0)*0.33 + (option.dragDown or 0)*0.33
+		spec.massScale = spec.massScale + (option.power or 0)*0.33 + (option.dragDown or 0)*0.3
 		return spec
 	end,
 	options = {
@@ -27,6 +27,13 @@ local data = {
 			depth = 0,
 			dragDown = 1,
 			hydroMult = 0.6,
+		},
+		{
+			name = "drag++",
+			cost = 0,
+			depth = 0,
+			dragDown = 2.5,
+			hydroMult = 0.2,
 		},
 		{
 			name = "lift",

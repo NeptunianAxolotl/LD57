@@ -16,6 +16,7 @@ local data = {
 		spec.wheelOffY = option.wheelOffY or spec.wheelOffY
 		spec.wheelRadius = option.wheelRadius or spec.wheelRadius
 		spec.wheelCount = option.wheelCount or spec.wheelCount
+		spec.wheelMass = option.wheelMass or spec.wheelMass
 		
 		spec.torque = spec.motorTorque * (option.torque or 1)
 		spec.motorMaxSpeed = spec.motorMaxSpeed * (option.speed or 1)
@@ -41,7 +42,8 @@ local data = {
 			wheelOffY = 0.2,
 			wheelRadius = 0.65,
 			speed = 1.1,
-			hullRotateMult = 1.2,
+			wheelMass = 0.018,
+			hullRotateMult = 1.4,
 			hydrofoilForceMult = 0.95,
 			mass = -1,
 		},
@@ -54,9 +56,10 @@ local data = {
 			wheelOffX = 1.2,
 			wheelOffY = 0.1,
 			wheelRadius = 0.95,
+			wheelMass = 0.03,
 			torque = 1.1,
-			hydrofoilForceMult = 1.2,
-			mass = 6,
+			hydrofoilForceMult = 1.1,
+			mass = 3,
 		},
 		{
 			name = "light",
@@ -66,6 +69,7 @@ local data = {
 			height = 1,
 			wheelOffX = 0.8,
 			wheelOffY = 0.5,
+			wheelMass = 0.01,
 			wheelRadius = 0.45,
 			hullRotateMult = 0.6,
 			hydrofoilForceMult = 0.6,

@@ -18,7 +18,7 @@ local data = {
 			depth = 0,
 			speed = 1,
 			torque = 1.2,
-			accelMult = 1.2,
+			accelMult = 1.5,
 			mass = 0.15,
 		},
 		{
@@ -26,6 +26,7 @@ local data = {
 			cost = 0,
 			depth = 0,
 			speed = 2,
+			accelMult = 1.4,
 			torque = 0.9,
 			mass = 0.18,
 		},
@@ -35,7 +36,7 @@ local data = {
 			depth = 0,
 			speed = 0.9,
 			torque = 1.6,
-			accelMult = 2,
+			accelMult = 4,
 			mass = 0.25,
 		},
 		{
@@ -44,6 +45,7 @@ local data = {
 			depth = 0,
 			speed = 10,
 			torque = 1.2,
+			accelMult = 1.8,
 			mass = 0.38,
 		},
 		{
@@ -52,7 +54,7 @@ local data = {
 			depth = 0,
 			speed = 2,
 			torque = 2.8,
-			accelMult = 3,
+			accelMult = 8,
 			mass = 0.45,
 		},
 	},

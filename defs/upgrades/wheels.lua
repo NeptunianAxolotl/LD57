@@ -6,6 +6,7 @@ local data = {
 		spec.hullBounce = option.hullBounce or spec.hullBounce
 		spec.wheelDampen = option.wheelDampen or spec.wheelDampen
 		spec.wheelFreq = option.wheelFreq or spec.wheelFreq
+		spec.wheelFriction = option.wheelFriction or spec.wheelFriction
 		
 		spec.hullRotateMult     = spec.hullRotateMult     * (option.hullRotateMult or 1)
 		spec.massScale = spec.massScale + (option.mass or 0)
@@ -31,20 +32,22 @@ local data = {
 			name = "control",
 			cost = 0,
 			depth = 0,
-			hullRotateMult = 1.1,
+			hullRotateMult = 1.3,
+			wheelFriction = 1,
 			reactionControl = 0.4,
 			wheelDampen = 5,
-			mass = 0.15,
+			mass = 0.06,
 		},
 		{
 			name = "control+",
 			cost = 0,
 			depth = 0,
-			hullRotateMult = 1.6,
+			hullRotateMult = 1.7,
+			wheelFriction = 1.5,
 			reactionControl = 0.6,
 			wheelDampen = 5,
 			wheelFreq = 16,
-			mass = 0.28,
+			mass = 0.1,
 		},
 	},
 }
