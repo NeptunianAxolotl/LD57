@@ -34,7 +34,7 @@ local globals = {
 	FLOATING_TEXT_COL   = {0.95,0.95,0.9},
 	
 	
-	DEBUG_SHOP = false,
+	DEBUG_SHOP = true,
 	
 	
 	

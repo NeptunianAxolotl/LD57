@@ -28,8 +28,8 @@ local upgradeOrder = {
 local statsList = {
 	{text = "Oxygen: ",  param = "airSeconds", showDepth = 100},
 	{text = "Mass: ",  param = "mass", showDepth = 100},
-	{text = "Width: ",  param = "width", showDepth = 100},
-	{text = "Height: ",  param = "height", showDepth = 100},
+	--{text = "Width: ",  param = "width", showDepth = 100},
+	--{text = "Height: ",  param = "height", showDepth = 100},
 	{text = "Engine Power: ",  param = "power", showDepth = 100},
 	{text = "Engine Speed: ",  param = "speed", showDepth = 100},
 	{text = "Counter-Torque: ",  param = "reactionControl", showDepth = 250},
@@ -51,8 +51,8 @@ local function ExtractSpecStats(spec)
 	data.mass = string.format("%.02f tons", 10*(spec.massScale*spec.hullMass + spec.wheelCount*spec.wheelMass))
 	data.power = string.format("%d%%", 100 * spec.motorTorque / default.motorTorque)
 	data.speed = string.format("%d%%", 100 * spec.motorMaxSpeed / default.motorMaxSpeed)
-	data.width = string.format("%ds", spec.width / default.width * 10)
-	data.height = string.format("%ds", spec.height / default.height * 10)
+	data.width = string.format("%dm", spec.width / default.width * 10)
+	data.height = string.format("%dm", spec.height / default.height * 10)
 	data.reactionControl = string.format("%d%%", 100 * spec.reactionControl)
 	data.hullRotateMult = string.format("%d%%", 100 * spec.hullRotateMult)
 	data.bounce = string.format("%d%%", 100 * spec.wheelBounce)
@@ -79,7 +79,7 @@ local function CanSelectOption(slot, index)
 	end
 	local currentCost = (def.options[self.loadout[slot]].cost or 0)
 	local deltaMoney = currentCost - (option.cost or 0)
-	return true, self.currentCarCost - deltaMoney <= InterfaceUtil.GetRawNumber("total_money"), deltaMoney
+	return true, (self.currentCarCost - deltaMoney <= InterfaceUtil.GetRawNumber("total_money")) or Global.DEBUG_SHOP, deltaMoney
 end
 
 --------------------------------------------------

@@ -72,6 +72,9 @@ local function UpdateHyrdodynamics(def, dt, body)
 end
 
 local function NewComponent(spawnPos, physicsWorld, world, def)
+	if def.spawnOffset then
+		spawnPos = util.Add(spawnPos, def.spawnOffset)
+	end
 	local self = {
 		pos = spawnPos,
 	}
@@ -163,7 +166,9 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 			end
 			self.bubbleSpawn = (self.bubbleSpawn or 0) + dt*(1.2 + math.random()*3 + (2 + math.random()*8)*math.pow(1 - self.GetUnderwaterTimeProp(), 2))
 			if self.bubbleSpawn > 1 then
-				EffectsHandler.SpawnEffect("bubble", {bx, by}, {velocity = {6*math.random() - 3, -2*(0.4 + 0.6*math.random())}})
+				local vx, vy = self.hull.body:getWorldVector(0.25*def.width*def.scale, -0.5*def.height*def.scale)
+				local spawnPos = util.Add({vx, vy}, {bx, by})
+				EffectsHandler.SpawnEffect("bubble", spawnPos, {velocity = {6*math.random() - 3, -2*(0.4 + 0.6*math.random())}})
 				self.bubbleSpawn = self.bubbleSpawn - (0.8 + math.random()*0.2)
 			end
 		end
