@@ -40,8 +40,8 @@ local data = {
 		},
 		{
 			name = "Flat",
-			cost = 1400,
-			depth = 700,
+			cost = 400,
+			depth = 450,
 			width = 3.5,
 			height = 0.75,
 			wheelOffX = 1.5,
@@ -54,8 +54,8 @@ local data = {
 		},
 		{
 			name = "Monster",
-			cost = 2200,
-			depth = 900,
+			cost = 1000,
+			depth = 700,
 			width = 2.6,
 			height = 1.4,
 			wheelOffX = 1.2,
@@ -69,7 +69,7 @@ local data = {
 		},
 		{
 			name = "Mino",
-			cost = 2400,
+			cost = 1200,
 			depth = 1100,
 			width = 1.8,
 			height = 1,
@@ -84,8 +84,8 @@ local data = {
 		},
 		{
 			name = "Whale",
-			cost = 4000,
-			depth = 2000,
+			cost = 3000,
+			depth = 1800,
 			width = 3.6,
 			height = 2.2,
 			wheelOffX = 1.6,

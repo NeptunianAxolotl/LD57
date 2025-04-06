@@ -11,7 +11,7 @@ local data = {
 		spec.massScale = spec.massScale + (option.mass or 0)
 		return spec
 	end,
-	showDepth = 700,
+	showDepth = 450,
 	options = {
 		{
 			name = "Burst",
@@ -19,8 +19,8 @@ local data = {
 		},
 		{
 			name = "Steady",
-			cost = 800,
-			depth = 900,
+			cost = 200,
+			depth = 450,
 			jumpUseRate = 5,
 			jumpMaxMult = 1.25,
 			jumpPropRequired = 0,
@@ -29,11 +29,11 @@ local data = {
 		},
 		{
 			name = "Mixed",
-			cost = 800,
-			depth = 900,
+			cost = 300,
+			depth = 450,
 			jumpUseRate = 10,
 			jumpMaxMult = 0.75,
-			jumpForce = 1.4,
+			jumpForce = 1.5,
 			chargeMult = 1.1,
 			jumpPropRequired = 0.5,
 			mass = 0.35
@@ -41,7 +41,7 @@ local data = {
 		{
 			name = "Super\nBurst",
 			textLine = 2,
-			cost = 1200,
+			cost = 600,
 			depth = 900,
 			jumpMaxMult = 1.2,
 			chargeMult = 0.5,

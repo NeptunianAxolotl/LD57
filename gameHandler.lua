@@ -34,7 +34,7 @@ local statsList = {
 	{text = "Engine Speed: ",  param = "speed", showDepth = 100},
 	{text = "Counter-Torque: ",  param = "reactionControl", showDepth = 250},
 	{text = "Hull Rotation: ",  param = "hullRotateMult", showDepth = 250},
-	{text = "Bounce: ",  param = "bounce", showDepth = 450},
+	--{text = "Bounce: ",  param = "bounce", showDepth = 450},
 	{text = "Drag: ",  param = "drag", showDepth = 450},
 	{text = "Lift: ",  param = "lift", showDepth = 450},
 	{text = "Boost Capacity: ",  param = "jumpMax", showDepth = 450},
@@ -194,7 +194,7 @@ function api.Draw(drawQueue)
 		for i = 1, #upgradeOrder do
 			local defName = upgradeOrder[i]
 			local def = UpgradeDefs[defName]
-			if def.depth < InterfaceUtil.GetRawRecordHigh("depth") or Global.DEBUG_SHOP then
+			if def.showDepth < InterfaceUtil.GetRawRecordHigh("depth") or Global.DEBUG_SHOP then
 				local x = shopX + (buttonSize + buttonPad) * (drawIndex - 1)
 				drawIndex = drawIndex + 1
 				local open = (self.selectingSlot == defName)
