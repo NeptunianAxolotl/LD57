@@ -9,7 +9,7 @@ local function HandleWheel(def, wheel, wantLeft, wantRight)
 		if speed > -def.motorMaxSpeed then
 			motor:setMotorEnabled(true)
 			motor:setMotorSpeed(-def.motorMaxSpeed)
-			motor:setMaxMotorTorque(def.motorTorque * 500 / (300 + math.max(-speed, 100)))
+			motor:setMaxMotorTorque(def.motorTorque * 500 / (500 + math.max(-speed/def.accelMult, 100)))
 		else
 			motor:setMotorEnabled(false)
 		end
@@ -17,7 +17,7 @@ local function HandleWheel(def, wheel, wantLeft, wantRight)
 		if speed < def.motorMaxSpeed then
 			motor:setMotorEnabled(true)
 			motor:setMotorSpeed(def.motorMaxSpeed)
-			motor:setMaxMotorTorque(def.motorTorque * 500 / (300 + math.max(speed, 100)))
+			motor:setMaxMotorTorque(def.motorTorque * 500 / (500 + math.max(speed/def.accelMult, 100)))
 		else
 			motor:setMotorEnabled(false)
 		end
@@ -125,8 +125,7 @@ local function NewComponent(self, physicsWorld, world, def)
 		
 		if love.keyboard.isDown("space") and not self.jumpReload then
 			local vx, vy = self.hull.body:getWorldVector(0, -1)
-			local force = 4800
-			local forceVec = util.Mult(force, util.Unit({vx, vy}))
+			local forceVec = util.Mult(def.jumpForce, util.Unit({vx, vy}))
 			self.hull.body:applyForce(forceVec[1], forceVec[2])
 			self.jumpReload = def.jumpReload
 		end
@@ -153,8 +152,8 @@ local function NewComponent(self, physicsWorld, world, def)
 		if turnAmount then
 			local vx, vy = self.hull.body:getLinearVelocity()
 			local speed = util.Dist(0, 0, vx, vy)
-			turnAmount = turnAmount * Global.TURN_MULT
-			turnAmount = turnAmount * (0.4 + 0.6 * (1 - speed / (speed + 1000))) * math.max(1, 90 / (15 + speed))
+			turnAmount = turnAmount * Global.TURN_MULT * def.hullRotateMult
+			turnAmount = turnAmount * (0.4 + 0.6 * (1 - speed / (speed + 1000))) * math.max(1, 140 / (20 + speed))
 			self.hull.body:applyTorque(turnAmount)
 		end
 	end
