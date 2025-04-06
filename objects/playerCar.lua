@@ -119,6 +119,13 @@ local function NewComponent(self, physicsWorld, world, def)
 		self.animTime = self.animTime + dt
 		TerrainHandler.UpdateSpeedLimit(self.hull.body)
 		UpdateHyrdodynamics(def, dt, self.hull.body)
+		
+		local bx, by = self.hull.body:getPosition()
+		local pickup = TerrainHandler.TryCollectPickup({bx, by}, def.pickupRadius)
+		if pickup then
+			PlayerHandler.ProcessPickup(pickup)
+		end
+		
 		if world.GetEditMode() then
 			return
 		end

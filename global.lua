@@ -43,7 +43,7 @@ local globals = {
 	SPEED_ZOOM_SCALE = false,
 	
 	SAVE_ORDER = {
-		"waterline", "polygons", "circles"
+		"waterline", "pickups", "polygons", "circles"
 	},
 	SAVE_INLINE = {"pos", "points"},
 	INIT_LEVEL = "mainLevel",

@@ -46,10 +46,12 @@ function api.DrawInterface()
 		love.graphics.setColor(1, 1, 1, 0.7)
 		love.graphics.printf([[ - F to disable edit mode
  - G to warp player to mouse.
- - C to place circle with the mouse.
- - R and click to remove shapes.
- - V to place polygon vertices with the mouse. Right click to finish.
+ - C to place circle.
+ - V to place polygon vertices with LMB. Right click to finish.
  - Press C or V to cancel placement.
+ - T to toggle surface and item type.
+ - R and click to remove things.
+ - B to place coins.
  Polygons are convex have 2 < vertices < 9]], 40, 40, 500)
 	else
 		Font.SetSize(3)
@@ -61,8 +63,10 @@ function api.DrawInterface()
  - Space to thrust
  - Ctrl+R to restart
 ]], 40, 40, 500)
-	
 	end
+	
+	Font.SetSize(2)
+	love.graphics.printf("$0", windowX/2 - 100, 25, windowX/2, "left")
 end
 
 function api.Initialize(world)
