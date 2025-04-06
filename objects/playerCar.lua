@@ -62,8 +62,6 @@ local function UpdateHyrdodynamics(def, dt, body)
 	-- The penalty reduces the component perpendicular to velocity, ie the useful lift part
 	local penaltyComponent = util.Mult(1 - def.hydroPerpEffect, util.Subtract(util.Mult(util.Dot(bodyForce, velUnit), velUnit), bodyForce))
 	bodyForce = util.Add(bodyForce, penaltyComponent)
-	
-	print(offMag)
 	body:applyForce(bodyForce[1], bodyForce[2])
 end
 
@@ -73,7 +71,7 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 	}
 	self.animTime = 0
 	
-	self.jumpReload = false
+	self.jumpStore = def.jumpMax
 	
 	local width, height = 2, 1.4
 	local wheelOffX, wheelOffY = 0.72, 0.95
@@ -132,17 +130,21 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 			return
 		end
 		
-		if love.keyboard.isDown("space") and not self.jumpReload then
-			local vx, vy = self.hull.body:getWorldVector(0, -1)
-			local forceVec = util.Mult(def.jumpForce, util.Unit({vx, vy}))
-			self.hull.body:applyForce(forceVec[1], forceVec[2])
-			self.jumpReload = def.jumpReload
-		end
-		if self.jumpReload then
-			self.jumpReload = self.jumpReload - dt
-			if self.jumpReload < 0 then
-				self.jumpReload = false
+		if self.jumpStore < def.jumpMax then
+			self.jumpStore = self.jumpStore + dt*def.jumpChargeRate
+			if self.jumpStore > def.jumpMax then
+				self.jumpStore = def.jumpMax
 			end
+		end
+		if love.keyboard.isDown("space") and (self.jumping or (self.jumpStore/def.jumpMax >= def.jumpPropRequired)) then
+			local jumpUse = (jumpUse and math.min(self.jumpStore, dt*def.jumpUseRate)) or self.jumpStore
+			local vx, vy = self.hull.body:getWorldVector(0, -1)
+			local forceVec = util.Mult(def.jumpForce*jumpUse/def.jumpMax, util.Unit({vx, vy}))
+			self.hull.body:applyForce(forceVec[1], forceVec[2])
+			self.jumpStore = self.jumpStore - jumpUse
+			self.jumping = (self.jumpStore > 0)
+		else
+			self.jumping = false
 		end
 		
 		local wantLeft = love.keyboard.isDown("a") or love.keyboard.isDown("left")
@@ -214,11 +216,8 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 					local other = hullCoords[(i < #hullCoords and (i + 1)) or 1]
 					love.graphics.line(hullCoords[i][1], hullCoords[i][2], other[1], other[2])
 				end
-				local fill = 1
-				if self.jumpReload then
-					fill = 1 - self.jumpReload/def.jumpReload
-				end
-				if fill == 1 then
+				local fill = self.jumpStore/def.jumpMax
+				if fill >= def.jumpPropRequired then
 					love.graphics.setColor(1, 1, 1, 0.12)
 				else
 					love.graphics.setColor(1, 1, 1, 0.08)
