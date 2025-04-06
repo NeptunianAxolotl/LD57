@@ -70,7 +70,7 @@ local data = {
 		{
 			name = "Mino",
 			cost = 1200,
-			depth = 1100,
+			depth = 1300,
 			width = 1.8,
 			height = 1,
 			wheelOffX = 0.8,
@@ -85,7 +85,7 @@ local data = {
 		{
 			name = "Whale",
 			cost = 3000,
-			depth = 1800,
+			depth = 2000,
 			width = 3.6,
 			height = 2.2,
 			wheelOffX = 1.6,
