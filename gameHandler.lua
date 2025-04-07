@@ -20,36 +20,27 @@ local upgradeOrder = {
 	"boostDirection",
 }
 
-local depthThresholds = {
-	100,
-	450,
-	900,
-	1200,
-	2000,
-}
-
-
 --------------------------------------------------
 -- Utils
 --------------------------------------------------
 
 local statsList = {
-	{text = "Oxygen: ",  param = "airSeconds", showDepth = 100},
-	{text = "Mass: ",  param = "mass", showDepth = 100},
-	--{text = "Width: ",  param = "width", showDepth = 100},
-	--{text = "Height: ",  param = "height", showDepth = 100},
-	{text = "Engine Power: ",  param = "power", showDepth = 100},
-	{text = "Engine Speed: ",  param = "speed", showDepth = 100},
-	{text = "Counter-Torque: ",  param = "reactionControl", showDepth = 250},
-	{text = "Hull Rotation: ",  param = "hullRotateMult", showDepth = 250},
-	--{text = "Bounce: ",  param = "bounce", showDepth = 450},
-	{text = "Drag: ",  param = "drag", showDepth = 450},
-	{text = "Lift: ",  param = "lift", showDepth = 450},
-	{text = "Boost Capacity: ",  param = "jumpMax", showDepth = 450},
-	{text = "Charge Rate: ",  param = "jumpChargeRate", showDepth = 450},
-	{text = "Use Rate: ",  param = "jumpUseRate", showDepth = 450},
-	{text = "Boost Power: ",  param = "jumpForce", showDepth = 450},
-	{text = "Direction: ",  param = "jumpAngleName", showDepth = 450},
+	{text = "Oxygen: ",  param = "airSeconds", showDepth = Global.DEPTHS[1]},
+	{text = "Mass: ",  param = "mass", showDepth = Global.DEPTHS[1]},
+	--{text = "Width: ",  param = "width", showDepth = Global.DEPTHS[1]},
+	--{text = "Height: ",  param = "height", showDepth = Global.DEPTHS[1]},
+	{text = "Engine Power: ",  param = "power", showDepth = Global.DEPTHS[1]},
+	{text = "Engine Speed: ",  param = "speed", showDepth = Global.DEPTHS[1]},
+	{text = "Counter-Torque: ",  param = "reactionControl", showDepth = Global.DEPTHS[2]},
+	{text = "Hull Rotation: ",  param = "hullRotateMult", showDepth = Global.DEPTHS[2]},
+	--{text = "Bounce: ",  param = "bounce", showDepth = Global.DEPTHS[2]},
+	{text = "Drag: ",  param = "drag", showDepth = Global.DEPTHS[2]},
+	{text = "Lift: ",  param = "lift", showDepth = Global.DEPTHS[2]},
+	{text = "Boost Capacity: ",  param = "jumpMax", showDepth = Global.DEPTHS[3]},
+	{text = "Charge Rate: ",  param = "jumpChargeRate", showDepth = Global.DEPTHS[3]},
+	{text = "Use Rate: ",  param = "jumpUseRate", showDepth = Global.DEPTHS[4]},
+	{text = "Boost Power: ",  param = "jumpForce", showDepth = Global.DEPTHS[4]},
+	{text = "Direction: ",  param = "jumpAngleName", showDepth = Global.DEPTHS[4]},
 }
 
 local function ExtractSpecStats(spec)
@@ -152,7 +143,16 @@ function api.GetViewRestriction()
 end
 
 function api.ReportOnRecord(name, newValue, prevValue)
-	
+	if name == "depth" then
+		local _, markKey, markData = IterableMap.GetBarbarianData(self.depthMarkers)
+		for i = 1, #markKey do
+			local marker = markData[markKey[i]]
+			if newValue > marker.depth then
+				IterableMap.Remove(self.depthMarkers, marker.map_key)
+				return
+			end
+		end
+	end
 end
 
 function api.UpdateDepthRecordMarker()
@@ -236,6 +236,35 @@ function api.Draw(drawQueue)
 		end
 		DrawCarStats()
 	end})
+	
+	drawQueue:push({y=1000; f=function()
+		love.graphics.setLineWidth(3)
+		local carPos = PlayerHandler.GetPos()
+		local _, markKey, markData = IterableMap.GetBarbarianData(self.depthMarkers)
+		for i = 1, #markKey do
+			local marker = markData[markKey[i]]
+			local worldDepth = TerrainHandler.DepthToWorld(marker.depth)
+			love.graphics.setColor(1, 1, 1, 1)
+			love.graphics.line(-1000, worldDepth, 10000000, worldDepth)
+			Font.SetSize(1)
+			if carPos then
+				love.graphics.printf(marker.text, carPos[1] - 350, worldDepth - 60, 600)
+			end
+		end
+		
+		local depthRecord = InterfaceUtil.GetNumber("depthRecord")
+		if depthRecord > 0 then
+			local worldDepth = TerrainHandler.DepthToWorld(depthRecord)
+			love.graphics.setColor(1, 1, 1, 1)
+			love.graphics.line(-1000, worldDepth, 10000000, worldDepth)
+			Font.SetSize(1)
+			if carPos then
+				love.graphics.printf(string.format("%dm Record", depthRecord), carPos[1] - 350, worldDepth - 60, 600)
+			end
+		end
+		
+		love.graphics.setLineWidth(1)
+	end})
 end
 
 function api.DrawInterface()
@@ -274,7 +303,7 @@ function api.DrawInterface()
 		love.graphics.printf(string.format("$%d", InterfaceUtil.GetNumber("money")), windowX/2 - 275, 25, windowX/2, "left")
 	end
 	local depth = math.max(0, InterfaceUtil.GetNumber("depth"))
-	love.graphics.printf(string.format("Depth: %d", depth), 25, windowY - 85, windowX, "left")
+	love.graphics.printf(string.format("Depth: %dm", depth), 25, windowY - 85, windowX, "left")
 	
 	local underwaterTime = PlayerHandler.GetUnderwaterTime()
 	love.graphics.printf(string.format("Oxygen: %.1fs", underwaterTime), 25, windowY - 135, windowX, "left")
@@ -291,12 +320,12 @@ function api.Initialize(world)
 	InterfaceUtil.RegisterSmoothNumber("total_money", 0, 1)
 	InterfaceUtil.RegisterSmoothNumber("destroyed_money", 0, 1)
 	InterfaceUtil.RegisterSmoothNumber("depth", 0, 1)
-	InterfaceUtil.RegisterSmoothNumber("depthRecord", 0, 1)
+	InterfaceUtil.RegisterSmoothNumber("depthRecord", 0, 0.8)
 	
-	for i = 1, #depthThresholds do
+	for i = 1, #Global.DEPTHS do
 		local marker = {
-			depth = depthThresholds[i],
-			text = string.format("%dm", depthThresholds[i]),
+			depth = Global.DEPTHS[i],
+			text = string.format("%dm", Global.DEPTHS[i]),
 			beatPopup = "New Shop Items",
 		}
 		IterableMap.Add(self.depthMarkers, marker)

@@ -14,7 +14,7 @@ local data = {
 		spec.massScale = spec.massScale + (option.mass or 0)
 		return spec
 	end,
-	showDepth = 250,
+	showDepth = Global.DEPTHS[2],
 	options = {
 		{
 			name = "Basic",
@@ -23,7 +23,7 @@ local data = {
 		{
 			name = "Control",
 			cost = 200,
-			depth = 250,
+			depth = Global.DEPTHS[2],
 			hullRotateMult = 1.4,
 			wheelFriction = 1,
 			reactionControl = 0.4,
@@ -33,7 +33,7 @@ local data = {
 		{
 			name = "Rotate",
 			cost = 350,
-			depth = 250,
+			depth = Global.DEPTHS[3],
 			hullRotateMult = 2.2,
 			mass = 0.08,
 		},
@@ -41,7 +41,7 @@ local data = {
 			name = "Super\nControl",
 			textLine = 2,
 			cost = 700,
-			depth = 450,
+			depth = Global.DEPTHS[4],
 			hullRotateMult = 1.9,
 			wheelFriction = 1.5,
 			reactionControl = 0.7,
@@ -52,8 +52,8 @@ local data = {
 		{
 			name = "Super\nRotate",
 			textLine = 2,
-			cost = 900,
-			depth = 700,
+			cost = 1000,
+			depth = Global.DEPTHS[4],
 			hullRotateMult = 3.8,
 			reactionControl = 0.35,
 			mass = 0.22,
@@ -61,8 +61,8 @@ local data = {
 		{
 			name = "Ultra\nControl",
 			textLine = 2,
-			cost = 700,
-			depth = 1200,
+			cost = 1500,
+			depth = Global.DEPTHS[5],
 			hullRotateMult = 1.9,
 			wheelFriction = 1.5,
 			reactionControl = 0.99,
@@ -72,8 +72,8 @@ local data = {
 		},
 		{
 			name = "Bounce",
-			cost = 900,
-			depth = 2000,
+			cost = 500,
+			depth = Global.DEPTHS[6],
 			reactionControl = 0.4,
 			wheelBounce = 2,
 			hullBounce = 2,
@@ -81,18 +81,6 @@ local data = {
 			wheelFreq = 25,
 			mass = 0.05,
 		},
-		--{
-		--	name = "Bounce\nMk 2",
-		--	textLine = 2,
-		--	cost = 1800,
-		--	depth = 1100,
-		--	reactionControl = 0.25,
-		--	wheelBounce = 1.5,
-		--	hullBounce = 1.5,
-		--	wheelDampen = 0.01,
-		--	wheelFreq = 60,
-		--	mass = 0.1,
-		--},
 	},
 }
 

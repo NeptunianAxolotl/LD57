@@ -136,9 +136,20 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 		}
 	end
 	
-	
-	if self.initVelocity then
-		self.hull.body:setLinearVelocity(self.initVelocity[1], self.initVelocity[2])
+	function self.CleanupCar()
+		local bx, by = self.hull.body:getPosition()
+		local vx, vy = self.hull.body:getLinearVelocity()
+		GameHandler.UpdateDepthRecordMarker()
+		self.hull.body:setLinearVelocity(vx*0.6, vy*0.6)
+		self.hull.body:setLinearDamping(20)
+		self.hull.body:setGravityScale(0.2)
+		self.hull.body:setAngularDamping(2)
+		for i = 1, 35 do
+			EffectsHandler.SpawnEffect("bubble", {bx, by}, {velocity = util.RandomPointInAnnulus(3, 12)})
+		end
+		for i = 1, #self.wheels do
+			StopWheel(self.wheels[i])
+		end
 	end
 	
 	function self.Update(dt)
@@ -157,11 +168,11 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 			self.hull.body:applyTorque(torque * def.reactionControl)
 		end
 		
-		if world.GetEditMode() then
-			return
-		end
 		if not self.noAirWaitTimer then
 			InterfaceUtil.SetNumber("depth", TerrainHandler.GetDepth(by))
+		end
+		if world.GetEditMode() then
+			return
 		end
 		
 		if TerrainHandler.GetDepth(by) > def.height then
@@ -170,13 +181,7 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 				local vx, vy = self.hull.body:getLinearVelocity()
 				local speed = util.Dist(0, 0, vx, vy)
 				if not self.noAirWaitTimer then
-					GameHandler.UpdateDepthRecordMarker()
-					for i = 1, 35 do
-						EffectsHandler.SpawnEffect("bubble", {bx, by}, {velocity = util.RandomPointInAnnulus(3, 12)})
-					end
-					for i = 1, #self.wheels do
-						StopWheel(self.wheels[i])
-					end
+					self.CleanupCar()
 				end
 				self.noAirWaitTimer = (self.noAirWaitTimer or 0) + dt * (0.4 + 0.6 * (200 / (200 + speed)))
 				if self.noAirWaitTimer > 2.2 then
@@ -201,7 +206,14 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 		end
 		if love.keyboard.isDown("space") and (self.jumping or (self.jumpStore/def.jumpMax >= def.jumpPropRequired)) then
 			local jumpUse = (def.jumpUseRate and math.min(self.jumpStore, dt*def.jumpUseRate)) or self.jumpStore
-			local vx, vy = self.hull.body:getWorldVector(def.jumpVector[1], def.jumpVector[2])
+			local vx, vy
+			if def.jumpVector == "adaptive" then
+				vx, vy = self.hull.body:getLinearVelocity()
+				local v = util.Unit({vx, vy})
+				vx, vy = v[1], v[2]
+			else
+				vx, vy = self.hull.body:getWorldVector(def.jumpVector[1], def.jumpVector[2])
+			end
 			local forceVec = util.Mult(def.jumpForce*jumpUse, util.Unit({vx, vy}))
 			self.hull.body:applyForce(forceVec[1], forceVec[2])
 			self.jumpStore = self.jumpStore - jumpUse

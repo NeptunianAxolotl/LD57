@@ -36,7 +36,7 @@ local data = {
 		
 		return spec
 	end,
-	showDepth = 350,
+	showDepth = Global.DEPTHS[3],
 	options = {
 		{
 			name = "Brick",
@@ -46,7 +46,7 @@ local data = {
 		{
 			name = "Flat",
 			cost = 400,
-			depth = 450,
+			depth = Global.DEPTHS[3],
 			spawnOffset = {35, 10},
 			pickupRadius = 60,
 			width = 3.5,
@@ -62,7 +62,7 @@ local data = {
 		{
 			name = "Monster",
 			cost = 1000,
-			depth = 700,
+			depth = Global.DEPTHS[4],
 			spawnOffset = {38, 0},
 			pickupRadius = 60,
 			width = 2.6,
@@ -78,8 +78,8 @@ local data = {
 		},
 		{
 			name = "Mino",
-			cost = 1200,
-			depth = 1300,
+			cost = 1500,
+			depth = Global.DEPTHS[5],
 			spawnOffset = {0, 6},
 			pickupRadius = 45,
 			width = 1.8,
@@ -96,7 +96,7 @@ local data = {
 		{
 			name = "Whale",
 			cost = 3000,
-			depth = 2000,
+			depth = Global.DEPTHS[6],
 			spawnOffset = {50, -22},
 			pickupRadius = 80,
 			width = 3.6,
@@ -118,7 +118,7 @@ local data = {
 		{
 			name = "Rocket",
 			cost = 1800,
-			depth = 3000,
+			depth = Global.DEPTHS[7],
 			spawnOffset = {0, 6},
 			pickupRadius = 60,
 			width = 1.2,

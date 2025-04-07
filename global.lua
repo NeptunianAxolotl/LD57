@@ -33,7 +33,15 @@ local globals = {
 	TEXT_COL            = {9/255, 11/255, 17/255},
 	FLOATING_TEXT_COL   = {0.95,0.95,0.9},
 	
-	
+	DEPTHS = {
+		120,
+		350,
+		600,
+		1000,
+		1400,
+		2000,
+		3000,
+	},
 	
 	TURN_MULT = 1500,
 	GRAVITY = 520,
