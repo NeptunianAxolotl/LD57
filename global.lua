@@ -33,6 +33,8 @@ local globals = {
 	TEXT_COL            = {9/255, 11/255, 17/255},
 	FLOATING_TEXT_COL   = {0.95,0.95,0.9},
 	
+	BUTTON_FLASH_PERIOD = 0.8,
+	
 	DEPTHS = {
 		120,
 		350,

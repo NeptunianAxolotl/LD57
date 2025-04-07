@@ -262,7 +262,7 @@ function api.Draw(drawQueue)
 				local x = shopX + (buttonSize + buttonPad) * (drawIndex - 1)
 				drawIndex = drawIndex + 1
 				local open = (self.selectingSlot == defName)
-				self.hoveredSlot = InterfaceUtil.DrawButton(x, shopY, buttonSize, buttonSize, mousePos, def.humanName or def.name, false, false, false, open, 2, buttonOffset[def.textLine], 8) and def.name or self.hoveredSlot
+				self.hoveredSlot = InterfaceUtil.DrawButton(x, shopY, buttonSize, buttonSize, mousePos, def.humanName or def.name, false, not self.shopOpened, false, open, 2, buttonOffset[def.textLine], 8) and def.name or self.hoveredSlot
 				if self.selectingSlot == defName then
 					local options = def.options
 					for j = 1, #options do
