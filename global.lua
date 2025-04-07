@@ -51,7 +51,7 @@ local globals = {
 		[9] = "You found the treasure. Thanks for playing!",
 	},
 	
-	NO_DRIVE_TIME = 1,
+	NO_DRIVE_TIME = 0,
 	TURN_MULT = 1500,
 	GRAVITY = 520,
 	CAMERA_SCALE = 1600,
@@ -62,7 +62,7 @@ local globals = {
 	
 	SAVE_ORDER = {
 		"waterline", "playerSpawn", "text",
-		"pickups", "polygons", "circles",
+		"pickups", "polygons", "circles", "doodads",
 	},
 	SAVE_INLINE = {"pos", "playerSpawn", "points"},
 	INIT_LEVEL = "mainLevel",
@@ -71,7 +71,7 @@ local globals = {
 	
 	
 	
-	DRAW_TERRAIN_IN_DEBUG = false,
+	DRAW_TERRAIN_IN_DEBUG = true,
 	
 	
 	

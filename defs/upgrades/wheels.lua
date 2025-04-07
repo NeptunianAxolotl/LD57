@@ -10,6 +10,7 @@ local data = {
 		spec.wheelFreq = option.wheelFreq or spec.wheelFreq
 		spec.wheelFriction = option.wheelFriction or spec.wheelFriction
 		
+		spec.wheelImage = option.wheelImage or spec.wheelImage
 		spec.hullRotateMult     = spec.hullRotateMult     * (option.hullRotateMult or 1)
 		spec.massScale = spec.massScale + (option.mass or 0)
 		return spec
@@ -25,9 +26,10 @@ local data = {
 			name = "Control+",
 			cost = 200,
 			depth = Global.DEPTHS[2],
+			wheelImage = "cool_wheel",
 			hullRotateMult = 1.5,
 			wheelFriction = 1,
-			reactionControl = 0.45,
+			reactionControl = 0.8,
 			wheelDampen = 5,
 			mass = 0.1,
 		},
@@ -36,6 +38,7 @@ local data = {
 			cost = 350,
 			depth = Global.DEPTHS[3],
 			hullRotateMult = 2.5,
+			reactionControl = 0.4,
 			mass = 0.08,
 		},
 		{
@@ -43,9 +46,10 @@ local data = {
 			textLine = 2,
 			cost = 600,
 			depth = Global.DEPTHS[4],
-			hullRotateMult = 2.2,
+			wheelImage = "cool_wheel",
+			hullRotateMult = 1.8,
 			wheelFriction = 1.5,
-			reactionControl = 0.8,
+			reactionControl = 1.2,
 			wheelDampen = 5,
 			wheelFreq = 16,
 			mass = 0.2,
@@ -56,7 +60,7 @@ local data = {
 			cost = 900,
 			depth = Global.DEPTHS[5],
 			hullRotateMult = 4,
-			reactionControl = 0.35,
+			reactionControl = 0.75,
 			mass = 0.22,
 		},
 		{
@@ -64,9 +68,10 @@ local data = {
 			textLine = 2,
 			cost = 2000,
 			depth = Global.DEPTHS[6],
+			wheelImage = "cool_wheel",
 			hullRotateMult = 2.5,
 			wheelFriction = 1.5,
-			reactionControl = 1.2,
+			reactionControl = 2,
 			wheelDampen = 5,
 			wheelFreq = 16,
 			mass = 0.25,
@@ -77,7 +82,7 @@ local data = {
 			cost = 2500,
 			depth = Global.DEPTHS[7],
 			hullRotateMult = 6.5,
-			reactionControl = 0.2,
+			reactionControl = 0.8,
 			mass = 0.3,
 		},
 		--{

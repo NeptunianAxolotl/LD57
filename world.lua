@@ -3,6 +3,7 @@ EffectsHandler = require("effectsHandler")
 DialogueHandler = require("dialogueHandler")
 TerrainHandler = require("terrainHandler")
 --ShadowHandler = require("--ShadowHandler")
+DoodadHandler = require("doodadHandler")
 
 LevelHandler = require("levelHandler")
 PlayerHandler = require("playerHandler")
@@ -72,6 +73,9 @@ function api.KeyPressed(key, scancode, isRepeat)
 	if TerrainHandler.KeyPressed and TerrainHandler.KeyPressed(key, scancode, isRepeat) then
 		return
 	end
+	if DoodadHandler.KeyPressed and DoodadHandler.KeyPressed(key, scancode, isRepeat) then
+		return
+	end
 	if PlayerHandler.KeyPressed and PlayerHandler.KeyPressed(key, scancode, isRepeat) then
 		return
 	end
@@ -97,6 +101,9 @@ function api.MousePressed(x, y, button)
 		return
 	end
 	if TerrainHandler.MousePressed(x, y, button) then
+		return
+	end
+	if DoodadHandler.MousePressed(x, y, button) then
 		return
 	end
 	if api.GetPaused() then
@@ -235,6 +242,7 @@ function api.Update(dt)
 
 	ChatHandler.Update(dt)
 	EffectsHandler.Update(dt)
+	DoodadHandler.Update(dt)
 	UpdateCamera(dt)
 end
 
@@ -254,6 +262,7 @@ function api.Draw()
 	EffectsHandler.Draw(drawQueue)
 	PlayerHandler.Draw(drawQueue)
 	TerrainHandler.Draw(drawQueue)
+	DoodadHandler.Draw(drawQueue)
 	GameHandler.Draw(drawQueue)
 	
 	love.graphics.replaceTransform(CameraHandler.GetCameraTransform())
@@ -307,6 +316,7 @@ function api.Initialize(cosmos, levelData)
 	TerrainHandler.Initialize(api, levelData)
 	--ShadowHandler.Initialize(api)
 	
+	DoodadHandler.Initialize(api)
 	DeckHandler.Initialize(api)
 	
 	CameraHandler.Initialize(api, PlayerHandler.GetPos())

@@ -340,7 +340,12 @@ function api.DrawInterface()
  - R and click to remove things.
  - B to place coins.
  Polygons are convex have 2 < vertices < 9
- Right click with T to make unusual pickups.]], Global.UI_WIDTH - 500, 40, 500)
+ Right click with T to make unusual pickups.
+
+ - Numpad to select doodads.
+ - Right click to rotate recent placement.
+ - kp+ delete.
+]], Global.UI_WIDTH - 500, 40, 500)
 --	else
 --		Font.SetSize(3)
 --		love.graphics.setColor(1, 1, 1, 0.7)
