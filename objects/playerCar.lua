@@ -182,8 +182,8 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 				if not self.noAirWaitTimer then
 					self.CleanupCar()
 				end
-				self.noAirWaitTimer = (self.noAirWaitTimer or 0) + dt * (0.4 + 0.6 * (200 / (200 + speed)))
-				if self.noAirWaitTimer > 2.2 then
+				self.noAirWaitTimer = (self.noAirWaitTimer or 0) + dt * (0.8 + 0.2 * (200 / (200 + speed)))
+				if self.noAirWaitTimer > 2 then
 					return true
 				end
 				return false

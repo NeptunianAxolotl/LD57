@@ -35,7 +35,7 @@ local data = {
 			jumpMaxMult = 0.75,
 			jumpForce = 1.5,
 			chargeMult = 1.1,
-			jumpPropRequired = 0.5,
+			jumpPropRequired = 0,
 			mass = 0.35
 		},
 		{
@@ -51,7 +51,7 @@ local data = {
 		{
 			name = "Super\nSteady",
 			textLine = 2,
-			cost = 200,
+			cost = 1200,
 			depth = Global.DEPTHS[6],
 			jumpUseRate = 3,
 			jumpMaxMult = 1.25,
@@ -59,6 +59,18 @@ local data = {
 			jumpPropRequired = 0,
 			jumpForce = 2.1,
 			mass = 0.65
+		},
+		{
+			name = "Super\nQuick",
+			textLine = 2,
+			cost = 1800,
+			depth = Global.DEPTHS[7],
+			jumpUseRate = 10,
+			jumpMaxMult = 0.6,
+			jumpForce = 1.7,
+			chargeMult = 1.2,
+			jumpPropRequired = 0,
+			mass = 0.8
 		},
 	},
 }

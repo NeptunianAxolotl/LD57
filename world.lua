@@ -298,6 +298,7 @@ function api.Initialize(cosmos, levelData)
 	InterfaceUtil.Initialize()
 	EffectsHandler.Initialize(api)
 	
+	GameHandler.Initialize(api)
 	PhysicsHandler.Initialize(api)
 	PlayerHandler.Initialize(api)
 	ChatHandler.Initialize(api)
@@ -307,7 +308,6 @@ function api.Initialize(cosmos, levelData)
 	--ShadowHandler.Initialize(api)
 	
 	DeckHandler.Initialize(api)
-	GameHandler.Initialize(api)
 	
 	CameraHandler.Initialize(api, PlayerHandler.GetPos())
 end

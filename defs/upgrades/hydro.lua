@@ -16,25 +16,25 @@ local data = {
 		{
 			name = "None",
 			cost = 0,
+			dragDown = 0.2,
+			hydroMult = 0.95,
 		},
 		{
-			name = "Sleek\nMk 1",
-			textLine = 2,
+			name = "Sleek+",
 			cost = 400,
 			depth = Global.DEPTHS[2],
 			dragDown = 0.7,
 			hydroMult = 0.75,
 		},
 		{
-			name = "Glide\nMk 1",
-			textLine = 2,
+			name = "Glide+",
 			cost = 500,
 			depth = Global.DEPTHS[2],
 			power = 0.7,
 			dragDown = -0.1,
 		},
 		{
-			name = "Sleek\nMk 2",
+			name = "Mega\nSleek+",
 			textLine = 2,
 			cost = 1200,
 			depth = Global.DEPTHS[3],
@@ -42,7 +42,7 @@ local data = {
 			hydroMult = 0.5,
 		},
 		{
-			name = "Glide\nMk 2",
+			name = "Mega\nGlide+",
 			textLine = 2,
 			cost = 1400,
 			depth = Global.DEPTHS[4],
@@ -51,7 +51,7 @@ local data = {
 			hydroMult = 1.05,
 		},
 		{
-			name = "Sleek\nMk 3",
+			name = "Ultra\nSleek+",
 			textLine = 2,
 			cost = 1800,
 			depth = Global.DEPTHS[5],
@@ -59,7 +59,7 @@ local data = {
 			hydroMult = 0.15,
 		},
 		{
-			name = "Glide\nMk 3",
+			name = "Ultra\nGlide+",
 			textLine = 2,
 			cost = 2200,
 			depth = Global.DEPTHS[6],
@@ -68,7 +68,7 @@ local data = {
 			hydroMult = 1.1,
 		},
 		{
-			name = "Ultra Sleek",
+			name = "Sleek\nDolphin",
 			textLine = 2,
 			cost = 2400,
 			depth = Global.DEPTHS[6],

@@ -182,7 +182,7 @@ local function DrawCarStats()
 		loadout[self.selectingSlot] = self.hoveredOptionEvenDisabled
 		newData = ExtractSpecStats(api.ApplyCarUpgrades(loadout))
 	end
-	local shopX, shopY = 550, -450
+	local shopX, shopY = 520, -400
 	local offset = 35
 	love.graphics.setColor(1, 1, 1, 0.9)
 	Font.SetSize(2)
@@ -329,10 +329,10 @@ function api.Initialize(world)
 		currentCarCost = 0,
 		depthMarkers = IterableMap.New(),
 	}
-	InterfaceUtil.RegisterSmoothNumber("money", 0, 5)
-	InterfaceUtil.RegisterSmoothNumber("total_money", 0, 5)
-	InterfaceUtil.RegisterSmoothNumber("destroyed_money", 0, 5)
-	InterfaceUtil.RegisterSmoothNumber("depth", 0, 5)
+	InterfaceUtil.RegisterSmoothNumber("money", 0, 1.1)
+	InterfaceUtil.RegisterSmoothNumber("total_money", 0, 1.1)
+	InterfaceUtil.RegisterSmoothNumber("destroyed_money", 0, 1.1)
+	InterfaceUtil.RegisterSmoothNumber("depth", 0, 1)
 	InterfaceUtil.RegisterSmoothNumber("depthRecord", 0, 0.8)
 	
 	for i = 1, #Global.DEPTHS do

@@ -20,7 +20,7 @@ local data = {
 			cost = 400,
 			depth = Global.DEPTHS[4],
 			jumpVector = {1, 0},
-			jumpForce = 0.8,
+			jumpForce = 0.75,
 			mass = 0.02,
 		},
 		{
@@ -36,7 +36,7 @@ local data = {
 			cost = 1200,
 			depth = Global.DEPTHS[6],
 			jumpVector = "adaptive",
-			jumpForce = 1.2,
+			jumpForce = 0.9,
 			mass = 0.15,
 		},
 		{
