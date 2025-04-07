@@ -339,7 +339,7 @@ function api.DrawInterface()
 	
 	if self.world.GetEditMode() then
 		Font.SetSize(3)
-		love.graphics.setColor(1, 1, 1, 0.7)
+		love.graphics.setColor(1, 1, 1, 0.85)
 		love.graphics.printf([[ - F to disable edit mode
  - G to warp player to mouse.
  - C to place circle.
@@ -372,6 +372,7 @@ function api.DrawInterface()
 	local money = InterfaceUtil.GetNumber("money")
 	local totalMoney = InterfaceUtil.GetNumber("total_money")
 	Font.SetSize(1)
+	love.graphics.setColor(1, 1, 1, 0.85)
 	if totalMoney > 0 then
 		if self.drawMoneyChange then
 			local sign = (self.drawMoneyChange > 0) and "+" or ""
@@ -385,7 +386,7 @@ function api.DrawInterface()
 	local alpha = math.min(1, (800 - carPos[1])/180)
 	if alpha > 0 then
 		if totalMoney > 0 then
-			love.graphics.setColor(1, 1, 1, 0.7*alpha)
+			love.graphics.setColor(1, 1, 1, 0.8*alpha)
 			love.graphics.printf(string.format("Total: $%d", totalMoney + Global.START_CAR_COST), 25, 25, windowX/2, "left")
 			love.graphics.printf(string.format("Vehicle: $%d", InterfaceUtil.GetNumber("car_cost") + Global.START_CAR_COST), 25, 25 + textGap, windowX/2, "left")
 		end
@@ -393,7 +394,7 @@ function api.DrawInterface()
 	
 	local alpha = math.min(1, (carPos[1] - 1100)/300)
 	if alpha > 0 then
-		love.graphics.setColor(1, 1, 1, 0.7*alpha)
+		love.graphics.setColor(1, 1, 1, 0.85*alpha)
 		local depth = math.max(0, InterfaceUtil.GetNumber("depth"))
 		love.graphics.printf(string.format("Depth: %dm", depth), 25, windowY - 85, windowX, "left")
 		local underwaterTime = PlayerHandler.GetUnderwaterTime()
@@ -402,7 +403,7 @@ function api.DrawInterface()
 		end
 		local boostProp, boostReady = PlayerHandler.GetBoost()
 		if boostProp then
-			love.graphics.setColor(1, 1, 1, 0.7*alpha*(boostReady and 1 or 0.5))
+			love.graphics.setColor(1, 1, 1, 0.85*alpha*(boostReady and 1 or 0.5))
 			love.graphics.printf(string.format("Boost: %d%%", 100*boostProp), 25, windowY - 85 - textGap*2, windowX, "left")
 		end
 	end
