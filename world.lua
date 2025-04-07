@@ -1,11 +1,7 @@
 
 EffectsHandler = require("effectsHandler")
-DialogueHandler = require("dialogueHandler")
 TerrainHandler = require("terrainHandler")
---ShadowHandler = require("--ShadowHandler")
 DoodadHandler = require("doodadHandler")
-
-LevelHandler = require("levelHandler")
 PlayerHandler = require("playerHandler")
 
 InterfaceUtil = require("utilities/interfaceUtilities")
@@ -15,8 +11,6 @@ local PhysicsHandler = require("physicsHandler")
 CameraHandler = require("cameraHandler")
 Camera = require("utilities/cameraUtilities")
 
-ChatHandler = require("chatHandler")
-DeckHandler = require("deckHandler")
 GameHandler = require("gameHandler") -- Handles the gamified parts of the game, such as score, progress and interface.
 
 local PriorityQueue = require("include/PriorityQueue")
@@ -239,8 +233,6 @@ function api.Update(dt)
 	--ShadowHandler.Update(api)
 	
 	PhysicsHandler.Update(dt)
-
-	ChatHandler.Update(dt)
 	EffectsHandler.Update(dt)
 	DoodadHandler.Update(dt)
 	TerrainHandler.Update(dt)
@@ -285,8 +277,6 @@ function api.Draw()
 	-- Draw interface
 	GameHandler.DrawInterface()
 	EffectsHandler.DrawInterface()
-	DialogueHandler.DrawInterface()
-	ChatHandler.DrawInterface()
 	
 	love.graphics.replaceTransform(self.emptyTransform)
 end
@@ -311,14 +301,8 @@ function api.Initialize(cosmos, levelData)
 	GameHandler.Initialize(api)
 	PhysicsHandler.Initialize(api)
 	PlayerHandler.Initialize(api)
-	ChatHandler.Initialize(api)
-	DialogueHandler.Initialize(api)
-	
 	TerrainHandler.Initialize(api, levelData)
-	--ShadowHandler.Initialize(api)
-	
 	DoodadHandler.Initialize(api)
-	DeckHandler.Initialize(api)
 	
 	CameraHandler.Initialize(api, PlayerHandler.GetPos())
 end
