@@ -42,7 +42,7 @@ local data = {
 			mass = 0.3,
 		},
 		{
-			name = "150",
+			name = "150s",
 			cost = 1500,
 			depth = Global.DEPTHS[5],
 			airMult = 150/15,

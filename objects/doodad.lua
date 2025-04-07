@@ -5,6 +5,7 @@ local function NewDoodad(myDef, pos, angle)
 	self.pos = pos
 	self.angle = angle or 0
 	self.scale = myDef.scaleRand*math.random() + 1
+	self.drawOffset = math.random()*0.01
 	
 	function self.RemoveAtPos(pos)
 		return (util.Dist(pos, self.pos) < 60)
@@ -27,7 +28,7 @@ local function NewDoodad(myDef, pos, angle)
 		if self.toRemove then
 			return true
 		end
-		drawQueue:push({y=self.def.drawLayer; f=function()
+		drawQueue:push({y=self.def.drawLayer + self.drawOffset; f=function()
 			DoodadHandler.DrawDoodad(self.def, self.pos, self.angle, self.scale)
 		end})
 	end

@@ -1,5 +1,5 @@
 function love.conf(t)
-	t.window.title = "LD57"
+	t.window.title = "Journey to the Centre of the Ocean"
 	t.window.width = 1640
 	t.window.height = 900
 	--t.window.fullscreen = true -- Do not fullscreen since we lack an exit button.
