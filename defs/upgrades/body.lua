@@ -24,6 +24,10 @@ local data = {
 		spec.spawnOffset = option.spawnOffset
 		spec.hydroRotation = option.hydroRotation
 		
+		spec.carImage = option.carImage or spec.carImage
+		spec.carImageScale = option.carImageScale or spec.carImageScale
+		spec.carImageOffset = option.carImageOffset or spec.carImageOffset
+
 		spec.torque = spec.motorTorque * (option.torque or 1)
 		spec.motorMaxSpeed = spec.motorMaxSpeed * (option.speed or 1)
 		spec.jumpForce = spec.jumpForce * (option.jumpForce or 1)
@@ -46,13 +50,16 @@ local data = {
 		{
 			name = "Flat",
 			cost = 400,
+			carImage = "cool_car",
+			carImageScale = 1.1,
+			carImageOffset = {0, -9},
 			depth = Global.DEPTHS[3],
 			spawnOffset = {35, 10},
 			pickupRadius = 60,
 			width = 3.5,
-			height = 0.75,
+			height = 0.63,
 			wheelOffX = 1.5,
-			wheelOffY = 0.25,
+			wheelOffY = 0.22,
 			wheelRadius = 0.65,
 			speed = 1.1,
 			wheelMass = 0.018,

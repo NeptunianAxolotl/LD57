@@ -7,6 +7,7 @@ local api = {}local defaultCar = {	density = 1.2,	ballastDensity = 5,	hullM
 		airSeconds = 15,	
 	carImage = "basic_car",
 	carImageScale = 0.92,
+	carImageOffset = {0, 0},
 	wheelImage = "basic_wheel",
 	wheelImageScale = 1,
 		massScale = 10,	scale = 50,	pickupRadius = 50,	wheelFriction = 0.95,	wheelBounce = 0.05,	hullFriction = 0.65,	hullBounce = 0.05,	width = 2.1,	height = 1.4,	

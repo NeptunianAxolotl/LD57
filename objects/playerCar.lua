@@ -340,7 +340,7 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 			love.graphics.push()
 				love.graphics.translate(x, y)
 				love.graphics.rotate(angle)
-				Resources.DrawImage(def.carImage, 0, 0, 0, 1, def.carImageScale)
+				Resources.DrawImage(def.carImage, def.carImageOffset[1], def.carImageOffset[2], 0, 1, def.carImageScale)
 				love.graphics.setColor(1, 1, 1, 1)
 				if debugMode then
 					for i = 1, #hullCoords do
