@@ -44,7 +44,6 @@ local data = {
 			cost = 300,
 			depth = Global.DEPTHS[6],
 			jumpVector = {0, 1},
-			jumpForce = 1.5,
 			mass = 0.05,
 		},
 	},

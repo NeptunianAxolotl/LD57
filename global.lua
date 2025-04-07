@@ -39,8 +39,14 @@ local globals = {
 		600,
 		1000,
 		1400,
-		2000,
-		3000,
+		2250,
+		4200,
+		5100,
+		6000,
+	},
+	DEPTH_TEXT = {
+		[8] = "Almost there!",
+		[9] = "You found the treasure. Thanks for playing!",
 	},
 	
 	TURN_MULT = 1500,

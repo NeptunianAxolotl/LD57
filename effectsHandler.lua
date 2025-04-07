@@ -7,7 +7,7 @@ local self = {}
 local api = {}
 
 function api.SpawnEffect(name, pos, data)
-	local def = EffectDefs[name]	print(name)	util.PrintTable(def)
+	local def = EffectDefs[name]
 	data = data or {}
 	data.pos = pos
 	if def.interface then

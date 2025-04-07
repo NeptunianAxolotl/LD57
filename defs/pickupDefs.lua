@@ -2,13 +2,19 @@ local defs = {
 	{
 		name = "coin",
 		radius = 40,
-		money = 100,
+		money = 50,
 		col = {1, 0.8, 0, 1},
 	},
 	{
 		name = "bigCoin",
 		radius = 50,
-		money = 250,
+		money = 200,
+		col = {1, 0.8, 0, 1},
+	},
+	{
+		name = "chest",
+		radius = 50,
+		money = 500,
 		col = {1, 0.8, 0, 1},
 	},
 	{
@@ -34,6 +40,18 @@ local defs = {
 		radius = 120,
 		portalEntrance = 2,
 		col = {0.9, 0.2, 1, 1},
+	},
+	{
+		name = "start_portal",
+		radius = 120,
+		portalEntrance = "start",
+		col = {0.9, 0.2, 1, 1},
+	},
+	{
+		name = "ultraCoin",
+		radius = 450,
+		money = 20000,
+		col = {1, 0.8, 0, 1},
 	},
 }
 

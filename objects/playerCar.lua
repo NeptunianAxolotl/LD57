@@ -9,7 +9,7 @@ local function HandleWheel(def, wheel, wantLeft, wantRight)
 		if speed > -def.motorMaxSpeed then
 			motor:setMotorEnabled(true)
 			motor:setMotorSpeed(-def.motorMaxSpeed)
-			motor:setMaxMotorTorque(def.motorTorque * 500 / (500 + math.max(-speed/def.accelMult, 100)))
+			motor:setMaxMotorTorque(def.motorTorque * 500 * (def.topSpeedAccel + (1 - def.topSpeedAccel) / (500 + math.max(-speed/def.accelMult, 100))))
 		else
 			motor:setMotorEnabled(false)
 		end
@@ -17,7 +17,7 @@ local function HandleWheel(def, wheel, wantLeft, wantRight)
 		if speed < def.motorMaxSpeed then
 			motor:setMotorEnabled(true)
 			motor:setMotorSpeed(def.motorMaxSpeed)
-			motor:setMaxMotorTorque(def.motorTorque * 500 / (500 + math.max(speed/def.accelMult, 100)))
+			motor:setMaxMotorTorque(def.motorTorque * 500 * (def.topSpeedAccel + (1 - def.topSpeedAccel) / (500 + math.max(speed/def.accelMult, 100))))
 		else
 			motor:setMotorEnabled(false)
 		end
@@ -98,7 +98,6 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 	self.animTime = 0
 	self.underwaterTime = 0
 	self.jumpStore = def.jumpMax
-	print("ballastProp", def.ballastProp)
 	local hullCoords = {{def.width/2, def.height/2}, {-def.width/2, def.height/2}, {-def.width/2, -def.height/2}, {def.width/2, -def.height/2}}
 	local ballastCoords = {{def.width/2, def.height/2}, {-def.width/2, def.height/2}, {-def.width/2, def.height*def.ballastProp}, {def.width/2, def.height*def.ballastProp}}
 	

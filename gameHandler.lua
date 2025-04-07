@@ -30,7 +30,7 @@ local statsList = {
 	--{text = "Width: ",  param = "width", showDepth = Global.DEPTHS[1]},
 	--{text = "Height: ",  param = "height", showDepth = Global.DEPTHS[1]},
 	{text = "Engine Power: ",  param = "power", showDepth = Global.DEPTHS[1]},
-	{text = "Engine Speed: ",  param = "speed", showDepth = Global.DEPTHS[1]},
+	{text = "Top Speed: ",  param = "speed", showDepth = Global.DEPTHS[1]},
 	{text = "Counter-Torque: ",  param = "reactionControl", showDepth = Global.DEPTHS[2]},
 	{text = "Hull Rotation: ",  param = "hullRotateMult", showDepth = Global.DEPTHS[2]},
 	--{text = "Bounce: ",  param = "bounce", showDepth = Global.DEPTHS[2]},
@@ -49,7 +49,7 @@ local function ExtractSpecStats(spec)
 	data.airSeconds = string.format("%ds", spec.airSeconds)
 	data.mass = string.format("%.02f tons", 10*(spec.massScale*spec.hullMass + spec.wheelCount*spec.wheelMass))
 	data.power = string.format("%d%%", 100 * spec.motorTorque / default.motorTorque)
-	data.speed = string.format("%d%%", 100 * spec.motorMaxSpeed / default.motorMaxSpeed)
+	data.speed = string.format("%d%%", 100 * spec.topSpeedAccel / default.topSpeedAccel)
 	data.width = string.format("%dm", spec.width / default.width * 10)
 	data.height = string.format("%dm", spec.height / default.height * 10)
 	data.reactionControl = string.format("%d%%", 100 * spec.reactionControl)
@@ -261,7 +261,6 @@ function api.Draw(drawQueue)
 				end
 			else
 				marker.map_want_remove = true
-				print("marker.map_want_remove")
 			end
 		end
 		IterableMap.CleanupMapWantRemove(self.depthMarkers)
@@ -340,7 +339,7 @@ function api.Initialize(world)
 		local marker = {
 			depth = Global.DEPTHS[i],
 			text = string.format("%dm", Global.DEPTHS[i]),
-			beatPopup = "New Shop Items",
+			beatPopup = Global.DEPTH_TEXT[i] or "New Shop Items",
 		}
 		IterableMap.Add(self.depthMarkers, marker)
 	end
