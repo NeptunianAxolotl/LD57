@@ -19,6 +19,11 @@ local initialDelay = true
 local currentTrackRemaining = 1
 local trackParity = 1
 local playingSounds = {}
+local pitch = 1
+
+function api.setPitch(newPitch)
+  pitch = newPitch or 1
+end
 
 function api.StopCurrentTrack(delay)
 	currentTrackRemaining = delay or 0
@@ -46,6 +51,10 @@ function api.Update(dt)
 			return
 		end
 	end
+  for i = 1, #trackList do
+					SoundHandler.setPitch(currentTrack[i],null,pitch)
+				end
+  
 	currentTrackRemaining = (currentTrackRemaining or 0) - dt
 	if currentTrackRemaining < 0 then
 		if cosmos.MusicEnabled() then

@@ -187,6 +187,7 @@ end
 
 function api.UpdateDepthRecordMarker()
 	InterfaceUtil.SetNumber("depthRecord", InterfaceUtil.GetRawRecordHigh("depth"))
+  MusicHandler.setPitch(2^((InterfaceUtil.GetRawRecordHigh("depth")+1)/3000))
 end
 
 --------------------------------------------------

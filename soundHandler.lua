@@ -121,6 +121,19 @@ function api.Update(dt)
 	end
 end
 
+function api.setPitch(name,id,pitch)
+    if id then
+		id = name .. (id or 1)
+	else
+		id = name
+	end
+	local soundData = IterableMap.Get(sounds, id)
+	if not (soundData and soundData.source:isPlaying()) then
+		return
+	end
+  soundData.source:setPitch(pitch)
+end
+
 function api.Initialize()
 	for _, soundData in IterableMap.Iterator(sounds) do
 		soundData.source:stop()

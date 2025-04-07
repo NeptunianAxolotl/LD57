@@ -1,12 +1,10 @@
 
 local trackData = {
-	useAsDurationForAllTracks = 'bgm_space',
+	useAsDurationForAllTracks = 'LD57',
 	list = {
-		'bgm_classical',
-		'bgm_modern',
-		'bgm_space',
+		'LD57',
 	},
-	initialTrack = 'bgm_classical',
+	initialTrack = 'LD57',
 	WantTrack = function (cosmos, index)
 		return (math.floor(cosmos.GetRealTime()/10)%3 + 1) == index
 	end,
