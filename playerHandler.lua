@@ -19,7 +19,7 @@ local api = {}local defaultCar = {	density = 1.2,	ballastDensity = 5,	hullM
 	topSpeedAccel = 0.0003,	motorTorque = 5000,	accelMult = 1,	baseDrag = 0.05,	hydrofoilForceMult = 1,	hyroDragReduce = 0.1,	hydroPerpEffect = 0.6,}function api.ProcessPickup(pickup)
 	if pickup.def.money then
 		InterfaceUtil.AddNumber("money", pickup.def.money or 0)		InterfaceUtil.AddNumber("total_money", pickup.def.money or 0)
-		EffectsHandler.SpawnEffect("popup", self.playerCar.GetPos(), {text = string.format("+$%d", pickup.def.money), velocity = {0, -2}})
+		EffectsHandler.SpawnEffect("popup", self.playerCar.GetPos(), {text = string.format("$%d", pickup.def.money), velocity = {0, -2}})
 	end
 	if pickup.def.portalExit or pickup.def.portalEntrance then
 		TerrainHandler.HandlePortal(pickup)
