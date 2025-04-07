@@ -39,7 +39,7 @@ local globals = {
 		650,
 		1000,
 		1600,
-		2600,
+		2200,
 		3600,
 		5100,
 		6000,
@@ -57,7 +57,7 @@ local globals = {
 	SPEED_ZOOM_SCALE = false,
 	
 	SAVE_ORDER = {
-		"waterline", "playerSpawn",
+		"waterline", "playerSpawn", "text",
 		"pickups", "polygons", "circles",
 	},
 	SAVE_INLINE = {"pos", "playerSpawn", "points"},
@@ -67,7 +67,7 @@ local globals = {
 	
 	
 	
-	
+	DRAW_TERRAIN_IN_DEBUG = false,
 	
 	
 	
