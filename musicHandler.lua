@@ -57,7 +57,8 @@ function api.Update(dt)
 		end
 	end
 	currentTrackRemaining = (currentTrackRemaining or 0) - dt
-	if currentTrackRemaining < 0 then
+	
+	if currentTrackRemaining < 0 and not trackRunning then
 		if cosmos.MusicEnabled() then
 			if trackRunning then
 				for i = 1, #trackList do
@@ -68,7 +69,7 @@ function api.Update(dt)
 			currentTrackRemaining = soundFiles[trackData.useAsDurationForAllTracks or currentTrack[1]].duration
 			for i = 1, #trackList do
 				local pitch = trackData.PitchFunc and trackData.PitchFunc(i)
-				playingSounds[#playingSounds + 1] = SoundHandler.PlaySound(trackList[i], i, 1, 1, false, true, (trackData.WantTrack(cosmos, i) and 1) or 0, true, pitch)
+				playingSounds[#playingSounds + 1] = SoundHandler.PlaySound(trackList[i], i, 1, 1, false, true, ((trackData.WantTrack(cosmos, i) and 0.01) or 0), true, pitch)
 			end
 		elseif trackRunning then
 			for i = 1, #trackList do

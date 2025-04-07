@@ -45,11 +45,11 @@ function api.PlaySound(name, id, fadeIn, fadeOut, delay, loop, wantedVolume, pla
 	soundData.playAtZero = playAtZero 
 	
 	if not soundData.delay then
+		soundData.source:stop()
+		love.audio.play(soundData.source)
 		if pitch then
 			soundData.source:setPitch(pitch)
 		end
-		soundData.source:stop()
-		love.audio.play(soundData.source)
 		soundData.source:setVolume(soundData.want * soundData.volumeMult)
 	end
 	return soundData
