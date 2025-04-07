@@ -34,7 +34,7 @@ local data = {
 			cost = 900,
 			depth = Global.DEPTHS[4],
 			jumpMax = 2,
-			jumpChargeRate = 0.8,
+			jumpChargeRate = 0.9,
 			mass = 0.15,
 		},
 		{
@@ -51,8 +51,8 @@ local data = {
 			textLine = 2,
 			cost = 3200,
 			depth = Global.DEPTHS[6],
-			jumpMax = 2.5,
-			jumpChargeRate = 1,
+			jumpMax = 2.8,
+			jumpChargeRate = 0.8,
 			mass = 1.4,
 		},
 		{
@@ -60,7 +60,7 @@ local data = {
 			textLine = 2,
 			cost = 4000,
 			depth = Global.DEPTHS[6],
-			jumpMax = 0.5,
+			jumpMax = 0.6,
 			jumpChargeRate = 1.8,
 			mass = 2,
 		},
