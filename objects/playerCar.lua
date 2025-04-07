@@ -370,9 +370,9 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 			love.graphics.setColor(1, 1, 1, 1)
 			
 			if debugMode then
-				DrawVector(pos, self.debugDraw.bodyForce, 10, {0, 0, 0, 1})
-				DrawVector(pos, self.debugDraw.backComp, 10, {0, 1, 0, 1})
-				DrawVector(pos, self.debugDraw.penaltyComponent, 10, {1, 0, 0, 1})
+				DrawVector(pos, self.debugDraw.bodyForce, 5, {0, 0, 0, 1})
+				DrawVector(pos, self.debugDraw.backComp, 5, {0, 1, 0, 1})
+				DrawVector(pos, self.debugDraw.penaltyComponent, 5, {1, 0, 0, 1})
 			end
 			love.graphics.setColor(1, 1, 1, 1)
 			for i = 1, #self.wheels do
