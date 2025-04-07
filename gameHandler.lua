@@ -242,6 +242,15 @@ local function DrawTitleText()
 	end
 end
 
+local function DrawEndText()
+	local pos = {99687.9453125, 48521.5703125}
+	local moneyToFind = TerrainHandler.GetSpawnedMoney() + Global.START_CAR_COST
+	local totalMoney = InterfaceUtil.GetNumber("total_money")
+	Font.SetSize(0)
+	love.graphics.setColor(1, 1, 1, 1)
+	love.graphics.printf(string.format("Thanks for playing!             $%d / $%d treasure collected", totalMoney, moneyToFind), pos[1], pos[2], 3000, "left")
+end
+
 function api.Draw(drawQueue)
 	drawQueue:push({y=800; f=function()
 		local debugMode = self.world.GetEditMode()
@@ -284,6 +293,7 @@ function api.Draw(drawQueue)
 		end
 		DrawCarStats()
 		DrawTitleText()
+		DrawEndText()
 	end})
 	
 	drawQueue:push({y=1000; f=function()
@@ -376,8 +386,8 @@ function api.DrawInterface()
 	if alpha > 0 then
 		if totalMoney > 0 then
 			love.graphics.setColor(1, 1, 1, 0.7*alpha)
-			love.graphics.printf(string.format("Total: $%d", totalMoney + 1000), 25, 25, windowX/2, "left")
-			love.graphics.printf(string.format("Vehicle: $%d", InterfaceUtil.GetNumber("car_cost") + 1000), 25, 25 + textGap, windowX/2, "left")
+			love.graphics.printf(string.format("Total: $%d", totalMoney + Global.START_CAR_COST), 25, 25, windowX/2, "left")
+			love.graphics.printf(string.format("Vehicle: $%d", InterfaceUtil.GetNumber("car_cost") + Global.START_CAR_COST), 25, 25 + textGap, windowX/2, "left")
 		end
 	end
 	
@@ -426,7 +436,7 @@ function api.Initialize(world)
 		local defName = upgradeOrder[i]
 		self.loadout[defName] = 1
 	end
-	PrintDepthCosts()
+	--PrintDepthCosts()
 end
 
 return api

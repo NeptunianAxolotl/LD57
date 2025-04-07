@@ -47,10 +47,11 @@ local globals = {
 		6000,
 	},
 	DEPTH_TEXT = {
-		[8] = "New chassis unlocked\n(Almost there!)",
-		[9] = "You found the treasure. Thanks for playing!",
+		[8] = "New chassis unlocked",
+		[9] = "Look at all that treasure!",
 	},
 	
+	START_CAR_COST = 1000,
 	NO_DRIVE_TIME = 0.85,
 	TURN_MULT = 1500,
 	GRAVITY = 520,
