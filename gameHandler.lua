@@ -147,9 +147,14 @@ function api.ReportOnRecord(name, newValue, prevValue)
 		local _, markKey, markData = IterableMap.GetBarbarianData(self.depthMarkers)
 		for i = 1, #markKey do
 			local marker = markData[markKey[i]]
-			if newValue > marker.depth then
-				IterableMap.Remove(self.depthMarkers, marker.map_key)
-				return
+			if newValue > marker.depth and not marker.toRemove then
+				
+				local carPos = PlayerHandler.GetPos()
+				if carPos then
+					local pos = util.Add(carPos, {700, 0})
+					EffectsHandler.SpawnEffect("popup", pos, {text = marker.beatPopup, velocity = {0, -2}})
+				end
+				marker.toRemove = true
 			end
 		end
 	end
@@ -244,13 +249,22 @@ function api.Draw(drawQueue)
 		for i = 1, #markKey do
 			local marker = markData[markKey[i]]
 			local worldDepth = TerrainHandler.DepthToWorld(marker.depth)
-			love.graphics.setColor(1, 1, 1, 1)
-			love.graphics.line(-1000, worldDepth, 10000000, worldDepth)
-			Font.SetSize(1)
-			if carPos then
-				love.graphics.printf(marker.text, carPos[1] - 350, worldDepth - 60, 600)
+			if marker.toRemove then
+				marker.fade = (marker.fade or 0) + self.world.recentDt*1.8
+			end
+			if (marker.fade or 0) < 1 then
+				love.graphics.setColor(1, 1, 1, 1 - (marker.fade or 0))
+				love.graphics.line(-1000, worldDepth, 10000000, worldDepth)
+				Font.SetSize(1)
+				if carPos then
+					love.graphics.printf(marker.text, carPos[1] - 350, worldDepth - 60, 600)
+				end
+			else
+				marker.map_want_remove = true
+				print("marker.map_want_remove")
 			end
 		end
+		IterableMap.CleanupMapWantRemove(self.depthMarkers)
 		
 		local depthRecord = InterfaceUtil.GetNumber("depthRecord")
 		if depthRecord > 0 then
@@ -316,10 +330,10 @@ function api.Initialize(world)
 		currentCarCost = 0,
 		depthMarkers = IterableMap.New(),
 	}
-	InterfaceUtil.RegisterSmoothNumber("money", 0, 1)
-	InterfaceUtil.RegisterSmoothNumber("total_money", 0, 1)
-	InterfaceUtil.RegisterSmoothNumber("destroyed_money", 0, 1)
-	InterfaceUtil.RegisterSmoothNumber("depth", 0, 1)
+	InterfaceUtil.RegisterSmoothNumber("money", 0, 5)
+	InterfaceUtil.RegisterSmoothNumber("total_money", 0, 5)
+	InterfaceUtil.RegisterSmoothNumber("destroyed_money", 0, 5)
+	InterfaceUtil.RegisterSmoothNumber("depth", 0, 5)
 	InterfaceUtil.RegisterSmoothNumber("depthRecord", 0, 0.8)
 	
 	for i = 1, #Global.DEPTHS do

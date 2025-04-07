@@ -224,6 +224,7 @@ function api.Update(dt)
 		return
 	end
 	
+	api.recentDt = dt
 	self.lifetime = self.lifetime + dt
 	Delay.Update(dt)
 	InterfaceUtil.Update(dt)
@@ -281,6 +282,8 @@ function api.Draw()
 end
 
 function api.Initialize(cosmos, levelData)
+	api.recentDt = 0.01
+	
 	self = {}
 	self.cosmos = cosmos
 	self.levelData = levelData
