@@ -83,6 +83,29 @@ local function CanSelectOption(slot, index)
 end
 
 --------------------------------------------------
+-- Design Checks
+--------------------------------------------------
+
+local function PrintDepthCosts()
+	for di = 1, #Global.DEPTHS do
+		local depth = Global.DEPTHS[di]
+		local totalCost = 0
+		for i = 1, #upgradeOrder do
+			local def = UpgradeDefs[upgradeOrder[i]]
+			local maxCost = 0
+			for j = 1, #def.options do
+				local option = def.options[j]
+				if (not option.depth) or option.depth <= depth then
+					maxCost = math.max(maxCost, option.cost)
+				end
+			end
+			totalCost = totalCost + maxCost
+		end
+		print("depth cost", depth, totalCost)
+	end
+end
+
+--------------------------------------------------
 -- API
 --------------------------------------------------
 
@@ -131,6 +154,7 @@ function api.MousePressed(x, y)
 		if enabled then
 			self.loadout[self.selectingSlot] = self.hoveredOption
 			self.currentCarCost = api.GetCarCost(self.loadout)
+			InterfaceUtil.SetNumber("car_cost", self.currentCarCost)
 			InterfaceUtil.SetNumber("money", InterfaceUtil.GetRawNumber("total_money") - self.currentCarCost)
 			PlayerHandler.RespawnCar()
 		end
@@ -182,7 +206,7 @@ local function DrawCarStats()
 		loadout[self.selectingSlot] = self.hoveredOptionEvenDisabled
 		newData = ExtractSpecStats(api.ApplyCarUpgrades(loadout))
 	end
-	local shopX, shopY = 520, -400
+	local shopX, shopY = 460, 310
 	local offset = 35
 	love.graphics.setColor(1, 1, 1, 0.9)
 	Font.SetSize(2)
@@ -200,7 +224,7 @@ local function DrawCarStats()
 end
 
 function api.Draw(drawQueue)
-	drawQueue:push({y=0; f=function()
+	drawQueue:push({y=800; f=function()
 		local debugMode = self.world.GetEditMode()
 		local mousePos = self.world.GetMousePosition()
 		local shopX, shopY = 1060, -320
@@ -308,6 +332,7 @@ function api.DrawInterface()
 ]], Global.UI_WIDTH - 200, 40, 500)
 	end
 	
+	local textGap = 70
 	Font.SetSize(1)
 	if self.drawMoneyChange then
 		local sign = (self.drawMoneyChange > 0) and "+" or ""
@@ -315,11 +340,26 @@ function api.DrawInterface()
 	else
 		love.graphics.printf(string.format("$%d", InterfaceUtil.GetNumber("money")), windowX/2 - 275, 25, windowX/2, "left")
 	end
-	local depth = math.max(0, InterfaceUtil.GetNumber("depth"))
-	love.graphics.printf(string.format("Depth: %dm", depth), 25, windowY - 85, windowX, "left")
 	
-	local underwaterTime = PlayerHandler.GetUnderwaterTime()
-	love.graphics.printf(string.format("Oxygen: %.1fs", underwaterTime), 25, windowY - 135, windowX, "left")
+	local totalMoney = InterfaceUtil.GetNumber("total_money")
+	local carPos = PlayerHandler.GetPos()
+	if totalMoney > 0 then
+		local alpha = math.min(1, (1000 - carPos[1])/200)
+		if alpha > 0 then
+			love.graphics.setColor(1, 1, 1, 0.7*alpha)
+			love.graphics.printf(string.format("Total: $%d", totalMoney + 1000), 25, 25, windowX/2, "left")
+			love.graphics.printf(string.format("Vehicle: $%d", InterfaceUtil.GetNumber("car_cost") + 1000), 25, 25 + textGap, windowX/2, "left")
+		end
+	end
+	
+	local alpha = math.min(1, (carPos[1] - 1100)/300)
+	if alpha > 0 then
+		love.graphics.setColor(1, 1, 1, 0.7*alpha)
+		local depth = math.max(0, InterfaceUtil.GetNumber("depth"))
+		love.graphics.printf(string.format("Depth: %dm", depth), 25, windowY - 85, windowX, "left")
+		local underwaterTime = PlayerHandler.GetUnderwaterTime()
+		love.graphics.printf(string.format("Oxygen: %.1fs", underwaterTime), 25, windowY - 85 - textGap, windowX, "left")
+	end
 end
 
 function api.Initialize(world)
@@ -329,8 +369,9 @@ function api.Initialize(world)
 		currentCarCost = 0,
 		depthMarkers = IterableMap.New(),
 	}
-	InterfaceUtil.RegisterSmoothNumber("money", 0, 1.1)
-	InterfaceUtil.RegisterSmoothNumber("total_money", 0, 1.1)
+	InterfaceUtil.RegisterSmoothNumber("money", 0, 0.9, false, 1)
+	InterfaceUtil.RegisterSmoothNumber("total_money", 0, 0.9, false, 1)
+	InterfaceUtil.RegisterSmoothNumber("car_cost", 0, 0.9, false, 1)
 	InterfaceUtil.RegisterSmoothNumber("destroyed_money", 0, 1.1)
 	InterfaceUtil.RegisterSmoothNumber("depth", 0, 1)
 	InterfaceUtil.RegisterSmoothNumber("depthRecord", 0, 0.8)
@@ -348,6 +389,7 @@ function api.Initialize(world)
 		local defName = upgradeOrder[i]
 		self.loadout[defName] = 1
 	end
+	PrintDepthCosts()
 end
 
 return api

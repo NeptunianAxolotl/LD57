@@ -87,6 +87,24 @@ local function DrawVector(pos, vector, scale, color)
 	end
 end
 
+local function ShootFire(self, def, unit, mag)
+	local bx, by = self.hull.body:getPosition()
+	local vx, vy = self.hull.body:getLinearVelocity()
+	local ox, oy = self.hull.body:getWorldVector(0, 0.5*def.height*def.scale)
+	local spawnPos = util.Add({ox, oy}, {bx, by})
+	local carVel = {vx/60, vy/60}
+	self.toShootFire = (self.toShootFire or 0) + mag
+	while self.toShootFire > def.fireFxQuanta do
+		EffectsHandler.SpawnEffect("fire", spawnPos, {
+			velocity = util.Add(carVel, util.Add(util.Mult(-3 - math.random()*5, unit), util.RandomPointInCircle(2.5))),
+			scale = 0.8 + 0.4*math.random(),
+			life = 0.7 + 0.3*math.random(),
+			drag = 1 + math.random(),
+		})
+		self.toShootFire = self.toShootFire - (0.7 + math.random()*0.3)*def.fireFxQuanta
+	end
+end
+
 local function NewComponent(spawnPos, physicsWorld, world, def)
 	if def.spawnOffset then
 		spawnPos = util.Add(spawnPos, def.spawnOffset)
@@ -213,10 +231,13 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 			else
 				vx, vy = self.hull.body:getWorldVector(def.jumpVector[1], def.jumpVector[2])
 			end
-			local forceVec = util.Mult(def.jumpForce*jumpUse, util.Unit({vx, vy}))
+			local forceUnit = util.Unit({vx, vy})
+			local forceMag = def.jumpForce*jumpUse
+			local forceVec = util.Mult(forceMag, forceUnit)
 			self.hull.body:applyForce(forceVec[1], forceVec[2])
 			self.jumpStore = self.jumpStore - jumpUse
 			self.jumping = (self.jumpStore > 0)
+			ShootFire(self, def, forceUnit, forceMag)
 		else
 			self.jumping = false
 		end

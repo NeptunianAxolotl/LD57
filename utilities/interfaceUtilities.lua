@@ -19,7 +19,8 @@ local function UpdateSmoothNumber(dt, name)
 		number.diff = 0
 	else
 		local rate = dt*number.rate*15*(0.24 + 0.06 * math.abs(number.want - number.has) / number.diff)
-		if math.abs(rate) <= 0.0008 or math.abs(number.want - number.has) < 0.0002*number.diff then
+		local currentDiff = math.abs(number.want - number.has)
+		if math.abs(rate) <= 0.0008 or currentDiff < 0.0002*number.diff or currentDiff < number.snapGap then
 			number.has = number.want
 			number.diff = false
 		end
@@ -75,7 +76,7 @@ function api.IsNumberBehindWrap(name)
 	return math.floor(number.has) ~= math.floor(number.want)
 end
 
-function api.RegisterSmoothNumber(name, initial, rate, wrap)
+function api.RegisterSmoothNumber(name, initial, rate, wrap, snapGap)
 	initial = initial or 0
 	rate = rate or 1
 	wrap = wrap or false
@@ -85,7 +86,8 @@ function api.RegisterSmoothNumber(name, initial, rate, wrap)
 		diff = 0,
 		recordHigh = initial,
 		wrap = wrap,
-		rate = rate
+		snapGap = snapGap or 0,
+		rate = rate,
 	}
 	self.smoothNumberList[#self.smoothNumberList + 1] = name
 end

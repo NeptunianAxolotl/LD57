@@ -41,17 +41,17 @@ local data = {
 		{
 			name = "Super\nBurst",
 			textLine = 2,
-			cost = 600,
+			cost = 900,
 			depth = Global.DEPTHS[5],
 			jumpMaxMult = 1.2,
-			chargeMult = 0.5,
-			jumpForce = 1.6,
+			chargeMult = 0.6,
+			jumpForce = 1.8,
 			mass = 0.5
 		},
 		{
 			name = "Super\nSteady",
 			textLine = 2,
-			cost = 1200,
+			cost = 1600,
 			depth = Global.DEPTHS[6],
 			jumpUseRate = 3,
 			jumpMaxMult = 1.25,
@@ -63,7 +63,7 @@ local data = {
 		{
 			name = "Super\nQuick",
 			textLine = 2,
-			cost = 1800,
+			cost = 2000,
 			depth = Global.DEPTHS[7],
 			jumpUseRate = 10,
 			jumpMaxMult = 0.6,

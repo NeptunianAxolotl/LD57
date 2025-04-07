@@ -17,7 +17,7 @@ local data = {
 		},
 		{
 			name = "Front",
-			cost = 400,
+			cost = 500,
 			depth = Global.DEPTHS[4],
 			jumpVector = {1, 0},
 			jumpForce = 0.75,
@@ -25,7 +25,7 @@ local data = {
 		},
 		{
 			name = "Angled",
-			cost = 600,
+			cost = 900,
 			depth = Global.DEPTHS[5],
 			jumpForce = 0.9,
 			jumpVector = {math.sqrt(2), -math.sqrt(2)},
@@ -41,7 +41,7 @@ local data = {
 		},
 		{
 			name = "Down",
-			cost = 300,
+			cost = 600,
 			depth = Global.DEPTHS[6],
 			jumpVector = {0, 1},
 			mass = 0.05,

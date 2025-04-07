@@ -8,7 +8,7 @@ local function NewEffect(self, def)
 	-- pos
 	self.inFront = def.inFront or 0
 	local maxLife = (def.duration == "inherit" and def.image and Resources.GetAnimationDuration(def.image)) or def.duration
-	self.life = maxLife
+	self.life = maxLife * (self.life or 1)
 	self.animTime = 0
 	self.direction = (def.randomDirection and math.random()*2*math.pi) or 0
 	
@@ -39,7 +39,7 @@ local function NewEffect(self, def)
 		end
 		if def.drag then
 			self.velocity = self.velocity or {0, 0}
-			self.velocity = util.Mult(1 - dt*def.drag, self.velocity)
+			self.velocity = util.Mult(1 - dt*def.drag*(self.drag or 1), self.velocity)
 		end
 		if def.walkRate and math.random() < def.walkRate*dt then
 			self.velocity = self.velocity or {0, 0}
@@ -52,7 +52,7 @@ local function NewEffect(self, def)
 	end
 	
 	function self.Draw(drawQueue)
-		drawQueue:push({y=self.pos[2] + self.inFront; f=function()
+		drawQueue:push({y=self.inFront; f=function()
 			if def.fontSize and self.text then
 				local col = def.color
 				Font.SetSize(def.fontSize)

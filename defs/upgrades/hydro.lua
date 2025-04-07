@@ -53,7 +53,7 @@ local data = {
 		{
 			name = "Ultra\nSleek+",
 			textLine = 2,
-			cost = 1800,
+			cost = 2800,
 			depth = Global.DEPTHS[5],
 			dragDown = 3,
 			hydroMult = 0.15,
@@ -61,7 +61,7 @@ local data = {
 		{
 			name = "Ultra\nGlide+",
 			textLine = 2,
-			cost = 2200,
+			cost = 3500,
 			depth = Global.DEPTHS[6],
 			power = 1.4,
 			dragDown = -0.2,
@@ -70,8 +70,8 @@ local data = {
 		{
 			name = "Sleek\nDolphin",
 			textLine = 2,
-			cost = 2400,
-			depth = Global.DEPTHS[6],
+			cost = 4000,
+			depth = Global.DEPTHS[7],
 			dragDown = 15,
 			hydroMult = 0.05,
 			mass = -2.05, -- counteract autocalculated

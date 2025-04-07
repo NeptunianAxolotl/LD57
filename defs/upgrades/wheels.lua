@@ -62,7 +62,7 @@ local data = {
 		{
 			name = "Ultra\nControl+",
 			textLine = 2,
-			cost = 1600,
+			cost = 2000,
 			depth = Global.DEPTHS[6],
 			hullRotateMult = 2,
 			wheelFriction = 1.5,

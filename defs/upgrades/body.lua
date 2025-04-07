@@ -52,7 +52,7 @@ local data = {
 			width = 3.5,
 			height = 0.75,
 			wheelOffX = 1.5,
-			wheelOffY = 0.2,
+			wheelOffY = 0.25,
 			wheelRadius = 0.65,
 			speed = 1.1,
 			wheelMass = 0.018,
@@ -78,7 +78,7 @@ local data = {
 		},
 		{
 			name = "Mino",
-			cost = 1500,
+			cost = 1200,
 			depth = Global.DEPTHS[5],
 			spawnOffset = {0, 6},
 			pickupRadius = 45,
@@ -95,7 +95,7 @@ local data = {
 		},
 		{
 			name = "Whale",
-			cost = 4000,
+			cost = 3200,
 			depth = Global.DEPTHS[6],
 			spawnOffset = {50, -22},
 			pickupRadius = 80,
