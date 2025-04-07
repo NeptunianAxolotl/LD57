@@ -192,7 +192,8 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 			return
 		end
 		
-		if TerrainHandler.GetDepth(by) > def.height then
+		local myDepth = TerrainHandler.GetDepth(by)
+		if myDepth > def.height and myDepth < Global.DEPTHS[#Global.DEPTHS] - 40 then
 			self.underwaterTime = self.underwaterTime + dt
 			if self.underwaterTime > def.airSeconds then
 				local vx, vy = self.hull.body:getLinearVelocity()
