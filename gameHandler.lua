@@ -359,7 +359,14 @@ function api.DrawInterface()
 		local depth = math.max(0, InterfaceUtil.GetNumber("depth"))
 		love.graphics.printf(string.format("Depth: %dm", depth), 25, windowY - 85, windowX, "left")
 		local underwaterTime = PlayerHandler.GetUnderwaterTime()
-		love.graphics.printf(string.format("Oxygen: %.1fs", underwaterTime), 25, windowY - 85 - textGap, windowX, "left")
+		if underwaterTime then
+			love.graphics.printf(string.format("Oxygen: %.1fs", underwaterTime), 25, windowY - 85 - textGap, windowX, "left")
+		end
+		local boostProp, boostReady = PlayerHandler.GetBoost()
+		if boostProp then
+			love.graphics.setColor(1, 1, 1, 0.7*alpha*(boostReady and 1 or 0.5))
+			love.graphics.printf(string.format("Boost: %d%%", 100*boostProp), 25, windowY - 85 - textGap*2, windowX, "left")
+		end
 	end
 end
 

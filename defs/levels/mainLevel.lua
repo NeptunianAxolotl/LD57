@@ -1,6 +1,6 @@
 local data = {
 	waterline = 300,
-	playerSpawn = {500, 200},
+	playerSpawn = {530, 200},
 	pickups = {
 		{
 			defName = "coin",

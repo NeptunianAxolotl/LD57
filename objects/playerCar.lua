@@ -128,14 +128,16 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 	
 	self.hull = {}
 	self.hull.body = love.physics.newBody(physicsWorld, self.pos[1], self.pos[2], "dynamic")
-	self.hull.shape = love.physics.newPolygonShape(unpack(MakeShapeCoords(def, hullCoords)))
+	do
+		local shape = love.physics.newPolygonShape(unpack(MakeShapeCoords(def, hullCoords)))
+		local fixture = love.physics.newFixture(self.hull.body, shape, def.density)
+		self.hull.body:setAngularDamping(1)
+		self.hull.body:setLinearDamping(def.baseDrag)
+		fixture:setFriction(def.hullFriction)
+		fixture:setRestitution(def.hullBounce)
+	end
 	self.hull.ballastShape = love.physics.newPolygonShape(unpack(MakeShapeCoords(def, ballastCoords)))
-	self.hull.fixture = love.physics.newFixture(self.hull.body, self.hull.shape, def.density)
 	self.hull.ballastFixture = love.physics.newFixture(self.hull.body, self.hull.ballastShape, def.density)
-	self.hull.body:setAngularDamping(1)
-	self.hull.body:setLinearDamping(def.baseDrag)
-	self.hull.fixture:setFriction(def.hullFriction)
-	self.hull.fixture:setRestitution(def.hullBounce)
 	self.hull.body:setMass(def.hullMass * def.massScale)
 	
 	self.wheels = {}
@@ -281,6 +283,11 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 		return 1 - math.min(1, self.underwaterTime / def.airSeconds)
 	end
 	
+	function self.GetBoost()
+		local fill = self.jumpStore/def.jumpMax
+		return fill, fill >= def.jumpPropRequired
+	end
+	
 	function self.GetUnderwaterTime()
 		return math.max(0, def.airSeconds - self.underwaterTime)
 	end
@@ -325,36 +332,41 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 	end
 	
 	function self.Draw(drawQueue)
-		drawQueue:push({y=0; f=function()
-			love.graphics.setColor(1, 1, 1, 1)
+		drawQueue:push({y=10; f=function()
 			local x, y = self.hull.body:getPosition()
 			local pos = {x, y}
 			local angle = self.hull.body:getAngle()
+			local debugMode = world.GetEditMode()
 			love.graphics.push()
 				love.graphics.translate(x, y)
 				love.graphics.rotate(angle)
-				for i = 1, #hullCoords do
-					local other = hullCoords[(i < #hullCoords and (i + 1)) or 1]
-					love.graphics.line(hullCoords[i][1], hullCoords[i][2], other[1], other[2])
+				Resources.DrawImage(def.carImage, 0, 0, 0, 1, def.carImageScale)
+				love.graphics.setColor(1, 1, 1, 1)
+				if debugMode then
+					for i = 1, #hullCoords do
+						local other = hullCoords[(i < #hullCoords and (i + 1)) or 1]
+						love.graphics.line(hullCoords[i][1], hullCoords[i][2], other[1], other[2])
+					end
+					for i = 1, #ballastCoords do
+						local other = ballastCoords[(i < #ballastCoords and (i + 1)) or 1]
+						love.graphics.line(ballastCoords[i][1], ballastCoords[i][2], other[1], other[2])
+					end
+					local fill = self.jumpStore/def.jumpMax
+					if fill >= def.jumpPropRequired then
+						love.graphics.setColor(1, 1, 1, 0.12)
+					else
+						love.graphics.setColor(1, 1, 1, 0.08)
+					end
+					love.graphics.rectangle("fill", -0.5*def.width*def.scale, (0.5 - fill)*def.height*def.scale, def.width*def.scale, fill * def.height*def.scale)
 				end
-				for i = 1, #ballastCoords do
-					local other = ballastCoords[(i < #ballastCoords and (i + 1)) or 1]
-					love.graphics.line(ballastCoords[i][1], ballastCoords[i][2], other[1], other[2])
-				end
-				local fill = self.jumpStore/def.jumpMax
-				if fill >= def.jumpPropRequired then
-					love.graphics.setColor(1, 1, 1, 0.12)
-				else
-					love.graphics.setColor(1, 1, 1, 0.08)
-				end
-				love.graphics.rectangle("fill", -0.5*def.width*def.scale, (0.5 - fill)*def.height*def.scale, def.width*def.scale, fill * def.height*def.scale)
 			love.graphics.pop()
 			love.graphics.setColor(1, 1, 1, 1)
 			
-			DrawVector(pos, self.debugDraw.bodyForce, 10, {0, 0, 0, 1})
-			DrawVector(pos, self.debugDraw.backComp, 10, {0, 1, 0, 1})
-			DrawVector(pos, self.debugDraw.penaltyComponent, 10, {1, 0, 0, 1})
-			
+			if debugMode then
+				DrawVector(pos, self.debugDraw.bodyForce, 10, {0, 0, 0, 1})
+				DrawVector(pos, self.debugDraw.backComp, 10, {0, 1, 0, 1})
+				DrawVector(pos, self.debugDraw.penaltyComponent, 10, {1, 0, 0, 1})
+			end
 			love.graphics.setColor(1, 1, 1, 1)
 			for i = 1, #self.wheels do
 				local x, y = self.wheels[i].body:getPosition()
@@ -362,15 +374,15 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 				love.graphics.push()
 					love.graphics.translate(x, y)
 					love.graphics.rotate(angle)
-					love.graphics.circle("line", 0, 0, def.wheelRadius * def.scale)
-					local rx, ry = def.wheelRadius * def.scale, def.wheelRadius * def.scale
-					love.graphics.rectangle("line", -0.5*rx, -0.5*ry, rx, ry, 0, 0, 0)
+					Resources.DrawImage(def.wheelImage, 0, 0, 0, 1, def.wheelRadius * 2 * def.wheelImageScale )
+					if debugMode then
+						love.graphics.circle("line", 0, 0, def.wheelRadius * def.scale)
+						local rx, ry = def.wheelRadius * def.scale, def.wheelRadius * def.scale
+						love.graphics.rectangle("line", -0.5*rx, -0.5*ry, rx, ry, 0, 0, 0)
+					end
 				love.graphics.pop()
 			end
 		end})
-		if DRAW_DEBUG then
-			love.graphics.circle('line',self.pos[1], self.pos[2], def.radius)
-		end
 	end
 	
 	function self.DrawInterface()

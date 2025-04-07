@@ -4,7 +4,12 @@ local NewPlayerCar = require("objects/playerCar")
 local self = {}
 local api = {}local defaultCar = {	density = 1.2,	ballastDensity = 5,	hullMass = 0.015,	wheelDensity = 0.5,
 	wheelMass = 0.011,	ballastProp = 0.1,
-		airSeconds = 15,		massScale = 10,	scale = 50,	pickupRadius = 50,	wheelFriction = 0.95,	wheelBounce = 0.05,	hullFriction = 0.65,	hullBounce = 0.05,	width = 2.1,	height = 1.4,	
+		airSeconds = 15,	
+	carImage = "basic_car",
+	carImageScale = 0.92,
+	wheelImage = "basic_wheel",
+	wheelImageScale = 1,
+		massScale = 10,	scale = 50,	pickupRadius = 50,	wheelFriction = 0.95,	wheelBounce = 0.05,	hullFriction = 0.65,	hullBounce = 0.05,	width = 2.1,	height = 1.4,	
 	wheelDownforce = 200,	wheelOffX = 0.82,	wheelOffY = 0.6,	wheelRadius = 0.52,	wheelDampen = 4,	wheelFreq = 10,	wheelCount = 2,	reactionControl = 0.25,		jumpMax = 4,	jumpChargeRate = 1,	jumpUseRate = false,	jumpPropRequired = 1,	jumpForce = 1250,
 	jumpVector = {0, -1},
 	jumpAngleName = "Up",	
@@ -18,6 +23,13 @@ local api = {}local defaultCar = {	density = 1.2,	ballastDensity = 5,	hullM
 		TerrainHandler.HandlePortal(pickup)
 	endend---------------------------------------------------- API--------------------------------------------------function api.GetPos()	if self.playerCar then		self.lastPlayerPos = self.playerCar.GetPos()	end	return self.lastPlayerPosend
 function api.GetVelocity()	if self.playerCar then		self.lastPlayerVelocity = self.playerCar.GetVelocity()	end	return self.lastPlayerVelocityendfunction api.GetDefaultCar()	return defaultCarendfunction api.GetUpgradedCar(loadout)	return GameHandler.ApplyCarUpgrades(loadout)end
+function api.GetBoost()
+	if self.playerCar then
+		local boostProp, ready = self.playerCar.GetBoost()
+		return boostProp, ready
+	end
+end
+
 function api.SetCarPos(pos)
 	if self.playerCar then
 		self.playerCar.SetPos(pos)

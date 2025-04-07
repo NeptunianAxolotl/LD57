@@ -1,5 +1,5 @@
 
-local names = util.GetDefDirList("resources/images/food", "png")
+local names = util.GetDefDirList("resources/images/drawn", "png")
 local data = {}
 
 for i = 1, #names do
@@ -7,8 +7,8 @@ for i = 1, #names do
 		name = names[i],
 		file = "resources/images/drawn/" .. names[i] .. ".png",
 		form = "image",
-		xScale = 10,
-		yScale = 10,
+		xScale = 0.5,
+		yScale = 0.5,
 		xOffset = 0.5,
 		yOffset = 0.5,
 	}
