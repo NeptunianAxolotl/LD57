@@ -120,6 +120,7 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 		pos = spawnPos,
 		debugDraw = {}
 	}
+	self.age = 0
 	self.animTime = 0
 	self.underwaterTime = 0
 	self.jumpStore = def.jumpMax
@@ -180,6 +181,7 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 	
 	function self.Update(dt)
 		self.animTime = self.animTime + dt
+		self.age = self.age + dt
 		TerrainHandler.UpdateSpeedLimit(self.hull.body)
 		UpdateHyrdodynamics(def, dt, self.hull.body, self)
 		
@@ -231,7 +233,12 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 				self.jumpStore = def.jumpMax
 			end
 		end
-		if love.keyboard.isDown("space") and (self.jumping or (self.jumpStore/def.jumpMax >= def.jumpPropRequired)) then
+		
+		if self.age < Global.NO_DRIVE_TIME then
+			return
+		end
+		
+		if (love.keyboard.isDown("space") or love.keyboard.isDown("return")) and (self.jumping or (self.jumpStore/def.jumpMax >= def.jumpPropRequired)) then
 			local jumpUse = (def.jumpUseRate and math.min(self.jumpStore, dt*def.jumpUseRate)) or self.jumpStore
 			local vx, vy
 			if def.jumpVector == "adaptive" then
@@ -274,7 +281,7 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 			local vx, vy = self.hull.body:getLinearVelocity()
 			local speed = util.Dist(0, 0, vx, vy)
 			turnAmount = turnAmount * Global.TURN_MULT * def.hullRotateMult
-			turnAmount = turnAmount * (0.5 + 0.5 * (1 - speed / (speed + 1000))) * math.max(1, 140 / (8 + speed))
+			turnAmount = turnAmount * (0.5 + 0.5 * (1 - speed / (speed + 1800))) * math.max(1, 150 / (6 + speed))
 			self.hull.body:applyTorque(turnAmount)
 		end
 	end

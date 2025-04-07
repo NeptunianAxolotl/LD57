@@ -144,6 +144,7 @@ function api.MousePressed(x, y)
 	local windowX, windowY = love.window.getMode()
 	local drawPos = self.world.ScreenToInterface({windowX, 0})
 	if self.hoveredSlot then
+		self.shopOpened = true
 		if self.selectingSlot == self.hoveredSlot then
 			self.selectingSlot = false
 		else
@@ -223,6 +224,25 @@ local function DrawCarStats()
 	end
 end
 
+local function DrawTitleText()
+	local carPos = PlayerHandler.GetPos()
+	local alpha = math.min(1, (800 - carPos[1])/180)
+	if alpha > 0 then
+		Font.SetSize(-1)
+		love.graphics.setColor(0, 0, 0, 0.7*alpha)
+		love.graphics.printf("Journey to the Centre of the Ocean", 1020, 180, 1600, "center")
+		Font.SetSize(1)
+		love.graphics.printf([[Collect treasure to upgrade your submersible
+    - A and D to accelerate wheels
+           - W and S to rotate chassis
+                - Space or Enter to boost
+                   - R to Respawn
+                      Dive deep, until the Oxygen expires
+                        Find the motherload
+]], 1520, 320, 1200, "left")
+	end
+end
+
 function api.Draw(drawQueue)
 	drawQueue:push({y=800; f=function()
 		local debugMode = self.world.GetEditMode()
@@ -264,6 +284,7 @@ function api.Draw(drawQueue)
 			end
 		end
 		DrawCarStats()
+		DrawTitleText()
 	end})
 	
 	drawQueue:push({y=1000; f=function()
@@ -319,34 +340,37 @@ function api.DrawInterface()
  - R and click to remove things.
  - B to place coins.
  Polygons are convex have 2 < vertices < 9
- Right click with T to make unusual pickups.]], 30, 40, 500)
-	else
-		Font.SetSize(3)
-		love.graphics.setColor(1, 1, 1, 0.7)
-		love.graphics.printf([[ - F to enable edit mode
-
- - A and D spin wheels
- - W pitch up, S pitch down
- - Space to thrust
- - Ctrl+R to respawn
- - Ctrl+Y to restart
-]], Global.UI_WIDTH - 200, 40, 500)
+ Right click with T to make unusual pickups.]], Global.UI_WIDTH - 500, 40, 500)
+--	else
+--		Font.SetSize(3)
+--		love.graphics.setColor(1, 1, 1, 0.7)
+--		love.graphics.printf([[ - F to enable edit mode
+--
+-- - A and D spin wheels
+-- - W pitch up, S pitch down
+-- - Space to thrust
+-- - Ctrl+R to respawn
+-- - Ctrl+Y to restart
+--]], Global.UI_WIDTH - 200, 40, 500)
 	end
 	
 	local textGap = 70
+	local money = InterfaceUtil.GetNumber("money")
+	local totalMoney = InterfaceUtil.GetNumber("total_money")
 	Font.SetSize(1)
-	if self.drawMoneyChange then
-		local sign = (self.drawMoneyChange > 0) and "+" or ""
-		love.graphics.printf(string.format("$%d  (%s%d)", InterfaceUtil.GetNumber("money"), sign, self.drawMoneyChange), windowX/2 - 275, 25, windowX/2, "left")
-	else
-		love.graphics.printf(string.format("$%d", InterfaceUtil.GetNumber("money")), windowX/2 - 275, 25, windowX/2, "left")
+	if totalMoney > 0 then
+		if self.drawMoneyChange then
+			local sign = (self.drawMoneyChange > 0) and "+" or ""
+			love.graphics.printf(string.format("$%d  (%s%d)", money, sign, self.drawMoneyChange), windowX/2 - 275, 25, windowX/2, "left")
+		else
+			love.graphics.printf(string.format("$%d", money), windowX/2 - 275, 25, windowX/2, "left")
+		end
 	end
 	
-	local totalMoney = InterfaceUtil.GetNumber("total_money")
 	local carPos = PlayerHandler.GetPos()
-	if totalMoney > 0 then
-		local alpha = math.min(1, (1000 - carPos[1])/200)
-		if alpha > 0 then
+	local alpha = math.min(1, (800 - carPos[1])/180)
+	if alpha > 0 then
+		if totalMoney > 0 then
 			love.graphics.setColor(1, 1, 1, 0.7*alpha)
 			love.graphics.printf(string.format("Total: $%d", totalMoney + 1000), 25, 25, windowX/2, "left")
 			love.graphics.printf(string.format("Vehicle: $%d", InterfaceUtil.GetNumber("car_cost") + 1000), 25, 25 + textGap, windowX/2, "left")
@@ -375,6 +399,7 @@ function api.Initialize(world)
 		world = world,
 		loadout = {},
 		currentCarCost = 0,
+		shopOpened = false,
 		depthMarkers = IterableMap.New(),
 	}
 	InterfaceUtil.RegisterSmoothNumber("money", 0, 0.9, false, 1)

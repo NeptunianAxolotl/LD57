@@ -49,12 +49,14 @@ local globals = {
 		[9] = "You found the treasure. Thanks for playing!",
 	},
 	
+	NO_DRIVE_TIME = 1,
 	TURN_MULT = 1500,
 	GRAVITY = 520,
 	CAMERA_SCALE = 1600,
 	CAMERA_SCROLL_SPEED = 0.12,
 	CAMERA_SPEED = 1.8,
 	SPEED_ZOOM_SCALE = false,
+	MIN_CAMERA_RATIO = 14/9,
 	
 	SAVE_ORDER = {
 		"waterline", "playerSpawn", "text",
