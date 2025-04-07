@@ -8,7 +8,7 @@ local defs = {
 	},
 	{
 		name = "bigCoin",
-		radius = 50,
+		radius = 60,
 		money = 200,
 		col = {1, 0.8, 0, 1},
 		image = "gem_1",

@@ -20,7 +20,7 @@ local data = {
 			hydroMult = 0.95,
 		},
 		{
-			name = "Sleek+",
+			name = "Slick+",
 			cost = 400,
 			depth = Global.DEPTHS[2],
 			dragDown = 0.7,
@@ -34,7 +34,7 @@ local data = {
 			dragDown = -0.1,
 		},
 		{
-			name = "Mega\nSleek+",
+			name = "Mega\nSlick+",
 			textLine = 2,
 			cost = 1200,
 			depth = Global.DEPTHS[4],
@@ -51,7 +51,7 @@ local data = {
 			hydroMult = 1.05,
 		},
 		{
-			name = "Ultra\nSleek+",
+			name = "Ultra\nSlick+",
 			textLine = 2,
 			cost = 2800,
 			depth = Global.DEPTHS[5],
@@ -68,7 +68,7 @@ local data = {
 			hydroMult = 1.15,
 		},
 		{
-			name = "Sleek\nDolphin",
+			name = "Omega\nSlick+",
 			textLine = 2,
 			cost = 4000,
 			depth = Global.DEPTHS[7],

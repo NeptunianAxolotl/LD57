@@ -53,7 +53,7 @@ function api.Update(dt)
 	end
 	for i = 1, #trackList do
 		if playingSounds[i] then
-			SoundHandler.setPitch(playingSounds[i].name,playingSounds[i].id,pitch)
+			SoundHandler.setPitch(playingSounds[i].name,playingSounds[i].id, pitch)
 		end
 	end
 	currentTrackRemaining = (currentTrackRemaining or 0) - dt

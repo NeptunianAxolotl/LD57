@@ -404,7 +404,7 @@ function api.DrawInterface()
 	local alpha = math.min(1, (800 - carPos[1])/180)
 	if alpha > 0 then
 		if totalMoney > 0 then
-			love.graphics.setColor(1, 1, 1, 0.8*alpha)
+			love.graphics.setColor(1, 1, 1, 0.85*alpha)
 			love.graphics.printf(string.format("Total: $%d", totalMoney + Global.START_CAR_COST), 25, 25, windowX/2, "left")
 			love.graphics.printf(string.format("Vehicle: $%d", InterfaceUtil.GetNumber("car_cost") + Global.START_CAR_COST), 25, 25 + textGap, windowX/2, "left")
 		end
