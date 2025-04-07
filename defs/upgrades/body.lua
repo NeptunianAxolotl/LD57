@@ -118,7 +118,7 @@ local data = {
 		{
 			name = "Rocket",
 			cost = 5000,
-			depth = Global.DEPTHS[7],
+			depth = Global.DEPTHS[8],
 			spawnOffset = {35, -46},
 			pickupRadius = 60,
 			width = 1.2,

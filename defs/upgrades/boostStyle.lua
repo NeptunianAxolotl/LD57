@@ -35,7 +35,7 @@ local data = {
 			jumpMaxMult = 0.75,
 			jumpForce = 1.5,
 			chargeMult = 1.1,
-			jumpPropRequired = 0,
+			jumpPropRequired = 0.2,
 			mass = 0.35
 		},
 		{
@@ -69,7 +69,7 @@ local data = {
 			jumpMaxMult = 0.6,
 			jumpForce = 1.7,
 			chargeMult = 1.2,
-			jumpPropRequired = 0,
+			jumpPropRequired = 0.2,
 			mass = 0.8
 		},
 	},

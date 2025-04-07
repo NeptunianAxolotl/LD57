@@ -48,6 +48,7 @@ local data = {
 		},
 		{
 			name = "Ultra\nVolume+",
+			textLine = 2,
 			cost = 2000,
 			depth = Global.DEPTHS[6],
 			jumpMax = 2.5,
@@ -56,6 +57,7 @@ local data = {
 		},
 		{
 			name = "Ultra\nCharge+",
+			textLine = 2,
 			cost = 4000,
 			depth = Global.DEPTHS[6],
 			jumpMax = 0.5,

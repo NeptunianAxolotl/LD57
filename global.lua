@@ -45,7 +45,7 @@ local globals = {
 		6000,
 	},
 	DEPTH_TEXT = {
-		[8] = "Almost there!",
+		[8] = "New chassis unlocked\n(Almost there!)",
 		[9] = "You found the treasure. Thanks for playing!",
 	},
 	
