@@ -257,7 +257,7 @@ end
 local function DrawEndText()
 	local pos = {99687.9453125, 48521.5703125}
 	local moneyToFind = TerrainHandler.GetSpawnedMoney() + Global.START_CAR_COST
-	local totalMoney = InterfaceUtil.GetNumber("total_money")
+	local totalMoney = InterfaceUtil.GetNumber("total_money") + Global.START_CAR_COST
 	Font.SetSize(0)
 	love.graphics.setColor(1, 1, 1, 1)
 	love.graphics.printf(string.format("Thanks for playing!             $%d / $%d treasure collected", totalMoney, moneyToFind), pos[1], pos[2], 3000, "left")
