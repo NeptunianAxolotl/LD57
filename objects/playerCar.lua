@@ -90,7 +90,14 @@ end
 local function ShootFire(self, def, unit, mag)
 	local bx, by = self.hull.body:getPosition()
 	local vx, vy = self.hull.body:getLinearVelocity()
-	local ox, oy = self.hull.body:getWorldVector(0, 0.5*def.height*def.scale)
+	local ox, oy = 0, 0
+	if def.jumpVector ~= "adaptive" then
+		if math.abs(def.jumpVector[1]) > 0 and math.abs(def.jumpVector[2]) > 0 then
+			ox, oy = self.hull.body:getWorldVector(-0.1*def.width*def.scale, 0.5*def.height*def.scale)
+		else
+			ox, oy = self.hull.body:getWorldVector(-0.5*def.jumpVector[1]*def.width*def.scale, -0.5*def.jumpVector[2]*def.height*def.scale)
+		end
+	end
 	local spawnPos = util.Add({ox, oy}, {bx, by})
 	local carVel = {vx/60, vy/60}
 	self.toShootFire = (self.toShootFire or 0) + mag
