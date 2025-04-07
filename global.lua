@@ -72,6 +72,7 @@ local globals = {
 	
 	
 	CAN_DEBUG_DRAW_CAR = false,
+	CAN_DEBUG_DRAW_PICKUP = false,
 	DRAW_TERRAIN_IN_DEBUG = true,
 	
 	
