@@ -9,6 +9,7 @@ local data = {
 		spec.wheelDampen = option.wheelDampen or spec.wheelDampen
 		spec.wheelFreq = option.wheelFreq or spec.wheelFreq
 		spec.wheelFriction = option.wheelFriction or spec.wheelFriction
+		spec.angularDampen = option.angularDampen or spec.angularDampen
 		
 		spec.wheelImage = option.wheelImage or spec.wheelImage
 		spec.hullRotateMult     = spec.hullRotateMult     * (option.hullRotateMult or 1)
@@ -23,17 +24,18 @@ local data = {
 			cost = 0,
 		},
 		{
-			name = "Control+",
+			name = "Stable+",
 			cost = 200,
 			depth = Global.DEPTHS[2],
 			hullRotateMult = 1.5,
 			wheelFriction = 1,
 			reactionControl = 0.8,
 			wheelDampen = 5,
+			angularDampen = 1.2,
 			mass = 0.1,
 		},
 		{
-			name = "Rotate+",
+			name = "Spin+",
 			cost = 350,
 			depth = Global.DEPTHS[3],
 			hullRotateMult = 2.5,
@@ -41,45 +43,49 @@ local data = {
 			mass = 0.08,
 		},
 		{
-			name = "Super\nControl+",
+			name = "Super\nStable+",
 			textLine = 2,
 			cost = 600,
 			depth = Global.DEPTHS[4],
 			hullRotateMult = 1.8,
 			wheelFriction = 1.5,
-			reactionControl = 1.2,
+			reactionControl = 0.9,
 			wheelDampen = 5,
 			wheelFreq = 16,
+			angularDampen = 1.6,
 			mass = 0.2,
 		},
 		{
-			name = "Super\nRotate+",
+			name = "Super\nSpin+",
 			textLine = 2,
 			cost = 900,
 			depth = Global.DEPTHS[5],
 			hullRotateMult = 4,
 			reactionControl = 0.75,
+			angularDampen = 1.1,
 			mass = 0.22,
 		},
 		{
-			name = "Ultra\nControl+",
+			name = "Ultra\nStable+",
 			textLine = 2,
 			cost = 2000,
 			depth = Global.DEPTHS[6],
 			hullRotateMult = 2.5,
 			wheelFriction = 1.5,
-			reactionControl = 2,
+			reactionControl = 1,
 			wheelDampen = 5,
 			wheelFreq = 16,
+			angularDampen = 2,
 			mass = 0.25,
 		},
 		{
-			name = "Ultra\nRotate+",
+			name = "Ultra\nSpin+",
 			textLine = 2,
 			cost = 2500,
 			depth = Global.DEPTHS[7],
-			hullRotateMult = 6.5,
+			hullRotateMult = 7,
 			reactionControl = 0.8,
+			angularDampen = 1.2,
 			mass = 0.3,
 		},
 		--{

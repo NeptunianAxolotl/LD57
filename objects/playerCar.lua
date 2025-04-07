@@ -131,7 +131,7 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 	do
 		local shape = love.physics.newPolygonShape(unpack(MakeShapeCoords(def, hullCoords)))
 		local fixture = love.physics.newFixture(self.hull.body, shape, def.density)
-		self.hull.body:setAngularDamping(1)
+		self.hull.body:setAngularDamping(1*def.angularDampen)
 		self.hull.body:setLinearDamping(def.baseDrag)
 		fixture:setFriction(def.hullFriction)
 		fixture:setRestitution(def.hullBounce)
