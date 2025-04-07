@@ -51,10 +51,11 @@ function api.Update(dt)
 			return
 		end
 	end
-  for i = 1, #trackList do
-					SoundHandler.setPitch(currentTrack[i],null,pitch)
-				end
-  
+	for i = 1, #trackList do
+		if playingSounds[i] then
+			SoundHandler.setPitch(playingSounds[i].name,playingSounds[i].id,pitch)
+		end
+	end
 	currentTrackRemaining = (currentTrackRemaining or 0) - dt
 	if currentTrackRemaining < 0 then
 		if cosmos.MusicEnabled() then
