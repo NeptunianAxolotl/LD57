@@ -187,7 +187,6 @@ end
 
 function api.UpdateDepthRecordMarker()
 	InterfaceUtil.SetNumber("depthRecord", InterfaceUtil.GetRawRecordHigh("depth"))
-  MusicHandler.setPitch(2^((InterfaceUtil.GetRawRecordHigh("depth")+1)/3000))
 end
 
 --------------------------------------------------
@@ -195,6 +194,16 @@ end
 --------------------------------------------------
 
 function api.Update(dt)
+	local depth = InterfaceUtil.GetNumber("depth")
+	local depthBand = 0
+	for i = 1, #Global.DEPTHS do
+		if depth > Global.DEPTHS[i] then
+			depthBand = i
+		else
+			break
+		end
+	end
+	MusicHandler.setPitch(1.5^(depthBand/2))
 end
 
 local buttonOffset = {47, 27}
@@ -430,6 +439,7 @@ function api.Initialize(world)
 	InterfaceUtil.RegisterSmoothNumber("destroyed_money", 0, 1.1)
 	InterfaceUtil.RegisterSmoothNumber("depth", 0, 1)
 	InterfaceUtil.RegisterSmoothNumber("depthRecord", 0, 0.8)
+	
 	
 	for i = 1, #Global.DEPTHS do
 		local marker = {

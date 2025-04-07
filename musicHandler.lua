@@ -67,7 +67,7 @@ function api.Update(dt)
 			trackRunning = true
 			currentTrackRemaining = soundFiles[trackData.useAsDurationForAllTracks or currentTrack[1]].duration
 			for i = 1, #trackList do
-				playingSounds[i] = SoundHandler.PlaySound(trackList[i], false, 1, 1, false, false, (trackData.WantTrack(cosmos, i) and 1) or 0, true)
+				playingSounds[i] = SoundHandler.PlaySound(trackList[i], false, 1, 1, false, true, (trackData.WantTrack(cosmos, i) and 1) or 0, true)
 			end
 		elseif trackRunning then
 			for i = 1, #trackList do
