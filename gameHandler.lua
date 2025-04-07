@@ -315,10 +315,11 @@ function api.DrawInterface()
  - C to place circle.
  - V to place polygon vertices with LMB. Right click to finish.
  - Press C or V to cancel placement.
- - T to toggle surface and item type.
+ - T to toggle surface and pickup type.
  - R and click to remove things.
  - B to place coins.
- Polygons are convex have 2 < vertices < 9]], 30, 40, 500)
+ Polygons are convex have 2 < vertices < 9
+ Right click with T to make unusual pickups.]], 30, 40, 500)
 	else
 		Font.SetSize(3)
 		love.graphics.setColor(1, 1, 1, 0.7)
