@@ -29,7 +29,7 @@ local data = {
 		{
 			name = "Glide+",
 			cost = 500,
-			depth = Global.DEPTHS[2],
+			depth = Global.DEPTHS[3],
 			power = 0.7,
 			dragDown = -0.1,
 		},
@@ -37,7 +37,7 @@ local data = {
 			name = "Mega\nSleek+",
 			textLine = 2,
 			cost = 1200,
-			depth = Global.DEPTHS[3],
+			depth = Global.DEPTHS[4],
 			dragDown = 1,
 			hydroMult = 0.5,
 		},
