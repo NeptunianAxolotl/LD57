@@ -189,23 +189,29 @@ function api.UpdateDepthRecordMarker()
 	InterfaceUtil.SetNumber("depthRecord", InterfaceUtil.GetRawRecordHigh("depth"))
 end
 
+function api.GetDesiredTrack()
+	return self.wantedTrack
+end
+
 --------------------------------------------------
 -- Updating
 --------------------------------------------------
 
-function api.Update(dt)
+local function UpdateMusicDepth()
 	local depth = InterfaceUtil.GetRawRecordHigh("depth")
 	local depthBand = 0
 	for i = 2, #Global.DEPTHS do
 		if depth > Global.DEPTHS[i] then
-			depthBand = i - 1
+			depthBand = i
 		else
 			break
 		end
 	end
-	self.maxDepthBand = math.max(self.maxDepthBand or 0, depthBand)
-	InterfaceUtil.SetNumber("music", self.maxDepthBand)
-	MusicHandler.setPitch(4^(1 - InterfaceUtil.GetNumber("music")/8))
+	self.wantedTrack = math.max(self.wantedTrack, depthBand)
+end
+
+function api.Update(dt)
+	UpdateMusicDepth()
 end
 
 local buttonOffset = {47, 27}
@@ -434,6 +440,7 @@ function api.Initialize(world)
 		currentCarCost = 0,
 		shopOpened = false,
 		depthMarkers = IterableMap.New(),
+		wantedTrack = 1,
 	}
 	InterfaceUtil.RegisterSmoothNumber("money", 0, 0.9, false, 1)
 	InterfaceUtil.RegisterSmoothNumber("total_money", 0, 0.9, false, 1)

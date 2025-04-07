@@ -34,7 +34,7 @@ function api.LoadSound(name, id)
 	return soundData
 end
 
-function api.PlaySound(name, id, fadeIn, fadeOut, delay, loop, wantedVolume, playAtZero)
+function api.PlaySound(name, id, fadeIn, fadeOut, delay, loop, wantedVolume, playAtZero, pitch)
 	local soundData = api.LoadSound(name, id)
 	soundData.source:setLooping(loop and true or false)
 	
@@ -45,6 +45,9 @@ function api.PlaySound(name, id, fadeIn, fadeOut, delay, loop, wantedVolume, pla
 	soundData.playAtZero = playAtZero 
 	
 	if not soundData.delay then
+		if pitch then
+			soundData.source:setPitch(pitch)
+		end
 		soundData.source:stop()
 		love.audio.play(soundData.source)
 		soundData.source:setVolume(soundData.want * soundData.volumeMult)
