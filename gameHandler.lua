@@ -20,6 +20,14 @@ local upgradeOrder = {
 	"boostDirection",
 }
 
+local depthThresholds = {
+	100,
+	450,
+	900,
+	1200,
+	2000,
+}
+
 
 --------------------------------------------------
 -- Utils
@@ -74,12 +82,13 @@ end
 local function CanSelectOption(slot, index)
 	local def = UpgradeDefs[slot]
 	local option = def.options[index]
-	if option.depth and option.depth > InterfaceUtil.GetRawRecordHigh("depth") and not Global.DEBUG_SHOP then
+	local debugMode = self.world.GetEditMode()
+	if option.depth and option.depth > InterfaceUtil.GetRawRecordHigh("depth") and not debugMode then
 		return false
 	end
 	local currentCost = (def.options[self.loadout[slot]].cost or 0)
 	local deltaMoney = currentCost - (option.cost or 0)
-	return true, (self.currentCarCost - deltaMoney <= InterfaceUtil.GetRawNumber("total_money")) or Global.DEBUG_SHOP, deltaMoney
+	return true, (self.currentCarCost - deltaMoney <= InterfaceUtil.GetRawNumber("total_money")) or debugMode, deltaMoney
 end
 
 --------------------------------------------------
@@ -146,6 +155,10 @@ function api.ReportOnRecord(name, newValue, prevValue)
 	
 end
 
+function api.UpdateDepthRecordMarker()
+	InterfaceUtil.SetNumber("depthRecord", InterfaceUtil.GetRawRecordHigh("depth"))
+end
+
 --------------------------------------------------
 -- Updating
 --------------------------------------------------
@@ -158,6 +171,7 @@ local function DrawCarStats()
 	local def = PlayerHandler.GetCarDef()
 	local defData = ExtractSpecStats(def)
 	local newData = false
+	local debugMode = self.world.GetEditMode()
 	if self.hoveredOptionEvenDisabled and self.selectingSlot then
 		local loadout = util.CopyTable(self.loadout)
 		loadout[self.selectingSlot] = self.hoveredOptionEvenDisabled
@@ -169,7 +183,7 @@ local function DrawCarStats()
 	Font.SetSize(2)
 	for i = 1, #statsList do
 		local stat = statsList[i]
-		if stat.showDepth < InterfaceUtil.GetRawRecordHigh("depth") or Global.DEBUG_SHOP then
+		if stat.showDepth < InterfaceUtil.GetRawRecordHigh("depth") or debugMode then
 			local text = stat.text .. defData[stat.param]
 			if newData and newData[stat.param] ~= defData[stat.param] then
 				text = text .. " (" .. newData[stat.param] .. ")"
@@ -182,6 +196,7 @@ end
 
 function api.Draw(drawQueue)
 	drawQueue:push({y=0; f=function()
+		local debugMode = self.world.GetEditMode()
 		local mousePos = self.world.GetMousePosition()
 		local shopX, shopY = 1060, -320
 		local buttonSize = 145
@@ -194,7 +209,7 @@ function api.Draw(drawQueue)
 		for i = 1, #upgradeOrder do
 			local defName = upgradeOrder[i]
 			local def = UpgradeDefs[defName]
-			if def.showDepth < InterfaceUtil.GetRawRecordHigh("depth") or Global.DEBUG_SHOP then
+			if def.showDepth < InterfaceUtil.GetRawRecordHigh("depth") or debugMode then
 				local x = shopX + (buttonSize + buttonPad) * (drawIndex - 1)
 				drawIndex = drawIndex + 1
 				local open = (self.selectingSlot == defName)
@@ -270,11 +285,22 @@ function api.Initialize(world)
 		world = world,
 		loadout = {},
 		currentCarCost = 0,
+		depthMarkers = IterableMap.New(),
 	}
 	InterfaceUtil.RegisterSmoothNumber("money", 0, 1)
 	InterfaceUtil.RegisterSmoothNumber("total_money", 0, 1)
 	InterfaceUtil.RegisterSmoothNumber("destroyed_money", 0, 1)
 	InterfaceUtil.RegisterSmoothNumber("depth", 0, 1)
+	InterfaceUtil.RegisterSmoothNumber("depthRecord", 0, 1)
+	
+	for i = 1, #depthThresholds do
+		local marker = {
+			depth = depthThresholds[i],
+			text = string.format("%dm", depthThresholds[i]),
+			beatPopup = "New Shop Items",
+		}
+		IterableMap.Add(self.depthMarkers, marker)
+	end
 	
 	for i = 1, #upgradeOrder do
 		local defName = upgradeOrder[i]

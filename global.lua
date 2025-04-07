@@ -34,9 +34,6 @@ local globals = {
 	FLOATING_TEXT_COL   = {0.95,0.95,0.9},
 	
 	
-	DEBUG_SHOP = true,
-	
-	
 	
 	TURN_MULT = 1500,
 	GRAVITY = 520,

@@ -147,7 +147,6 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 		UpdateHyrdodynamics(def, dt, self.hull.body, self)
 		
 		local bx, by = self.hull.body:getPosition()
-		InterfaceUtil.SetNumber("depth", TerrainHandler.GetDepth(by))
 		local pickup = TerrainHandler.TryCollectPickup({bx, by}, def.pickupRadius)
 		if pickup then
 			PlayerHandler.ProcessPickup(pickup)
@@ -161,6 +160,9 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 		if world.GetEditMode() then
 			return
 		end
+		if not self.noAirWaitTimer then
+			InterfaceUtil.SetNumber("depth", TerrainHandler.GetDepth(by))
+		end
 		
 		if TerrainHandler.GetDepth(by) > def.height then
 			self.underwaterTime = self.underwaterTime + dt
@@ -168,6 +170,7 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 				local vx, vy = self.hull.body:getLinearVelocity()
 				local speed = util.Dist(0, 0, vx, vy)
 				if not self.noAirWaitTimer then
+					GameHandler.UpdateDepthRecordMarker()
 					for i = 1, 35 do
 						EffectsHandler.SpawnEffect("bubble", {bx, by}, {velocity = util.RandomPointInAnnulus(3, 12)})
 					end
