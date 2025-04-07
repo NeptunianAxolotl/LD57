@@ -65,6 +65,7 @@ local data = {
 			wheelMass = 0.018,
 			hullRotateMult = 1.6,
 			hydrofoilForceMult = 0.95,
+			mass = -2,
 		},
 		{
 			name = "Monster",
