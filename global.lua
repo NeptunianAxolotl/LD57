@@ -51,7 +51,7 @@ local globals = {
 		[9] = "You found the treasure. Thanks for playing!",
 	},
 	
-	NO_DRIVE_TIME = 0,
+	NO_DRIVE_TIME = 0.85,
 	TURN_MULT = 1500,
 	GRAVITY = 520,
 	CAMERA_SCALE = 1600,

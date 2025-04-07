@@ -42,7 +42,15 @@ function api.SetCarVelocity(vel)
 		self.lastPlayerVelocity = self.playerCar.SetVelocity(vel)
 	end
 end
-function api.RespawnCar()	if self.playerCar then		self.playerCar.Destroy()	end	local carSpec = api.GetUpgradedCar(GameHandler.GetLoadout())	self.playerCar = NewPlayerCar(self.world.GetLevelData().playerSpawn, self.world.GetPhysicsWorld(), self.world, carSpec)end---------------------------------------------------- Updates--------------------------------------------------
+function api.RespawnCar()
+	local noDrive = false	if self.playerCar then
+		local pos = self.playerCar.GetPos()		self.playerCar.Destroy()
+		if pos[1] > 800 then
+			noDrive = true
+		end	end	local carSpec = api.GetUpgradedCar(GameHandler.GetLoadout())	self.playerCar = NewPlayerCar(self.world.GetLevelData().playerSpawn, self.world.GetPhysicsWorld(), self.world, carSpec)
+	if noDrive then
+		self.playerCar.SetNoDrive()
+	endend---------------------------------------------------- Updates--------------------------------------------------
 function api.Draw(drawQueue)
 	if self.playerCar then
 		self.playerCar.Draw(drawQueue)

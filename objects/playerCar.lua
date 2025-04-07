@@ -120,8 +120,7 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 		pos = spawnPos,
 		debugDraw = {}
 	}
-	self.age = 0
-	self.animTime = 0
+	self.noDriveTime = false
 	self.underwaterTime = 0
 	self.jumpStore = def.jumpMax
 	local hullCoords = {{def.width/2, def.height/2}, {-def.width/2, def.height/2}, {-def.width/2, -def.height/2}, {def.width/2, -def.height/2}}
@@ -180,8 +179,6 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 	end
 	
 	function self.Update(dt)
-		self.animTime = self.animTime + dt
-		self.age = self.age + dt
 		TerrainHandler.UpdateSpeedLimit(self.hull.body)
 		UpdateHyrdodynamics(def, dt, self.hull.body, self)
 		
@@ -234,8 +231,13 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 			end
 		end
 		
-		if self.age < Global.NO_DRIVE_TIME then
-			return
+		if self.noDriveTime then
+			self.noDriveTime = self.noDriveTime - dt
+			if self.noDriveTime < 0 then
+				self.noDriveTime = false
+			else
+				return
+			end
 		end
 		
 		if (love.keyboard.isDown("space") or love.keyboard.isDown("return")) and (self.jumping or (self.jumpStore/def.jumpMax >= def.jumpPropRequired)) then
@@ -301,6 +303,10 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 	
 	function self.GetDef()
 		return def
+	end
+	
+	function self.SetNoDrive()
+		self.noDriveTime = Global.NO_DRIVE_TIME
 	end
 	
 	function self.GetPos()
