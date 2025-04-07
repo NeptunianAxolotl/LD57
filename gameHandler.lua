@@ -194,7 +194,7 @@ end
 --------------------------------------------------
 
 function api.Update(dt)
-	local depth = InterfaceUtil.GetNumber("depthRecord")
+	local depth = InterfaceUtil.GetRawRecordHigh("depth")
 	local depthBand = 0
 	for i = 2, #Global.DEPTHS do
 		if depth > Global.DEPTHS[i] then
@@ -205,7 +205,7 @@ function api.Update(dt)
 	end
 	self.maxDepthBand = math.max(self.maxDepthBand or 0, depthBand)
 	InterfaceUtil.SetNumber("music", self.maxDepthBand)
-	MusicHandler.setPitch(4^(InterfaceUtil.GetNumber("music")/8))
+	MusicHandler.setPitch(4^(1 - InterfaceUtil.GetNumber("music")/8))
 end
 
 local buttonOffset = {47, 27}
