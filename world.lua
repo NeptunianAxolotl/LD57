@@ -243,6 +243,7 @@ function api.Update(dt)
 	ChatHandler.Update(dt)
 	EffectsHandler.Update(dt)
 	DoodadHandler.Update(dt)
+	TerrainHandler.Update(dt)
 	UpdateCamera(dt)
 end
 

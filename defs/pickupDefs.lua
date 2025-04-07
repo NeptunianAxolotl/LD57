@@ -4,18 +4,21 @@ local defs = {
 		radius = 40,
 		money = 50,
 		col = {1, 0.8, 0, 1},
+		image = "coin",
 	},
 	{
 		name = "bigCoin",
 		radius = 50,
 		money = 200,
 		col = {1, 0.8, 0, 1},
+		image = "gem_1",
 	},
 	{
 		name = "chest",
 		radius = 60,
 		money = 500,
 		col = {1, 0.8, 0, 1},
+		image = "treasure_chest_small",
 	},
 	{
 		name = "bigChest",
@@ -23,6 +26,7 @@ local defs = {
 		money = 5000,
 		col = {1, 0.8, 0, 1},
 		toolSkip = true,
+		image = "treasure_chest",
 	},
 	{
 		name = "portal_1",
@@ -30,6 +34,8 @@ local defs = {
 		portalExit = 1,
 		col = {0.9, 0.2, 1, 1},
 		toolSkip = true,
+		image = "portal_furled",
+		rotSpeed = 0.3,
 	},
 	{
 		name = "portal_1_entrance",
@@ -37,6 +43,8 @@ local defs = {
 		portalEntrance = 1,
 		col = {0.9, 0.2, 1, 1},
 		toolSkip = true,
+		image = "portal_unfurled",
+		rotSpeed = 0.7,
 	},
 	{
 		name = "portal_2",
@@ -44,6 +52,8 @@ local defs = {
 		portalExit = 2,
 		col = {0.9, 0.2, 1, 1},
 		toolSkip = true,
+		image = "portal_furled",
+		rotSpeed = 0.3,
 	},
 	{
 		name = "portal_2_entrance",
@@ -51,6 +61,8 @@ local defs = {
 		portalEntrance = 2,
 		col = {0.9, 0.2, 1, 1},
 		toolSkip = true,
+		image = "portal_unfurled",
+		rotSpeed = 0.7,
 	},
 	{
 		name = "start_portal",
@@ -58,6 +70,8 @@ local defs = {
 		portalEntrance = "start",
 		col = {0.9, 0.2, 1, 1},
 		toolSkip = true,
+		image = "portal_unfurled",
+		rotSpeed = 0.7,
 	},
 	{
 		name = "ultraCoin",

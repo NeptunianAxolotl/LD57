@@ -233,12 +233,11 @@ local function DrawTitleText()
 		love.graphics.printf("Journey to the Centre of the Ocean", 1020, 180, 1600, "center")
 		Font.SetSize(1)
 		love.graphics.printf([[Collect treasure to upgrade your submersible
-    - A and D to accelerate wheels
+     - A and D to accelerate wheels
            - W and S to rotate chassis
                 - Space or Enter to boost
                    - R to Respawn
                       Dive deep, until the Oxygen expires
-                        Find the motherload
 ]], 1520, 320, 1200, "left")
 	end
 end

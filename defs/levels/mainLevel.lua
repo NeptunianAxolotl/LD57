@@ -349,7 +349,7 @@ local data = {
 			pos = {87009.328125, 37552.765625},
 		},
 		{
-			defName = "bigCoin",
+			defName = "chest",
 			pos = {84472.421875, 33258.66796875},
 		},
 		{
@@ -601,7 +601,7 @@ local data = {
 			pos = {72668.5, 25627.7734375},
 		},
 		{
-			defName = "chest",
+			defName = "bigCoin",
 			pos = {82474.6875, 34752},
 		},
 		{
