@@ -7,7 +7,7 @@ local api = {}local defaultCar = {	density = 1.2,	ballastDensity = 5,	hullM
 		airSeconds = 15,	
 	carImage = "basic_car",
 	carImageScale = 0.92,
-	carImageOffset = {0, 0},
+	carImageOffset = {-5, 0},
 	wheelImage = "basic_wheel",
 	wheelImageScale = 1,
 		massScale = 10,	scale = 50,	pickupRadius = 50,	wheelFriction = 0.95,	wheelBounce = 0.05,	hullFriction = 0.65,	hullBounce = 0.05,	width = 2.1,	height = 1.4,	
@@ -48,7 +48,7 @@ function api.Draw(drawQueue)
 		self.playerCar.Draw(drawQueue)
 	end
 end
-function api.KeyPressed(key, scancode, isRepeat)	if self.world.GetEditMode() then		if key == "g" then			self.playerCar.SetPos(self.world.GetMousePosition())			self.playerCar.SetVelocity({9, 0})			self.playerCar.SetAngle(0)			return true		end	end	if key == "r" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then		self.playerCar.CleanupCar()
+function api.KeyPressed(key, scancode, isRepeat)	if self.world.GetEditMode() then		if key == "g" then			self.playerCar.SetPos(self.world.GetMousePosition())			self.playerCar.SetVelocity({9, 0})			self.playerCar.SetAngle(0)			return true		end	end	if key == "r" then		self.playerCar.CleanupCar()
 		api.RespawnCar()		return true	endendfunction api.GetUnderwaterTimeProp()	if self.playerCar then		return self.playerCar.GetUnderwaterTimeProp()	endend
 function api.GetUnderwaterTime()
 	if self.playerCar then
