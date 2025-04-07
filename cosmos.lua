@@ -105,7 +105,7 @@ end
 --------------------------------------------------
 
 function api.KeyPressed(key, scancode, isRepeat)
-	if key == "y" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
+	if key == "y" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) and (love.keyboard.isDown("lalt") or love.keyboard.isDown("ralt")) then
 		api.RestartWorld()
 		return true
 	end

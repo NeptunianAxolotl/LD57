@@ -71,7 +71,7 @@ local globals = {
 	DEPTH_SCALE = 8,
 	
 	
-	
+	CAN_DEBUG_DRAW_CAR = false,
 	DRAW_TERRAIN_IN_DEBUG = true,
 	
 	

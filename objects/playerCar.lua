@@ -349,7 +349,7 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 			local x, y = self.hull.body:getPosition()
 			local pos = {x, y}
 			local angle = self.hull.body:getAngle()
-			local debugMode = world.GetEditMode()
+			local debugMode = world.GetEditMode() and Global.CAN_DEBUG_DRAW_CAR
 			love.graphics.push()
 				love.graphics.translate(x, y)
 				love.graphics.rotate(angle)

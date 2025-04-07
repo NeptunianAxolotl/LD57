@@ -340,7 +340,7 @@ function api.DrawInterface()
 	if self.world.GetEditMode() then
 		Font.SetSize(3)
 		love.graphics.setColor(1, 1, 1, 0.85)
-		love.graphics.printf([[ - F to disable edit mode
+		love.graphics.printf([[ - Alt+Ctrl+F to disable edit mode
  - G to warp player to mouse.
  - C to place circle.
  - V to place polygon vertices with LMB. Right click to finish.
@@ -354,7 +354,7 @@ function api.DrawInterface()
  - Numpad to select doodads.
  - Right click to rotate recent placement.
  - kp+ delete.
-]], Global.UI_WIDTH - 500, 40, 500)
+]], Global.UI_WIDTH - 600, 40, 500)
 --	else
 --		Font.SetSize(3)
 --		love.graphics.setColor(1, 1, 1, 0.7)
@@ -366,6 +366,12 @@ function api.DrawInterface()
 -- - Ctrl+R to respawn
 -- - Ctrl+Y to restart
 --]], Global.UI_WIDTH - 200, 40, 500)
+	end
+	
+	if self.world.GetPaused() and not self.world.GetEditMode() then
+		Font.SetSize(0)
+		love.graphics.setColor(1, 1, 1, 0.85)
+		love.graphics.printf("Paused\nP or Escape to resume", 0, 200, windowX, "center")
 	end
 	
 	local textGap = 70

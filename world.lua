@@ -85,7 +85,7 @@ function api.KeyPressed(key, scancode, isRepeat)
 	if key == "p" then
 		api.ToggleMenu()
 	end
-	if key == "f" then
+	if key == "f" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) and (love.keyboard.isDown("lalt") or love.keyboard.isDown("ralt")) then
 		self.editMode = not self.editMode
 	end
 	if api.GetGameOver() then
