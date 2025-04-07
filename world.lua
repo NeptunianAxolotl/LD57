@@ -108,9 +108,6 @@ function api.MousePressed(x, y, button)
 	if api.GetGameOver() then
 		return -- No doing actions
 	end
-	if DialogueHandler.MousePressedInterface(uiX, uiY, button) then
-		return
-	end
 	x, y = CameraHandler.GetCameraTransform():inverse():transformPoint(x, y)
 	
 	-- Send event to game components
