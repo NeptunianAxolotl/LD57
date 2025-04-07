@@ -43,7 +43,7 @@ local data = {
 		{
 			name = "Super\nSpeed+",
 			textLine = 2,
-			cost = 1000,
+			cost = 800,
 			depth = Global.DEPTHS[3],
 			speed = 10,
 			topSpeedAccel = 1.45,
@@ -55,7 +55,7 @@ local data = {
 		{
 			name = "Super\nPower+",
 			textLine = 2,
-			cost = 1500,
+			cost = 1200,
 			depth = Global.DEPTHS[4],
 			speed = 6,
 			topSpeedAccel = 1,
@@ -67,7 +67,7 @@ local data = {
 		{
 			name = "Mega\nSpeed+",
 			textLine = 2,
-			cost = 2800,
+			cost = 2600,
 			depth = Global.DEPTHS[5],
 			speed = 100,
 			topSpeedAccel = 1.8,
@@ -79,7 +79,7 @@ local data = {
 		{
 			name = "Mega\nPower+",
 			textLine = 2,
-			cost = 3500,
+			cost = 3000,
 			depth = Global.DEPTHS[6],
 			speed = 20,
 			topSpeedAccel = 1.15,

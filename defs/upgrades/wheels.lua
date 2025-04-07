@@ -41,7 +41,7 @@ local data = {
 		{
 			name = "Super\nControl+",
 			textLine = 2,
-			cost = 700,
+			cost = 600,
 			depth = Global.DEPTHS[4],
 			hullRotateMult = 1.8,
 			wheelFriction = 1.5,
@@ -53,7 +53,7 @@ local data = {
 		{
 			name = "Super\nRotate+",
 			textLine = 2,
-			cost = 1100,
+			cost = 900,
 			depth = Global.DEPTHS[5],
 			hullRotateMult = 3.2,
 			reactionControl = 0.35,

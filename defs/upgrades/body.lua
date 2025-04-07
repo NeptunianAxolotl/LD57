@@ -95,7 +95,7 @@ local data = {
 		},
 		{
 			name = "Whale",
-			cost = 3200,
+			cost = 2500,
 			depth = Global.DEPTHS[6],
 			spawnOffset = {50, -22},
 			pickupRadius = 80,

@@ -64,8 +64,8 @@ local data = {
 			cost = 3500,
 			depth = Global.DEPTHS[6],
 			power = 1.4,
-			dragDown = -0.2,
-			hydroMult = 1.1,
+			dragDown = -0.15,
+			hydroMult = 1.15,
 		},
 		{
 			name = "Sleek\nDolphin",
