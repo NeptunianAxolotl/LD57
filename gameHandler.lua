@@ -194,16 +194,18 @@ end
 --------------------------------------------------
 
 function api.Update(dt)
-	local depth = InterfaceUtil.GetNumber("depth")
+	local depth = InterfaceUtil.GetNumber("depthRecord")
 	local depthBand = 0
-	for i = 1, #Global.DEPTHS do
+	for i = 2, #Global.DEPTHS do
 		if depth > Global.DEPTHS[i] then
-			depthBand = i
+			depthBand = i - 1
 		else
 			break
 		end
 	end
-	MusicHandler.setPitch(1.5^(depthBand/2))
+	self.maxDepthBand = math.max(self.maxDepthBand or 0, depthBand)
+	InterfaceUtil.SetNumber("music", self.maxDepthBand)
+	MusicHandler.setPitch(4^(InterfaceUtil.GetNumber("music")/8))
 end
 
 local buttonOffset = {47, 27}
@@ -439,6 +441,7 @@ function api.Initialize(world)
 	InterfaceUtil.RegisterSmoothNumber("destroyed_money", 0, 1.1)
 	InterfaceUtil.RegisterSmoothNumber("depth", 0, 1)
 	InterfaceUtil.RegisterSmoothNumber("depthRecord", 0, 0.8)
+	InterfaceUtil.RegisterSmoothNumber("music", 0, 0.2)
 	
 	
 	for i = 1, #Global.DEPTHS do
