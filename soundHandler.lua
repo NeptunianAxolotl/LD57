@@ -5,14 +5,17 @@ local sounds = IterableMap.New()
 
 local soundFiles = util.LoadDefDirectory("resources/soundDefs")
 
-function AddSource(name)
+function AddSource(name, musicData)
 	local def = soundFiles[name]
 	if def then
+		if musicData then
+			return love.audio.newSource(musicData, "static")
+		end
 		return love.audio.newSource("resources/sounds/" .. def.file, "static")
 	end
 end
 
-function api.LoadSound(name, id)
+function api.LoadSound(name, id, musicData)
 	if id then
 		id = name .. (id or 1)
 	else
@@ -26,7 +29,7 @@ function api.LoadSound(name, id)
 			want = 0,
 			have = 0,
 			volumeMult = def.volMult * Global.MASTER_VOLUME,
-			source = AddSource(name)
+			source = AddSource(name, musicData)
 		}
 		IterableMap.Add(sounds, id, soundData)
 	end
@@ -34,8 +37,8 @@ function api.LoadSound(name, id)
 	return soundData
 end
 
-function api.PlaySound(name, id, fadeIn, fadeOut, delay, loop, wantedVolume, playAtZero, pitch)
-	local soundData = api.LoadSound(name, id)
+function api.PlaySound(name, id, fadeIn, fadeOut, delay, loop, wantedVolume, playAtZero, pitch, musicData)
+	local soundData = api.LoadSound(name, id, musicData)
 	soundData.source:setLooping(loop and true or false)
 	
 	soundData.fadeIn = fadeIn or 10

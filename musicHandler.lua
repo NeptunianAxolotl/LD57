@@ -19,6 +19,7 @@ local initialDelay = true
 local trackParity = 1
 local playingSounds = {}
 local pitch = 1
+local musicData = false
 
 function api.setPitch(newPitch)
   pitch = newPitch or 1
@@ -55,7 +56,7 @@ function api.Update(dt)
 	for i = wantedTrack, wantedTrack + 1 do
 		if trackList[i] and not playingSounds[i] then
 			local pitch = trackData.PitchFunc and trackData.PitchFunc(i)
-			playingSounds[i] = SoundHandler.PlaySound(trackList[i], i, 1, 1, false, true, ((trackData.WantTrack(cosmos, i) and 0.01) or 0), true, pitch)
+			playingSounds[i] = SoundHandler.PlaySound(trackList[i], i, 1, 1, false, true, ((trackData.WantTrack(cosmos, i) and 0.01) or 0), true, pitch, musicData)
 		end
 	end
 	
@@ -65,6 +66,8 @@ function api.Update(dt)
 end
 
 function api.Initialize(newCosmos)
+	musicData = love.filesystem.read("resources/sounds/music/LD57.wav")
+	musicData = love.filesystem.newFileData(musicData, "resources/sounds/music/LD57.wav")
 	self = {}
 	cosmos = newCosmos
 	initialDelay = 0
