@@ -176,7 +176,7 @@ function api.ReportOnRecord(name, newValue, prevValue)
 				
 				local carPos = PlayerHandler.GetPos()
 				if carPos then
-					local pos = util.Add(carPos, {700, 0})
+					local pos = util.Add(carPos, {800, -20})
 					EffectsHandler.SpawnEffect("popup", pos, {text = marker.beatPopup, velocity = {0, -2}})
 				end
 				marker.toRemove = true

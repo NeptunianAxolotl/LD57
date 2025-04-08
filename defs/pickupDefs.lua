@@ -1,8 +1,8 @@
 local defs = {
 	{
 		name = "coin",
-		radius = 40,
-		money = 58,
+		radius = 48,
+		money = 50,
 		col = {1, 0.8, 0, 1},
 		image = "coin",
 	},
