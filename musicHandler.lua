@@ -16,7 +16,6 @@ local trackList = trackData.list
 local currentTrack = {}
 local trackRunning = false
 local initialDelay = true
-local currentTrackRemaining = 1
 local trackParity = 1
 local playingSounds = {}
 local pitch = 1
@@ -51,36 +50,17 @@ function api.Update(dt)
 			return
 		end
 	end
-	for i = 1, #trackList do
-		if playingSounds[i] then
-			SoundHandler.setPitch(playingSounds[i].name,playingSounds[i].id, pitch)
+	
+	local wantedTrack = GameHandler.GetDesiredTrack()
+	for i = wantedTrack, wantedTrack + 1 do
+		if trackList[i] and not playingSounds[i] then
+			local pitch = trackData.PitchFunc and trackData.PitchFunc(i)
+			playingSounds[i] = SoundHandler.PlaySound(trackList[i], i, 1, 1, false, true, ((trackData.WantTrack(cosmos, i) and 0.01) or 0), true, pitch)
 		end
 	end
-	currentTrackRemaining = (currentTrackRemaining or 0) - dt
 	
-	if currentTrackRemaining < 0 and not trackRunning then
-		if cosmos.MusicEnabled() then
-			if trackRunning then
-				for i = 1, #trackList do
-					SoundHandler.StopSound(currentTrack[i])
-				end
-			end
-			trackRunning = true
-			currentTrackRemaining = soundFiles[trackData.useAsDurationForAllTracks or currentTrack[1]].duration
-			for i = 1, #trackList do
-				local pitch = trackData.PitchFunc and trackData.PitchFunc(i)
-				playingSounds[#playingSounds + 1] = SoundHandler.PlaySound(trackList[i], i, 1, 1, false, true, ((trackData.WantTrack(cosmos, i) and 0.01) or 0), true, pitch)
-			end
-		elseif trackRunning then
-			for i = 1, #trackList do
-				SoundHandler.StopSound(trackList[i])
-			end
-			trackRunning = false
-		end
-	elseif trackRunning then
-		for i = 1, #trackList do
-			playingSounds[i].want = ((trackData.WantTrack(cosmos, i) and 1) or 0)
-		end
+	for i = 1, #playingSounds do
+		playingSounds[i].want = ((trackData.WantTrack(cosmos, i) and 1) or 0)
 	end
 end
 
