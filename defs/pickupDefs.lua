@@ -2,20 +2,20 @@ local defs = {
 	{
 		name = "coin",
 		radius = 40,
-		money = 50,
+		money = 58,
 		col = {1, 0.8, 0, 1},
 		image = "coin",
 	},
 	{
 		name = "bigCoin",
-		radius = 60,
+		radius = 65,
 		money = 200,
 		col = {1, 0.8, 0, 1},
 		image = "gem_1",
 	},
 	{
 		name = "chest",
-		radius = 60,
+		radius = 75,
 		money = 500,
 		col = {1, 0.8, 0, 1},
 		image = "treasure_chest_small",
@@ -30,7 +30,7 @@ local defs = {
 	},
 	{
 		name = "portal_1",
-		radius = 80,
+		radius = 120,
 		portalExit = 1,
 		alpha = 0.95,
 		col = {0.9, 0.2, 1, 1},
@@ -50,7 +50,7 @@ local defs = {
 	},
 	{
 		name = "portal_2",
-		radius = 80,
+		radius = 120,
 		portalExit = 2,
 		alpha = 0.95,
 		col = {0.9, 0.2, 1, 1},
