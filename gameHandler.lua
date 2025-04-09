@@ -193,9 +193,24 @@ function api.GetDesiredTrack()
 	return self.wantedTrack
 end
 
+function api.SwitchControl()
+	return self.switchControls
+end
+
 --------------------------------------------------
 -- Updating
 --------------------------------------------------
+
+function api.KeyPressed(key, scancode, isRepeat)
+	if key == "h" then
+		local carPos = PlayerHandler.GetPos()
+		self.switchControls = not self.switchControls
+		if carPos then
+			local pos = util.Add(carPos, {900, 100})
+			EffectsHandler.SpawnEffect("popup", pos, {text = "Controls Switched", velocity = {0, -2}})
+		end
+	end
+end
 
 local function UpdateMusicDepth()
 	local depth = InterfaceUtil.GetRawRecordHigh("depth")
@@ -255,6 +270,7 @@ local function DrawTitleText()
            - W and S to rotate chassis
                 - Space or Enter to boost
                    - R to Respawn
+                     - H to switch Up/Down with Left/Right
                       Dive deep, until the Oxygen expires
 ]], 1520, 320, 1200, "left")
 	end

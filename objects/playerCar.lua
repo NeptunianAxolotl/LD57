@@ -263,6 +263,12 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 		
 		local wantLeft = love.keyboard.isDown("a") or love.keyboard.isDown("left")
 		local wantRight = love.keyboard.isDown("d") or love.keyboard.isDown("right")
+		local up = love.keyboard.isDown("w") or love.keyboard.isDown("up")
+		local down = love.keyboard.isDown("s") or love.keyboard.isDown("down")
+		if GameHandler.SwitchControl() then
+			wantLeft, wantRight, up, down = down, up, wantLeft, wantRight
+		end
+		
 		if wantLeft or wantRight then
 			local vx, vy = self.hull.body:getWorldVector(0, 1)
 			local forceVec = util.Mult(def.wheelDownforce*dt, util.Unit({vx, vy}))
@@ -273,9 +279,9 @@ local function NewComponent(spawnPos, physicsWorld, world, def)
 		end
 		
 		local turnAmount = false
-		if love.keyboard.isDown("w") or love.keyboard.isDown("up") then
+		if up then
 			turnAmount = -1
-		elseif love.keyboard.isDown("s") or love.keyboard.isDown("down") then
+		elseif down then
 			turnAmount = 1
 		end
 		
